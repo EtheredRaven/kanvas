@@ -1,0 +1,41 @@
+{
+  "name": "kanvas",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A Vue webapp for interacting with Kanvas on Koinos",
+  "author": "Red Raven",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@ion-phaser/core": "^1.3.0",
+    "core-js": "^3.8.3",
+    "crypto-js": "^4.1.1",
+    "gradient-avatar": "^1.0.2",
+    "json-formatter-js": "^2.3.4",
+    "koilib": "^5.5.4",
+    "kondor-js": "^0.4.1",
+    "mosha-vue-toastify": "^1.0.23",
+    "phaser": "^3.55.2",
+    "tippy.js": "^6.3.7",
+    "vue": "^3.2.13",
+    "vue-color-kit": "^1.0.5",
+    "vue-router": "^4.0.3",
+    "vuex": "^4.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.16",
+    "@babel/eslint-parser": "^7.12.16",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-plugin-router": "~5.0.0",
+    "@vue/cli-plugin-vuex": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^8.0.3",
+    "sass": "^1.42.1",
+    "sass-loader": "^12.1.0"
+  }
+}
