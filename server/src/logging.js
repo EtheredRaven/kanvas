@@ -1,7 +1,7 @@
 const fs = require("fs");
 const util = require("util");
 module.exports = function (Server) {
-  Server.PATH_TO_LOGS = Server.__dirname + "/../logs/";
+  Server.PATH_TO_LOGS = __dirname + "/../logs/";
   let updateLogsFileStream = function () {
     let currentDate = new Date();
     currentDate =

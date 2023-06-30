@@ -77,6 +77,9 @@ export default {
     },
   },
   methods: {
+    preventNextClick() {
+      this.$store.commit("preventNextClick", true);
+    },
     computeMana() {
       this.computeMaxMana();
       this.computeUpdatedManaAmount();
@@ -132,7 +135,7 @@ export default {
 </script>
 
 <template>
-  <div v-if="showBar && currentAccountAddress">
+  <div v-if="showBar && currentAccountAddress" @click="preventNextClick">
     <div :style="manaBarStyle + pixelsBarStyle">
       <div :style="progressManaBarStyle + progressPixelsBarStyle"></div>
       <div id="manaAmount">

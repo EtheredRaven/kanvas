@@ -17,6 +17,7 @@ server/pnpm-debug.log*
 server/.DS_Store
 server/node_modules
 server/dist
+server/cert
 
 
 # local env files

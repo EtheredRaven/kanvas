@@ -4,8 +4,12 @@ import { hexToHexNumber, hexToRgb } from "../utils/colors";
 import { kanvasContractAbi } from "../utils/abi";
 import * as kondor from "kondor-js";
 import { Contract } from "koilib";
+import PointerPosition from "./PointerPosition";
 
 export default {
+  components: {
+    PointerPosition,
+  },
   created() {
     // Phaser instance for the pixel canvas
     this.initializePhaserGame = true;
@@ -49,6 +53,8 @@ export default {
       loadingPixels: [],
       pixelsArray: [],
       canvasDimensions: null,
+      pointerX: 0,
+      pointerY: 0,
       game: {
         // Phaser instance of the game (canvas)
         width: Math.floor(window.visualViewport.width), //  substract the menu width
@@ -110,6 +116,10 @@ export default {
             this.game.vueInstance.moveCanvasOnMouseMove() &&
               this.game.vueInstance.placePixelIfClicked() &&
               this.game.vueInstance.resetMovingVariables();
+
+            // Update mouse position
+            this.game.vueInstance.pointerX = this.input.activePointer.worldX;
+            this.game.vueInstance.pointerY = this.input.activePointer.worldY;
           },
         },
       },
@@ -312,14 +322,16 @@ export default {
 
       try {
         await kanvas.place_pixel({
-          posX: pixelPosX,
-          posY: pixelPosY,
-          red: rgbColor.r,
-          green: rgbColor.g,
-          blue: rgbColor.b,
-          alpha: 255,
           from: this.currentAccountAddress,
-          metadata: "",
+          pixel_to_place: {
+            posX: pixelPosX,
+            posY: pixelPosY,
+            red: rgbColor.r,
+            green: rgbColor.g,
+            blue: rgbColor.b,
+            alpha: 255,
+            metadata: "",
+          },
         });
         this.destroyPixel(loadingPixel);
         this.sceneInstance.pixelGraphics.fillStyle(hexNumberColor);
@@ -350,6 +362,7 @@ export default {
       v-bind:game.prop="game"
       v-bind:initialize.prop="initializePhaserGame"
     />
+    <PointerPosition v-bind:pointerX="pointerX" v-bind:pointerY="pointerY" />
   </div>
 </template>
 

@@ -16,7 +16,7 @@
     "gradient-avatar": "^1.0.2",
     "json-formatter-js": "^2.3.4",
     "koilib": "^5.5.4",
-    "kondor-js": "^0.4.1",
+    "kondor-js": "0.4.1",
     "mosha-vue-toastify": "^1.0.23",
     "phaser": "^3.55.2",
     "tippy.js": "^6.3.7",
