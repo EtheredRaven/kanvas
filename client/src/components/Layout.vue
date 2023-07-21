@@ -1,7 +1,7 @@
 <template>
   <div class="sp-layout">
     <slot name="sidebar"></slot>
-    <div class="sp-fill">
+    <div class="sp-fill" style="overflow: hidden">
       <slot name="content"></slot>
     </div>
   </div>

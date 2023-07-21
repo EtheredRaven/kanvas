@@ -1,21 +1,27 @@
-import { Contract, utils } from "koilib";
+import { Contract, utils, Provider } from "koilib";
 import { kanvasContractAbi } from "./abi";
-import * as kondor from "kondor-js";
 
-export function getKanvasContract(address) {
+const defaultProvider = new Provider(["https://api.koinos.io"]);
+
+export function getKanvasContract(signer) {
+  signer && (signer.provider = defaultProvider);
   return new Contract({
     id: "1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS",
     abi: kanvasContractAbi,
-    provider: kondor.provider,
-    signer: kondor.getSigner(address),
-  });
+    provider: defaultProvider,
+    signer: signer,
+    options: {
+      rcLimit: "100000000",
+    },
+  }).functions;
 }
 
-export function getKoinContract(address) {
+export function getKoinContract(signer) {
+  signer && (signer.provider = defaultProvider);
   return new Contract({
     id: "15DJN4a8SgrbGhhGksSBASiSYjGnMU8dGL",
     abi: utils.tokenAbi,
-    provider: kondor.provider,
-    signer: kondor.getSigner(address),
-  });
+    provider: defaultProvider,
+    signer: signer,
+  }).functions;
 }

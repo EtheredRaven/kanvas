@@ -11,7 +11,7 @@ export default {
   },
   computed: {
     currentAccount: function () {
-      return this.$store.state.currentAccount;
+      return this.$store.state.activeAccount;
     },
   },
 };
@@ -19,7 +19,7 @@ export default {
 
 <template>
   <div>
-    <ColorPicker v-if="currentAccount.address" />
+    <ColorPicker v-if="currentAccount && currentAccount.address" />
     <CanvasComponent />
     <ManaBar />
   </div>

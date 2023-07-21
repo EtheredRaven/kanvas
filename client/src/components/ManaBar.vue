@@ -19,7 +19,7 @@ export default {
   },
   computed: {
     currentAccountAddress() {
-      return this.$store.state.currentAccount.address;
+      return this.$store.state.activeAccount?.address;
     },
     manaProgress() {
       // Used for the width of the mana bar
@@ -106,7 +106,7 @@ export default {
     async computeUpdatedPixelsAmount(cache) {
       if (!this.currentAccountAddress) return;
       this.updatedPixelsAmount = await this.$store.getters.getPixelsAmount(
-        this.currentAccountAddress,
+        this.$store.state.activeAccount,
         cache
       );
     },
@@ -138,14 +138,14 @@ export default {
   <div v-if="showBar && currentAccountAddress" @click="preventNextClick">
     <div :style="manaBarStyle + pixelsBarStyle">
       <div :style="progressManaBarStyle + progressPixelsBarStyle"></div>
-      <div id="manaAmount">
+      <div class="manaAmount">
         {{ formatValue(maxPixels - updatedPixelsAmount) }} /
         {{ formatValue(maxPixels) }} PIXELS
       </div>
     </div>
     <div :style="manaBarStyle">
       <div :style="progressManaBarStyle"></div>
-      <div id="manaAmount">
+      <div class="manaAmount">
         {{ formatValue(updatedManaAmount) }} / {{ formatValue(maxMana) }} MANA
       </div>
     </div>
@@ -153,7 +153,7 @@ export default {
 </template>
 
 <style>
-#manaAmount {
+.manaAmount {
   width: 100%;
   text-align: center;
   position: absolute;

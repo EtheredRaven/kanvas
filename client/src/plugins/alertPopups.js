@@ -14,6 +14,23 @@ export default {
           showIcon: true,
           position: "bottom-right",
           type: "danger",
+          timeout: 4000,
+          showCloseButton: false,
+        }
+      );
+    app.config.globalProperties.$info = (title, description) =>
+      createToast(
+        {
+          title: title,
+          description: description,
+        },
+        {
+          hideProgressBar: true,
+          showIcon: true,
+          position: "bottom-right",
+          type: "success",
+          timeout: 4000,
+          showCloseButton: false,
         }
       );
   },
