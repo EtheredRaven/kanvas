@@ -3,8 +3,12 @@ const { kanvasContractAbi } = require("./abi");
 const { Client } = require("koinos-rpc");
 
 module.exports = async function (Server) {
-  Server.provider = new Provider(["https://api.koinos.io"]);
-  Server.client = new Client(["https://api.koinos.io"]);
+  Server.PROVIDERS_URL = [
+    "https://api.koinos.io",
+    "https://api.koinosblocks.com",
+  ];
+  Server.provider = new Provider(Server.PROVIDERS_URL);
+  Server.client = new Client(Server.PROVIDERS_URL);
   Server.kanvasContractAddress = "1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS";
   Server.kanvasContract = new Contract({
     id: Server.kanvasContractAddress,

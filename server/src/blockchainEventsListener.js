@@ -1,16 +1,18 @@
-module.exports = async function (Server) {
-  const TX_PER_CALL = 10;
+const { Client } = require("koinos-rpc");
 
-  // Get the last transactions on the kanvas contract to store the data in db
-  let eventsListener = async function () {
+module.exports = async function (Server) {
+  const INIT_EVENTS = 10; // The events to take on the contract to init the db (passed events)
+
+  // Get the last transactions on the kanvas contract to init the pixels data in db
+  let initPixelMap = async function () {
     let accountHistory = (
       await Server.client.accountHistory.getAccountHistory({
         address: Server.kanvasContractAddress,
-        limit: TX_PER_CALL,
+        limit: INIT_EVENTS,
       })
     ).values;
 
-    Server.infoLogging("Contract transactions history updated");
+    //Server.infoLogging("Contract transactions history updated");
 
     if (accountHistory) {
       for (let k = 0; k < accountHistory.length; k++) {
@@ -136,5 +138,27 @@ module.exports = async function (Server) {
     }
   };
 
-  setInterval(eventsListener, 1000);
+  await initPixelMap();
+
+  // Check for events in the new blocks
+  void (async () => {
+    for await (const block of Server.client.blockStore.getBlocks()) {
+      let transactionReceipts = block.receipt.transaction_receipts;
+      let receiptId = block.receipt.id;
+      if (transactionReceipts) {
+        for (let j = 0; j < transactionReceipts.length; j++) {
+          let txReceipt = transactionReceipts[j];
+          let events = txReceipt.events;
+          if (events) {
+            for (let i = 0; i < events.length; i++) {
+              // Process each event
+              let event = events[i];
+              await processEvent(event, receiptId);
+            }
+          }
+        }
+      }
+      Server.infoLogging("Processed block", block.block_height, block.block_id);
+    }
+  })();
 };
