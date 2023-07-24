@@ -6,7 +6,7 @@
     :to="link"
   >
     <div class="sp-card__icon">
-      <span class="sp-icon" :class="'sp-icon-' + icon" />
+      <span class="sp-icon" :class="'icon-' + icon" />
     </div>
     <div class="sp-card__text">
       <slot></slot>
@@ -14,7 +14,7 @@
   </router-link>
   <button class="sp-card" :class="'sp-card-' + type" v-else>
     <div class="sp-card__icon">
-      <span class="sp-icon" :class="'sp-icon-' + icon" />
+      <span class="sp-icon" :class="'icon-' + icon" />
     </div>
     <div class="sp-card__text">
       <slot></slot>

@@ -88,9 +88,6 @@ export const createStore = (app) => {
           return window.localStorage.getItem("lastWallet");
         }
       },
-      activeAccountAddress: (state) => {
-        state.activeAccount ? state.activeAccount.address : "";
-      },
       getWalletAsStoredFormat: () => {
         return function (wallet) {
           let storedWallet;

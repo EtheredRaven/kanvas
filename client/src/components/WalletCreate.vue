@@ -1,12 +1,12 @@
 <template>
   <div class="sp-wallet-create sp-shadow">
     <div class="sp-wallet-create__close" v-if="!createform && !importform">
-      <a class="sp-icon sp-icon-Close" v-on:click="close" />
+      <a class="sp-icon icon-Close" v-on:click="close" />
     </div>
     <div class="sp-wallet-create__back" v-else>
-      <a class="sp-icon sp-icon-Lock" v-on:click="goBack" v-if="create.step2" />
+      <a class="sp-icon icon-Lock" v-on:click="goBack" v-if="create.step2" />
       <a
-        class="sp-icon sp-icon-LeftArrow"
+        class="sp-icon icon-LeftArrow"
         v-on:click="goBack"
         v-if="!create.step2"
       />
@@ -28,7 +28,7 @@
         >
       </div>
       <div class="sp-wallet-create__keplr" v-if="kondorAvailable">
-        <KanvasButton type="primary" v-on:click="useKondor"
+        <KanvasButton type="primary" v-on:click="useKondor" bgColor="#7161EF"
           >Use Kondor</KanvasButton
         >
       </div>

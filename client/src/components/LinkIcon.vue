@@ -8,7 +8,7 @@
       :title="text"
     >
       <div class="sp-link-icon__icon">
-        <span class="sp-icon" :class="'sp-icon-' + icon" v-if="icon" />
+        <span class="sp-icon" :class="'icon-' + icon" v-if="icon" />
       </div>
       <div class="sp-link-icon__text">
         {{ text }}
@@ -23,7 +23,7 @@
       :target="target"
     >
       <div class="sp-link-icon__icon">
-        <span class="sp-icon" :class="'sp-icon-' + icon" v-if="icon" />
+        <span class="sp-icon" :class="'icon-' + icon" v-if="icon" />
       </div>
       <div class="sp-link-icon__text">
         {{ text }}
@@ -31,7 +31,7 @@
     </a>
     <a class="sp-link-icon-wrapper" v-else :alt="text" :title="text">
       <div class="sp-link-icon__icon">
-        <span class="sp-icon" :class="'sp-icon-' + icon" v-if="icon" />
+        <span class="sp-icon" :class="'icon-' + icon" v-if="icon" />
       </div>
       <div class="sp-link-icon__text">
         {{ text }}

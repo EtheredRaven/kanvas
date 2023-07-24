@@ -1,5 +1,3 @@
-const { Client } = require("koinos-rpc");
-
 module.exports = async function (Server) {
   const INIT_EVENTS = 10; // The events to take on the contract to init the db (passed events)
 
@@ -32,6 +30,8 @@ module.exports = async function (Server) {
   };
 
   let processEvent = async function (event, txId) {
+    if (event.source != Server.kanvasContractAddress) return;
+
     const eventDecoded = await Server.kanvasContract.decodeEvent(event);
     const res = await Server.db.get(
       "SELECT COUNT(id) AS n FROM processed_events WHERE id=(?)",
@@ -141,6 +141,7 @@ module.exports = async function (Server) {
   await initPixelMap();
 
   // Check for events in the new blocks
+
   void (async () => {
     for await (const block of Server.client.blockStore.getBlocks()) {
       let transactionReceipts = block.receipt.transaction_receipts;
@@ -161,4 +162,10 @@ module.exports = async function (Server) {
       Server.infoLogging("Processed block", block.block_height, block.block_id);
     }
   })();
+
+  /*const block = await Server.client.blockStore.getBlocksById([
+    "0x122089b7c74d89f66ef84516052edf016bacaeef0798544ebd4f2ebc10b3bc177a70",
+  ]);
+  console.log(block.block_items[0].block.transactions[0].operations);
+  console.log(block.block_items[0].receipt.transaction_receipts[0].events);*/
 };

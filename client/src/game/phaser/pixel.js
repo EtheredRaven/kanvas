@@ -2,6 +2,9 @@ import { hexToHexNumber } from "../../utils/colors";
 
 export default function ({ graphics, vue }) {
   graphics.drawPixel = function (pixel) {
+    // Add a reference for getting the pixel on specific coordinates (displaying properties for example)
+    vue.pixelsMap[pixel.posX + ";" + pixel.posY] = pixel;
+
     // Parse the color
     let red = parseInt(pixel.red).toString(16);
     red = red.length == 1 ? "0" + red : red;

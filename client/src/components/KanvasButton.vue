@@ -8,7 +8,7 @@
   >
     <span class="sp-button__text"><slot></slot></span>
     <div class="sp-button__loading">
-      <div class="sp-icon sp-icon-Reload"></div>
+      <div class="sp-icon icon-Reload"></div>
     </div>
   </router-link>
   <a
@@ -21,7 +21,7 @@
   >
     <span class="sp-button__text"><slot></slot></span>
     <div class="sp-button__loading">
-      <div class="sp-icon sp-icon-Reload"></div>
+      <div class="sp-icon icon-Reload"></div>
     </div>
   </a>
   <button
@@ -30,10 +30,11 @@
     class="sp-button"
     :class="[busy ? 'sp-button__progress' : '', 'sp-button-' + type]"
     :disabled="disabled"
+    :style="style"
   >
     <span class="sp-button__text"><slot></slot></span>
     <div class="sp-button__loading">
-      <div class="sp-icon sp-icon-Reload"></div>
+      <div class="sp-icon icon-Reload"></div>
     </div>
   </button>
 </template>
@@ -60,6 +61,14 @@ export default defineComponent({
     disabled: {
       type: Boolean,
       default: false,
+    },
+    bgColor: {
+      type: String,
+    },
+  },
+  computed: {
+    style() {
+      return this.bgColor ? "background:" + this.bgColor : "";
     },
   },
 });

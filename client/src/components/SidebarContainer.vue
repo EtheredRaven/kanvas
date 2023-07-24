@@ -12,9 +12,9 @@
       />Kanvas</template
     >
     <template v-slot:default>
-      <LinkIcon link="/" text="Pixel Map" icon="Dashboard" />
-      <LinkIcon text="Wallet (soon)" icon="Lock" />
-      <LinkIcon text="Docs (soon)" icon="Form" />
+      <LinkIcon link="/" text="Pixel map" icon="delicious" />
+      <LinkIcon href="../" text="Landing page" icon="home" />
+      <LinkIcon text="Docs (soon)" icon="book" />
     </template>
   </SidebarInside>
 </template>

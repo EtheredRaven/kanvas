@@ -21,7 +21,7 @@
             class="sp-accounts-list-item__copy"
             @click="copyAddress(account.address)"
           >
-            <span class="sp-icon sp-icon-Copy" />
+            <span class="sp-icon icon-Copy" />
           </div>
         </div>
       </li>
@@ -61,7 +61,7 @@ export default defineComponent({
       return this.$store.state.activeWallet.accounts;
     },
     activeAccountAddress: function () {
-      return this.$store.getters.activeAccountAddress;
+      return this.$store.state.activeAccount?.address || "";
     },
   },
   methods: {

@@ -1,5 +1,5 @@
 const { Contract, Provider } = require("koilib");
-const { kanvasContractAbi } = require("./abi");
+const kanvasContractAbi = require("../../client/src/utils/abi/kanvasContractAbi.json");
 const { Client } = require("koinos-rpc");
 
 module.exports = async function (Server) {
@@ -7,19 +7,21 @@ module.exports = async function (Server) {
     "https://api.koinos.io",
     "https://api.koinosblocks.com",
   ];
-  Server.provider = new Provider(Server.PROVIDERS_URL);
-  Server.client = new Client(Server.PROVIDERS_URL);
+  Server.provider = new Provider(Server.PROVIDERS_URL); // koilib
+  Server.client = new Client(Server.PROVIDERS_URL); // koinos-rpc
   Server.kanvasContractAddress = "1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS";
   Server.kanvasContract = new Contract({
     id: Server.kanvasContractAddress,
     abi: kanvasContractAbi,
     provider: Server.provider,
   });
-  const contractFunctions = Server.kanvasContract.functions;
-  const dimensionsResult = await contractFunctions.canvas_dimensions({});
+
+  const dimensionsResult =
+    await Server.kanvasContract.functions.canvas_dimensions({});
   Server.canvasDimensions = dimensionsResult.result;
 
   // Update the pixels map in memory to give it to new sockets connecting (to reduce db calls if a lot of new sockets connecting)
+  // TODO : changer, trouver une meilleure manière de load
   let updatePixelsMap = async function () {
     Server.pixels = await Server.db.all(
       "SELECT * FROM pixels WHERE unvisible != 1"

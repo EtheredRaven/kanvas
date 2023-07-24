@@ -4,18 +4,22 @@
       id="gameContainer"
       :style="'display:' + (gameGraphics ? 'show' : 'hidden') + ';'"
     />
-    <PointerPosition v-bind:pointerX="pointerX" v-bind:pointerY="pointerY" />
+    <PixelProperties
+      v-bind:pointerX="pointerX"
+      v-bind:pointerY="pointerY"
+      v-bind:hoveredPixel="hoveredPixel"
+    />
   </div>
 </template>
 
 <script>
-import PointerPosition from "./PointerPosition";
+import PixelProperties from "./PixelProperties";
 import { InitSocketFunctions } from "../game/socket/index";
 let Client = window.Client;
 
 export default {
   components: {
-    PointerPosition,
+    PixelProperties,
   },
   created() {
     InitSocketFunctions(this);
@@ -52,22 +56,23 @@ export default {
       sceneInstance: null,
       loadingPixels: [],
       pixelsArray: null,
+      pixelsMap: {},
       canvasDimensions: null,
       pointerX: 0,
       pointerY: 0,
+      hoveredPixel: null,
     };
   },
   computed: {
     activeAccountAddress() {
-      return this.$store.state.activeAccount
-        ? this.$store.state.activeAccount.address
-        : "";
+      return this.$store.state.activeAccount?.address || "";
     },
   },
   methods: {
-    updatePointer(x, y) {
+    updatePixelProperties(x, y, pixel) {
       this.pointerX = x;
       this.pointerY = y;
+      this.hoveredPixel = pixel;
     },
   },
 };

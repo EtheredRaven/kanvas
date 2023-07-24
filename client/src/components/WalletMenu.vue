@@ -12,7 +12,7 @@
     <div class="sp-wallet-menu__toggle" v-on:click="opened = !opened">
       <span
         class="sp-icon"
-        :class="{ 'sp-icon-DownCaret': !opened, 'sp-icon-UpCaret': opened }"
+        :class="{ 'icon-DownCaret': !opened, 'icon-UpCaret': opened }"
       />
     </div>
     <div class="sp-wallet-menu-items">
@@ -49,8 +49,8 @@
             <span
               class="sp-icon"
               :class="{
-                'sp-icon-Unlock': topWallet.name == walletName,
-                'sp-icon-Lock': topWallet.name != walletName,
+                'icon-Unlock': topWallet.name == walletName,
+                'icon-Lock': topWallet.name != walletName,
               }"
               v-if="opened"
               v-on:click="toggleWallet(topWallet.name)"
@@ -97,8 +97,8 @@
           <span
             class="sp-icon"
             :class="{
-              'sp-icon-Unlock': wallet.name == walletName,
-              'sp-icon-Lock': wallet.name != walletName,
+              'icon-Unlock': wallet.name == walletName,
+              'icon-Lock': wallet.name != walletName,
             }"
             v-if="topWallet || index > 0 || opened"
             v-on:click="toggleWallet(wallet.name)"
@@ -123,8 +123,8 @@
       <span
         class="sp-icon"
         :class="{
-          'sp-icon-DownCaret': !unlocking,
-          'sp-icon-Close': unlocking,
+          'icon-DownCaret': !unlocking,
+          'icon-Close': unlocking,
         }"
       />
     </div>
@@ -176,8 +176,8 @@ import { defineComponent } from "vue";
 import AccountList from "./AccountList";
 import KanvasButton from "./KanvasButton";
 import LinkIcon from "./LinkIcon";
-import avatar from "gradient-avatar";
-import MD5 from "crypto-js/md5";
+import { createAvatar } from "@dicebear/core";
+import { identicon } from "@dicebear/collection";
 
 export default defineComponent({
   name: "WalletMenu",
@@ -226,7 +226,14 @@ export default defineComponent({
       return addr.substr(0, 10) + "..." + addr.slice(-5);
     },
     getAvatar: function (name) {
-      return avatar(MD5(name) + "", 64);
+      const avatar = createAvatar(identicon, {
+        seed: name,
+        backgroundType: "solid",
+        row1: ["ooxoo", "oxoxo", "oxxxo"],
+        row5: ["ooxoo", "oxoxo", "oxxxo"],
+      });
+      const svg = avatar.toString();
+      return svg;
     },
     unlockStoreWallet: async function () {
       try {

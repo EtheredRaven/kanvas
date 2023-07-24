@@ -4,7 +4,7 @@
     :class="{ 'sp-opened': opened, 'sp-mob-opened': mobOpened }"
   >
     <div class="sp-hamburger sp-shadow" v-on:click="toggleMobOpen">
-      <div class="sp-icon sp-icon-Hamburger"></div>
+      <div class="sp-icon icon-Hamburger"></div>
     </div>
     <div class="sp-sidebar__header" v-if="$slots.header">
       <slot name="header"></slot>

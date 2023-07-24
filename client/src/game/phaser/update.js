@@ -25,9 +25,8 @@ export default function ({ graphics, vue }) {
     graphics.placePixelIfClicked() &&
     graphics.resetMovingVariables();
 
-  // Update mouse position
-  vue.updatePointer(
-    graphics.input.activePointer.worldX,
-    graphics.input.activePointer.worldY
-  );
+  // Update pixel properties
+  let posX = Math.floor(graphics.input.activePointer.worldX);
+  let posY = Math.floor(graphics.input.activePointer.worldY);
+  vue.updatePixelProperties(posX, posY, vue.pixelsMap[posX + ";" + posY]);
 }
