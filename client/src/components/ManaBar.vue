@@ -37,7 +37,7 @@ export default {
       return `
         width: ${this.manaBarWidth}px;
         position: absolute;
-        bottom: 12px;
+        bottom: 2rem;
         left: ${(this.gameWidth - this.manaBarWidth) / 2}px;
         background-color: rgb(200,200,200);
         border-radius: 6px;
@@ -48,7 +48,7 @@ export default {
     },
     pixelsBarStyle() {
       return `
-        bottom: 36px;
+        bottom: calc(2rem + 24px);
       `;
     },
     progressManaBarStyle() {
@@ -106,7 +106,7 @@ export default {
     async computeUpdatedPixelsAmount(cache) {
       if (!this.currentAccountAddress) return;
       this.updatedPixelsAmount = await this.$store.getters.getPixelsAmount(
-        this.$store.state.activeAccount,
+        this.currentAccountAddress,
         cache
       );
     },

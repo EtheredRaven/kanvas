@@ -47,6 +47,13 @@ Server.app.use("/app/", express.static(__dirname + "/../client/dist"));
 Server.app.get("/app/", function (req, res) {
   res.sendFile(__dirname + "/../client/dist/index.html");
 });
+Server.app.use(
+  "/docs/",
+  express.static(__dirname + "/../client/docs/.vitepress/dist")
+);
+Server.app.get("/docs/", function (req, res) {
+  res.sendFile(__dirname + "/../client/docs/.vitepress/dist/index.html");
+});
 
 require("./src/loadData")(Server);
 require("./src/socket")(Server);

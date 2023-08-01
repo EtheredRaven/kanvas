@@ -1,7 +1,11 @@
 import { createStore as createVuexStore } from "vuex";
 import * as kondor from "kondor-js";
 import { Signer } from "koilib";
-import { getKanvasContract, getKoinContract } from "../utils/contracts";
+import {
+  getKanvasContract,
+  getKoinContract,
+  defaultProvider,
+} from "../utils/contracts";
 import CryptoJS from "crypto-js";
 import HDKoinos from "../utils/HDKoinos";
 
@@ -19,19 +23,21 @@ export const createStore = (app) => {
       koinContract: getKoinContract(),
     },
     getters: {
-      getKoinBalance: (state) => async (address) => {
-        const koin = state.koinContract;
+      getKoinBalance:
+        (state) =>
+        async (address = state.activeAccount.address) => {
+          const koin = state.koinContract;
 
-        const ret = await koin.balanceOf({
-          owner: address,
-        });
-        let realKoin = Number(ret.result.value) / 1e8;
+          const ret = await koin.balanceOf({
+            owner: address,
+          });
+          let realKoin = Number(ret.result.value) / 1e8;
 
-        return realKoin;
-      },
+          return realKoin;
+        },
       getTokenBalance:
         (state) =>
-        async (address, cache = true) => {
+        async (address = state.activeAccount.address, cache = true) => {
           if (!cache) {
             const kan = state.kanvasContract;
 
@@ -44,27 +50,29 @@ export const createStore = (app) => {
 
           return state.tokenBalance[address];
         },
-      getMana: () => async (address) => {
-        let rc = await kondor.provider.getAccountRc(address);
-        let initialMana = Number(rc) / 1e8;
-        let mana = Number(initialMana.toFixed(8));
+      getMana:
+        (state) =>
+        async (address = state.activeAccount.address) => {
+          let rc = await defaultProvider.getAccountRc(address);
+          let initialMana = Number(rc) / 1e8;
+          let mana = Number(initialMana.toFixed(8));
 
-        return mana;
-      },
+          return mana;
+        },
       getPixelsAmount:
         (state) =>
-        async (account, cache = true) => {
+        async (address = state.activeAccount.address, cache = true) => {
           if (!cache) {
             const kanvas = state.kanvasContract;
 
             const ret = await kanvas.pixel_count_of({
-              owner: account.address,
+              owner: address,
             });
             let pixelsAmount = Number(ret?.result?.value || 0);
-            state.pixelsAmount[account.address] = pixelsAmount;
+            state.pixelsAmount[address] = pixelsAmount;
           }
 
-          return state.pixelsAmount[account.address];
+          return state.pixelsAmount[address];
         },
       nameAvailable: (state) => {
         return function (name) {
@@ -123,11 +131,16 @@ export const createStore = (app) => {
             : Signer.fromWif(newActiveAccount.privateKey, true);
         state.kanvasContract = getKanvasContract(newSigner);
         state.koinContract = getKoinContract(newSigner);
+        app.config.globalProperties.$socket.emit(
+          "subscribe_wallet_update",
+          newActiveAccount.address
+        );
       },
       setTokenBalance(state, data) {
         state.tokenBalance[data.address] = data.balance;
       },
       setPixelsAmount(state, data) {
+        if (!data.address) data.address = state.activeAccount?.address || "0";
         state.pixelsAmount[data.address] = data.amount;
       },
       preventNextClick(state, val = true) {
@@ -252,11 +265,6 @@ export const createStore = (app) => {
             accounts: accounts,
           });
           commit("setActiveAccount", state.activeWallet.accounts[0]);
-
-          app.config.globalProperties.$socket.emit(
-            "subscribe_wallet_update",
-            accounts
-          );
         } else {
           app.config.globalProperties.$error(
             "No Kondor account was selected !"

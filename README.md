@@ -2,7 +2,7 @@
 
 ## Info
 
-Kanvas is the first collaborative and decentralized canvas, based on the first feeless smart-contract blockchain, Koinos. You can find more info on the official website is https://kanvas-app.com. The source is licensed under the MIT licence.
+Kanvas is the first collaborative and decentralized canvas, based on the first feeless smart-contract blockchain, Koinos. You can find more info on the official website is https://kanvas-app.com. The source is licensed under the MIT licence. This project has been developed using node v16.15.0.
 
 ## Project setup
 
@@ -11,6 +11,9 @@ Kanvas is the first collaborative and decentralized canvas, based on the first f
 ```
 cd client
 npm install
+npm docs:build
+cd db
+touch data.db
 ```
 
 ### Server (nodejs + express)
@@ -18,6 +21,7 @@ npm install
 ```
 cd server
 npm install
+mkdir logs
 ```
 
 ## Compiles and hot-reloads for development

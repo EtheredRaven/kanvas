@@ -21,7 +21,6 @@ module.exports = async function (Server) {
   Server.canvasDimensions = dimensionsResult.result;
 
   // Update the pixels map in memory to give it to new sockets connecting (to reduce db calls if a lot of new sockets connecting)
-  // TODO : changer, trouver une meilleure manière de load
   let updatePixelsMap = async function () {
     Server.pixels = await Server.db.all(
       "SELECT * FROM pixels WHERE unvisible != 1"
@@ -29,7 +28,11 @@ module.exports = async function (Server) {
     Server.infoLogging("Updated pixels map");
   };
 
-  Server.updatePixelsMapInterval = setInterval(updatePixelsMap, 5000);
+  const PIXELS_MAP_UPDATE_FREQUENCY_IN_SECONDS = 10;
+  Server.updatePixelsMapInterval = setInterval(
+    updatePixelsMap,
+    PIXELS_MAP_UPDATE_FREQUENCY_IN_SECONDS * 1000
+  );
   /*for (let i = 0; i < Server.canvasDimensions.canvas_width; i++) {
     let row = [];
     for (let j = 0; j < Server.canvasDimensions.canvas_height; j++) {

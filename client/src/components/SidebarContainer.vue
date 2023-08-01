@@ -13,8 +13,12 @@
     >
     <template v-slot:default>
       <LinkIcon link="/" text="Pixel map" icon="delicious" />
-      <LinkIcon href="../" text="Landing page" icon="home" />
-      <LinkIcon text="Docs (soon)" icon="book" />
+      <LinkIcon href="../" text="Home" icon="home" />
+      <LinkIcon
+        href="../docs/introduction/whatiskanvas.html"
+        text="Docs"
+        icon="book"
+      />
     </template>
   </SidebarInside>
 </template>

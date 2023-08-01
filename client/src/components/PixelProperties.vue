@@ -101,7 +101,7 @@ export default defineComponent({
   padding: 0.7rem 1rem;
   background: white;
   border-radius: 1rem;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  border: 1px solid black;
 }
 
 .bold {

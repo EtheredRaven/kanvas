@@ -78,6 +78,12 @@ export default function ({ graphics, vue }) {
       graphics.destroyPixel(loadingPixel);
       graphics.pixelGraphics.fillStyle(hexNumberColor);
       graphics.pixelGraphics.fillRect(pixelPosX, pixelPosY, 1, 1);
+      vue.$store.commit("setPixelsAmount", {
+        amount: Math.min(
+          await vue.$store.getters.getTokenBalance(),
+          (await vue.$store.getters.getPixelsAmount()) + 1
+        ),
+      });
       vue.$info(
         "Pixel placed",
         rgbToHex(rgbColor.r, rgbColor.g, rgbColor.b) +
