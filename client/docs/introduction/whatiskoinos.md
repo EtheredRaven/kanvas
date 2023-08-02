@@ -104,3 +104,5 @@ Here's a comparison table between Koinos and the best-known cryptocurrencies
 |       Free smart-contracts |   ⬤    |         |          |          |        |         |        |      |
 | Universal language support |   ⬤    |         |          |          |        |         |   ◐    |      |
 |         Easily upgradeable |   ⬤    |         |    ◐     |          |        |         |   ◐    |      |
+
+_Credits to [Planet Koinos](https://planetkoinos.com/) for this comparison table_
