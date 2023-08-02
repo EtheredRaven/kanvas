@@ -18,8 +18,10 @@ export default defineConfig({
   ],
   themeConfig: {
     logo: "/favicon.ico",
+    lastUpdated: true,
     editLink: {
-      pattern: "https://github.com/EtheredRaven/kanvas/client/docs/:path",
+      pattern:
+        "https://github.com/EtheredRaven/kanvas/blob/master/client/docs/:path",
     },
     nav: [
       { text: "Home", link: "https://kanvas-app.com" },
@@ -29,7 +31,7 @@ export default defineConfig({
         items: [
           {
             text: "Changelog",
-            link: "https://github.com/EtheredRaven/kanvas/CHANGELOG.md",
+            link: "https://github.com/EtheredRaven/kanvas/blob/master/CHANGELOG.md",
           },
           {
             text: "Contributing",

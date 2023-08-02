@@ -1,4 +1,4 @@
-# 1.1.0
+# 1.1.0 (2023-08-02)
 
 - Integrated wallet added
 - Cleaning of server- and client-side js code
