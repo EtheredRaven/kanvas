@@ -8,6 +8,11 @@ import {
 } from "../utils/contracts";
 import CryptoJS from "crypto-js";
 import HDKoinos from "../utils/HDKoinos";
+import {
+  ChainIds,
+  Methods,
+  WalletConnectKoinos,
+} from "@armana/walletconnect-koinos-sdk-js";
 
 export const createStore = (app) => {
   return createVuexStore({
@@ -79,7 +84,9 @@ export const createStore = (app) => {
           return (
             state.walletsList.findIndex(function (x) {
               return x.name == name;
-            }) == -1 && name != "Kondor"
+            }) == -1 &&
+            name != "Kondor" &&
+            name != "WalletConnect"
           );
         };
       },
@@ -107,7 +114,10 @@ export const createStore = (app) => {
                 wallet.password
               ).toString(),
             };
-          } else if (wallet.name == "Kondor") {
+          } else if (
+            wallet.name == "Kondor" ||
+            wallet.name == "WalletConnect"
+          ) {
             storedWallet = {
               name: wallet.name,
               wallet: JSON.stringify(wallet),
@@ -125,10 +135,17 @@ export const createStore = (app) => {
       },
       setActiveAccount(state, newActiveAccount) {
         state.activeAccount = newActiveAccount;
-        let newSigner =
-          state.activeWallet.name == "Kondor"
-            ? kondor.getSigner(newActiveAccount.address)
-            : Signer.fromWif(newActiveAccount.privateKey, true);
+        let newSigner;
+        if (state.activeWallet.name == "Kondor") {
+          newSigner = kondor.getSigner(newActiveAccount.address);
+        } else if (state.activeWallet.name == "WalletConnect") {
+          newSigner = window.walletConnectKoinos.getSigner(
+            newActiveAccount.address
+          );
+        } else {
+          newSigner = Signer.fromWif(newActiveAccount.privateKey, true);
+        }
+
         state.kanvasContract = getKanvasContract(newSigner);
         state.koinContract = getKoinContract(newSigner);
         app.config.globalProperties.$socket.emit(
@@ -175,7 +192,7 @@ export const createStore = (app) => {
 
         dispatch("storeWallets");
       },
-      createWalletWithMnemonic(
+      async createWalletWithMnemonic(
         { dispatch },
         { name, mnemonicOrKey, password, isMnemonic = true }
       ) {
@@ -189,9 +206,9 @@ export const createStore = (app) => {
 
         dispatch("addAccount", wallet);
         dispatch("addWallet", wallet);
-        dispatch("unlockWallet", wallet);
+        await dispatch("unlockWallet", wallet);
       },
-      unlockWallet({ state, commit }, { name, password }) {
+      async unlockWallet({ state, commit, dispatch }, { name, password }) {
         let encryptedWallet =
           state.walletsList[
             state.walletsList.findIndex(function (x) {
@@ -200,8 +217,12 @@ export const createStore = (app) => {
           ].wallet;
 
         let wallet;
-        if (name == "Kondor") {
+        if (name == "Kondor" || name == "WalletConnect") {
           wallet = JSON.parse(encryptedWallet);
+          if (name == "WalletConnect") {
+            // If one already exists, pair it
+            await dispatch("pairWalletConnectAccounts", false);
+          }
         } else {
           wallet = JSON.parse(
             CryptoJS.AES.decrypt(encryptedWallet, password).toString(
@@ -256,7 +277,7 @@ export const createStore = (app) => {
         try {
           accounts = await kondor.getAccounts();
         } catch (error) {
-          console.error(error);
+          app.config.globalProperties.$error(error);
         }
         if (accounts.length) {
           dispatch("deleteWallet", "Kondor");
@@ -269,6 +290,62 @@ export const createStore = (app) => {
           app.config.globalProperties.$error(
             "No Kondor account was selected !"
           );
+        }
+      },
+      async pairWalletConnectAccounts(
+        { state, commit, dispatch },
+        newConnection = true
+      ) {
+        const projectId = "52f899f5d7d7e95a07c00ea404e71902";
+
+        window.walletConnectKoinos = new WalletConnectKoinos({
+          projectId,
+          metadata: {
+            name: "Kanvas",
+            description:
+              "The first collaborative and decentralized canvas, based on the first feeless smart-contract blockchain, Koinos !",
+            url: "kanvas-app.com",
+            icons: [
+              "https://walletconnect.com/_next/static/media/logo_mark.84dd8525.svg",
+            ],
+          },
+          modalOptions: {
+            explorerRecommendedWalletIds: "NONE",
+            enableExplorer: false,
+          },
+        });
+
+        const walletConnectParams = [
+          [ChainIds.Mainnet],
+          [Methods.SignAndSendTransaction, Methods.WaitForTransaction],
+        ];
+
+        if (newConnection) {
+          // Timeout to take time to propagate the disconnection
+          dispatch("deleteWallet", "WalletConnect");
+          await window.walletConnectKoinos.disconnect();
+          setTimeout(async () => {
+            const accounts = await window.walletConnectKoinos.connect(
+              ...walletConnectParams
+            );
+
+            if (accounts.length) {
+              let newAccounts = accounts.map((accAddress, index) => {
+                return { address: accAddress, name: "Account " + index };
+              });
+              dispatch("addWallet", {
+                name: "WalletConnect",
+                accounts: newAccounts,
+              });
+              commit("setActiveAccount", state.activeWallet.accounts[0]);
+            } else {
+              app.config.globalProperties.$error(
+                "No WalletConnect account was selected !"
+              );
+            }
+          }, 1000);
+        } else {
+          await window.walletConnectKoinos.connect(...walletConnectParams);
         }
       },
     },

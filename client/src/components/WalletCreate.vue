@@ -31,6 +31,12 @@
         <KanvasButton type="primary" v-on:click="useKondor" bgColor="#7161EF"
           >Use Kondor</KanvasButton
         >
+        <KanvasButton
+          type="primary"
+          v-on:click="useWalletConnect"
+          bgColor="#212323"
+          >Use WalletConnect</KanvasButton
+        >
       </div>
     </template>
     <template v-if="createform && create.step1">
@@ -306,6 +312,10 @@ export default defineComponent({
     },
     useKondor: async function () {
       this.$store.dispatch("changeKondorAccounts");
+      this.done();
+    },
+    useWalletConnect: async function () {
+      this.$store.dispatch("pairWalletConnectAccounts");
       this.done();
     },
     createWallet: async function () {

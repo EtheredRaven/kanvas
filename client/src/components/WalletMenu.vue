@@ -253,7 +253,7 @@ export default defineComponent({
     },
     toggleWallet: async function (name) {
       if (name != this.walletName) {
-        if (name == "Kondor") {
+        if (name == "Kondor" || name == "WalletConnect") {
           await this.$store.dispatch("unlockWallet", {
             name,
             password: null,

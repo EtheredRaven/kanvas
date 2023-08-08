@@ -69,7 +69,6 @@ export default defineComponent({
         Cookies.set(ownerName, this.hoveredAccountName, {
           expires: 30,
         });
-        console.log(Cookies.get(ownerName));
       }
     },
   },

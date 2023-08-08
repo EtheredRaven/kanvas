@@ -63,7 +63,7 @@ export default function ({ graphics, vue }) {
     const kanvas = vue.$store.state.kanvasContract;
 
     try {
-      await kanvas.place_pixel({
+      const { transaction } = await kanvas.place_pixel({
         from: vue.activeAccountAddress,
         pixel_to_place: {
           posX: pixelPosX,
@@ -75,15 +75,6 @@ export default function ({ graphics, vue }) {
           metadata: "",
         },
       });
-      graphics.destroyPixel(loadingPixel);
-      graphics.pixelGraphics.fillStyle(hexNumberColor);
-      graphics.pixelGraphics.fillRect(pixelPosX, pixelPosY, 1, 1);
-      vue.$store.commit("setPixelsAmount", {
-        amount: Math.min(
-          await vue.$store.getters.getTokenBalance(),
-          (await vue.$store.getters.getPixelsAmount()) + 1
-        ),
-      });
       vue.$info(
         "Pixel placed",
         rgbToHex(rgbColor.r, rgbColor.g, rgbColor.b) +
@@ -93,13 +84,29 @@ export default function ({ graphics, vue }) {
           pixelPosY +
           ")"
       );
+
+      await transaction.wait();
+      graphics.destroyPixel(loadingPixel);
+      graphics.pixelGraphics.fillStyle(hexNumberColor);
+      graphics.pixelGraphics.fillRect(pixelPosX, pixelPosY, 1, 1);
+      vue.$store.commit("setPixelsAmount", {
+        amount: Math.min(
+          await vue.$store.getters.getTokenBalance(),
+          (await vue.$store.getters.getPixelsAmount()) + 1
+        ),
+      });
     } catch (err) {
-      let error = err.toString().replace("Error: ", "");
-      try {
-        error = JSON.parse(error);
-        error = error.error;
-      } catch (err2) {
-        err2;
+      let error;
+      if (err.message) {
+        error = err.message;
+      } else {
+        error = err.toString().replace("Error: ", "");
+        try {
+          error = JSON.parse(error);
+          error = error.error;
+        } catch (err2) {
+          err2;
+        }
       }
 
       vue.$error("Transaction failed", error);

@@ -1,3 +1,8 @@
+# 1.1.1 (2023-08-08)
+
+- Added WalletConnect integration
+- Corrected minor bugs
+
 # 1.1.0 (2023-08-02)
 
 - Integrated wallet added

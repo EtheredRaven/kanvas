@@ -1,5 +1,6 @@
 import { Contract, utils, Provider } from "koilib";
 import { kanvasContractAbi, kapNameServiceAbi, kapProfileAbi } from "./abi";
+import { WalletConnectKoinos } from "@armana/walletconnect-koinos-sdk-js";
 
 export const defaultProvider = new Provider([
   "https://api.koinos.io",
@@ -43,4 +44,25 @@ export function getKapProfileContract() {
     abi: kapProfileAbi,
     provider: defaultProvider,
   }).functions;
+}
+
+export function getWalletConnectKoinos() {
+  const projectId = "52f899f5d7d7e95a07c00ea404e71902";
+  return new WalletConnectKoinos({
+    projectId,
+    // your application information
+    metadata: {
+      name: "Kanvas",
+      description:
+        "The first collaborative and decentralized canvas, based on the first feeless smart-contract blockchain, Koinos !",
+      url: "kanvas-app.com",
+      icons: [
+        "https://walletconnect.com/_next/static/media/logo_mark.84dd8525.svg",
+      ],
+    },
+    modalOptions: {
+      explorerRecommendedWalletIds: "NONE",
+      enableExplorer: false,
+    },
+  });
 }
