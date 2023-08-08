@@ -27,7 +27,7 @@ export default defineConfig({
       { text: "Home", link: "https://kanvas-app.com" },
       { text: "Game", link: "https://kanvas-app.com/app/" },
       {
-        text: "1.1.0",
+        text: "1.1.1",
         items: [
           {
             text: "Changelog",
