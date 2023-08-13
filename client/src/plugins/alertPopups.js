@@ -3,11 +3,12 @@ import { createToast } from "mosha-vue-toastify";
 
 export default {
   install(app) {
-    app.config.globalProperties.$error = (title, description) =>
+    app.config.globalProperties.$error = (title) =>
       createToast(
         {
           title: title,
-          description: description,
+          description:
+            "More info in the <a href='../docs/playing/troubleshooting.html' style='color: white'>troubleshooting docs</a>",
         },
         {
           hideProgressBar: true,

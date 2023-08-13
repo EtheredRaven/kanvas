@@ -243,7 +243,7 @@ export default defineComponent({
         });
         this.unlocking = false;
       } catch (err) {
-        this.$error("Unlocking failed", "Your password is wrong !");
+        this.$error("Your password is wrong !");
         this.unlocking = false;
         this.toUnlock = "";
       }

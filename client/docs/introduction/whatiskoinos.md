@@ -1,18 +1,18 @@
 ---
-title: "What is Koinos ?"
+title: "What is Koinos and $KOIN ?"
 head:
   - - meta
     - name: keywords
       content: koinos koin kanvas KAN cryptocurrency canvas decentralized description pixel war r/place rplace
 ---
 
-# What is Koinos ?
+# What is Koinos and $KOIN ?
 
 :::details Disclaimer
 This chapter has been copied from [learnkoinos.xyz](https://learnkoinos.xyz/docs/concepts/koinos_introduction.html). You may find more resources and tutorial on this website to help you understand Koinos and smart-contract development. You may also want to read [Koinos whitepaper](https://koinos.io/unified-whitepaper/)
 :::
 
-Kanvas is a smart-contract uploaded on Koinos. The Koinos project was announced on October 8th, 2020 as an ERC-20 token and fully transitioned to it's own main net on November 5th 2022.
+Kanvas is a smart-contract uploaded on Koinos. The Koinos project was announced on October 8th, 2020 as an ERC-20 token and fully transitioned to it's own main net on November 5th 2022. The native token, used for performing transactions ant that is being traded on exchanges, is called $KOIN.
 
 Instead of performing an ICO, the early ERC-20 $KOIN token was distributed through Proof of Work (PoW) mining only. Early supporters who ran the ERC-20 Koinos miner submitted PoW hashes to an Ethereum smart contract in return for ERC-20 $KOIN. This is known as the **"fair mine"** approach.
 
@@ -52,12 +52,12 @@ You can learn more about the consensus mechanism, Proof of Burn, on the Koinos w
 
 ## Feeless
 
-Carrying out a transaction on the Koinos blockchain, such as a token transfer, costs no $KOIN. To ensure that the blockchain is not spammed with transactions, the right to use the resource is represented by MANA. A transaction consumes MANA. MANA is recharged over time at a rate determined by the number of $KOIN in the account.
+Carrying out a transaction on the Koinos blockchain, such as a token transfer, costs no $KOIN. To ensure that the blockchain is not spammed with transactions, the right to use the resource is represented by MANA. A transaction consumes MANA and not $KOIN. MANA is then recharged over time at a rate determined by the amount of $KOIN in the account.
 
 The use of the Koinos blockchain is therefore free of charge, which is necessary in the case of Kanvas since players will be placing a large number of pixels.
 
 ::: warning MANA is not a token !
-MANA is not a token. It cannot be transferred, but can be delegated so that a user can play without holding a $KOIN. The MANA is intimately linked to the $KOIN and is moved with it each time it is transferred.
+MANA is not a token. It cannot be transferred, but can be delegated so that a user can play without holding a $KOIN. The MANA is intimately linked to the $KOIN and is moved with it each time $KOIN is transferred.
 :::
 
 ## Permissionless

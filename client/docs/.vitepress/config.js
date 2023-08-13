@@ -27,7 +27,7 @@ export default defineConfig({
       { text: "Home", link: "https://kanvas-app.com" },
       { text: "Game", link: "https://kanvas-app.com/app/" },
       {
-        text: "1.1.1",
+        text: "1.1.2",
         items: [
           {
             text: "Changelog",
@@ -45,23 +45,31 @@ export default defineConfig({
         text: "Introduction",
         items: [
           { text: "What is Kanvas ?", link: "/introduction/whatiskanvas" },
-          { text: "What is Koinos ?", link: "/introduction/whatiskoinos" },
+          {
+            text: "What is Koinos and $KOIN ?",
+            link: "/introduction/whatiskoinos",
+          },
           { text: "What is $KAN ?", link: "/introduction/whatiskan" },
         ],
       },
       {
         text: "Playing Kanvas",
         items: [
-          { text: "How to buy Koin ?", link: "/playing/howtobuykoin" },
+          { text: "How to buy $KOIN ?", link: "/playing/howtobuykoin" },
           { text: "How to buy $KAN ?", link: "/playing/howtobuykan" },
-          { text: "How to place pixels ?", link: "/playing/howtoplacepixels" },
-        ],
-      },
-      {
-        text: "What's next",
-        items: [
-          { text: "Roadmap", link: "/whatsnext/roadmap" },
-          { text: "Contributing", link: "/whatsnext/contributing" },
+          {
+            text: "Controls and info",
+            link: "/playing/controlsandinfo",
+          },
+          {
+            text: "Connecting your wallet",
+            link: "/playing/connectingwallet",
+          },
+          {
+            text: "Placing pixels",
+            link: "/playing/placingpixels",
+          },
+          { text: "Troubleshooting", link: "/playing/troubleshooting" },
         ],
       },
       {

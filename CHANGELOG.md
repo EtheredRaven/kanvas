@@ -1,3 +1,8 @@
+# 1.1.2 (2023-08-13)
+
+- Added "playing" docs
+- Corrected a generated seed wallet bug
+
 # 1.1.1 (2023-08-08)
 
 - Added WalletConnect integration

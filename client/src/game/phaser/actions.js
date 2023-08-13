@@ -96,20 +96,28 @@ export default function ({ graphics, vue }) {
         ),
       });
     } catch (err) {
-      let error;
+      let error = err;
       if (err.message) {
-        error = err.message;
-      } else {
         error = err.toString().replace("Error: ", "");
+
+        error = err.message;
+        if (error == "User rejected") {
+          error = "WalletConnect user rejected";
+        }
+
         try {
           error = JSON.parse(error);
           error = error.error;
         } catch (err2) {
           err2;
         }
+
+        if (error == "Connection lost") {
+          error = "Kondor connection lost";
+        }
       }
 
-      vue.$error("Transaction failed", error);
+      vue.$error(error);
       graphics.destroyPixel(loadingPixel);
     }
   };

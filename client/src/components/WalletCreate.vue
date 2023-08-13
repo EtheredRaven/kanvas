@@ -321,7 +321,8 @@ export default defineComponent({
     createWallet: async function () {
       await this.$store.dispatch("createWalletWithMnemonic", {
         name: this.create.name,
-        mnemonic: this.create.mnemonic,
+        isMnemonic: true,
+        mnemonicOrKey: this.create.mnemonic,
         password: this.create.password,
       });
     },
