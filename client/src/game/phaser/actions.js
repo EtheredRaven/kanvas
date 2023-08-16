@@ -1,4 +1,6 @@
 import { hexToHexNumber, hexToRgb, rgbToHex } from "../../utils/colors";
+//import { koinos } from "koinos-proto-js";
+//import { utils } from "koilib";
 
 export default function ({ graphics, vue }) {
   graphics.zoomOnCanvas = function (pointer, dz) {
@@ -63,6 +65,17 @@ export default function ({ graphics, vue }) {
     const kanvas = vue.$store.state.kanvasContract;
 
     try {
+      /*let nonce = vue.$store.state.activeAccount.nonce;
+      let nextNonce = nonce + 1;
+      vue.$store.commit("setActiveAccountNonce", nextNonce);
+
+      const message = koinos.chain.value_type.create({
+        uint64_value: String(nextNonce),
+      });
+      const nextNonceEncoded = utils.encodeBase64url(
+        koinos.chain.value_type.encode(message).finish()
+      );*/
+
       const { transaction } = await kanvas.place_pixel({
         from: vue.activeAccountAddress,
         pixel_to_place: {
@@ -75,6 +88,8 @@ export default function ({ graphics, vue }) {
           metadata: "",
         },
       });
+
+      await transaction.wait();
       vue.$info(
         "Pixel placed",
         rgbToHex(rgbColor.r, rgbColor.g, rgbColor.b) +
@@ -85,7 +100,6 @@ export default function ({ graphics, vue }) {
           ")"
       );
 
-      await transaction.wait();
       graphics.destroyPixel(loadingPixel);
       graphics.pixelGraphics.fillStyle(hexNumberColor);
       graphics.pixelGraphics.fillRect(pixelPosX, pixelPosY, 1, 1);

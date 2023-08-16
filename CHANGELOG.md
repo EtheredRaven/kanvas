@@ -1,3 +1,8 @@
+# 1.1.3 (2023-08-16)
+
+- Added links to KoinDX for launch
+- Corrected the docs
+
 # 1.1.2 (2023-08-13)
 
 - Added "playing" docs

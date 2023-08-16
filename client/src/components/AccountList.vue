@@ -65,7 +65,7 @@ export default defineComponent({
     },
   },
   methods: {
-    copyAddress: function (address) {
+    copyAddress: async function (address) {
       copyToClipboard(address);
     },
     shortenName: function (addr) {

@@ -35,33 +35,22 @@ Tokenomics are the characteristics of the token. Here are those of $KAN :
 
 ## Launch
 
-KAN will be launched in two stages:
-
-- The first is an airdrop to let the crypto community know about the project by sharing it on social networks. This stage will take place in **August 2023**.
-- The second is a presale via a DAO organized by KoinDX in **September 2023**. The funds raised will be used to finance the project and the liquidity pool on KoinDX. The starting price will be communicated on social media before the start of the fundraising.
+KAN will be launched in several stages, with different releases of liquidities on KoinDX. The funds from the sales will be used for these releases. The planning for theses releases is not fixed yet and will depend on the evolution of the project and its popularity.
 
 Here's the token allocation table :
 
-|            Position            |     Percentage      |
-| :----------------------------: | :-----------------: |
-|            Airdrop             |   60,000 KAN (2%)   |
-|         Presale (DAO)          |  900,000 KAN (30%)  |
-|    Liquidity pool (KoinDX)     |  450,000 KAN (15%)  |
-| Development & marketing wallet | 1,590,000 KAN (53%) |
+|            Position             |      Percentage      |
+| :-----------------------------: | :------------------: |
+|    Events, marketing and dev    | 1,000,000 $KAN (33%) |
+| Initial liquidity pool (KoinDX) |  500,000 $KAN (17%)  |
+|     Next liquidity releases     | 1,500,000 KAN (50%)  |
 
-Half of the total KAN supply will be kept in the development and marketing wallet to promote the project through bonuses, airdrops and contests!
+A third of the total $KAN supply will be kept in the development and marketing wallet to promote the project through bonuses, airdrops and contests!
 
 ## Distribution of funds
 
-The funds raised during the presale (DAO) will be distributed as follows:
-
-|            Position            | Percentage of raised KOIN |
-| :----------------------------: | :-----------------------: |
-|    Liquidity pool (KoinDX)     |    50% = 450 000 eqKAN    |
-| Development & marketing wallet |            50%            |
-
-This distribution ensures a starting price in the liquidity pool equal to the sales price via the DAO.
+The funds raised during the sales will be used to add liquidity on KoinDX.
 
 :::danger Important disclaimer !
-Please note that only the starting price of the KAN token is guaranteed by the above allocation, and not its future evolution. Market prices for cryptocurrencies such as KAN are extremely volatile and can change unpredictably in a very short time. By buying KAN, you acknowledge that you understand the risks you may face in the cryptocurrency market such as complete loss of value. Kanvas project may not be accounted responsible for your decisions.
+Please note that only the starting price of the $KAN token is guaranteed by the above allocation, and not its future evolution. Market prices for cryptocurrencies such as $KAN are extremely volatile and can change unpredictably in a very short time. By buying $KAN, you acknowledge that you understand the risks you may face in the cryptocurrency market such as complete loss of value. Kanvas project may not be accounted responsible for your decisions.
 :::

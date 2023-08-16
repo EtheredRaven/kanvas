@@ -133,8 +133,12 @@ export const createStore = (app) => {
         state.activeWallet = newActiveWallet;
         window.localStorage.setItem("lastWallet", newActiveWallet.name);
       },
-      setActiveAccount(state, newActiveAccount) {
+      async setActiveAccount(state, newActiveAccount) {
         state.activeAccount = newActiveAccount;
+        state.activeAccount.nonce = await defaultProvider.getNonce(
+          newActiveAccount.address
+        );
+
         let newSigner;
         if (state.activeWallet.name == "Kondor") {
           newSigner = kondor.getSigner(newActiveAccount.address);
@@ -152,6 +156,9 @@ export const createStore = (app) => {
           "subscribe_wallet_update",
           newActiveAccount.address
         );
+      },
+      setActiveAccountNonce(state, newNonce) {
+        state.activeAccount.nonce = newNonce;
       },
       setTokenBalance(state, data) {
         state.tokenBalance[data.address] = data.balance;
@@ -232,19 +239,22 @@ export const createStore = (app) => {
         }
 
         commit("setActiveWallet", wallet);
-        commit("setActiveAccount", wallet.accounts[0]);
+        await commit("setActiveAccount", wallet.accounts[0]);
       },
       signOut({ state }) {
         state.activeWallet = null;
         state.activeAccount = null;
       },
-      switchAccount({ state, commit }, address) {
+      async switchAccount({ state, commit }, address) {
         let accountIndex = state.activeWallet.accounts.findIndex(function (
           acc
         ) {
           return acc.address == address;
         });
-        commit("setActiveAccount", state.activeWallet.accounts[accountIndex]);
+        await commit(
+          "setActiveAccount",
+          state.activeWallet.accounts[accountIndex]
+        );
       },
       addAccount({ state, dispatch }, wallet) {
         !wallet && (wallet = state.activeWallet);
@@ -285,7 +295,7 @@ export const createStore = (app) => {
             name: "Kondor",
             accounts: accounts,
           });
-          commit("setActiveAccount", state.activeWallet.accounts[0]);
+          await commit("setActiveAccount", state.activeWallet.accounts[0]);
         } else {
           app.config.globalProperties.$error(
             "No Kondor account was selected !"
@@ -337,7 +347,7 @@ export const createStore = (app) => {
                 name: "WalletConnect",
                 accounts: newAccounts,
               });
-              commit("setActiveAccount", state.activeWallet.accounts[0]);
+              await commit("setActiveAccount", state.activeWallet.accounts[0]);
             } else {
               app.config.globalProperties.$error(
                 "No WalletConnect account was selected !"

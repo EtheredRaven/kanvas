@@ -28,6 +28,13 @@ module.exports = async function (Server) {
     Server.infoLogging("Updated pixels map");
   };
 
+  // TODO
+  /*
+  await Server.db.run(
+    "UPDATE pixels SET unvisible = ? WHERE owner = ?",
+    [0, accId]
+  );*/
+
   const PIXELS_MAP_UPDATE_FREQUENCY_IN_SECONDS = 10;
   Server.updatePixelsMapInterval = setInterval(
     updatePixelsMap,

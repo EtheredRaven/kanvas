@@ -179,6 +179,7 @@ import KanvasButton from "./KanvasButton";
 import Mnemonic from "./Mnemonic";
 import HDKoinos from "../utils/HDKoinos.js";
 import { ethers } from "ethers";
+import { utils } from "koilib";
 
 export default defineComponent({
   name: "WalletCreate",
@@ -213,7 +214,7 @@ export default defineComponent({
       return ethers.utils.isValidMnemonic(this.imported.mnemonicOrKey);
     },
     validPrivateKey: function () {
-      return /^[A-Za-z0-9]{50,52}$/.test(this.imported.mnemonicOrKey);
+      return utils.isChecksumWif(this.imported.mnemonicOrKey);
     },
   },
   methods: {
