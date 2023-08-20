@@ -15,7 +15,7 @@ export function getKanvasContract(signer) {
     provider: defaultProvider,
     signer: signer,
     options: {
-      rcLimit: "100000000",
+      rcLimit: "150000000",
     },
   }).functions;
 }

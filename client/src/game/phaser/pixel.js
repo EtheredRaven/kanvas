@@ -62,8 +62,8 @@ export default function ({ graphics, vue }) {
     px.alpha = alphaFactor;
   };
 
-  graphics.destroyPixel = function (loadingPixel) {
-    vue.loadingPixels.splice(vue.loadingPixels.indexOf(loadingPixel), 1);
-    loadingPixel.destroy();
+  graphics.destroyPixel = function (loadingPixel, removeInStore = true) {
+    removeInStore && vue.$store.commit("removePixelToPlace", loadingPixel);
+    loadingPixel.graphics.destroy();
   };
 }

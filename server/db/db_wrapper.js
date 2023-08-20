@@ -13,11 +13,12 @@ class DbWrapper {
   }
 
   run(sql, params = []) {
+    let Server = this.server;
     return new Promise((resolve, reject) => {
       this.db.run(sql, params, function (err) {
         if (err) {
-          this.server.errorLogging("Error running sql " + sql);
-          this.server.errorLogging(err);
+          Server.errorLogging("Error running sql " + sql);
+          Server.errorLogging(err);
           reject(err);
         } else {
           resolve({ id: this.lastID });
@@ -27,11 +28,12 @@ class DbWrapper {
   }
 
   get(sql, params = []) {
+    let Server = this.server;
     return new Promise((resolve, reject) => {
       this.db.get(sql, params, (err, result) => {
         if (err) {
-          this.server.errorLogging("Error running sql: " + sql);
-          this.server.errorLogging(err);
+          Server.errorLogging("Error running sql: " + sql);
+          Server.errorLogging(err);
           reject(err);
         } else {
           resolve(result);
@@ -41,11 +43,12 @@ class DbWrapper {
   }
 
   all(sql, params = []) {
+    let Server = this.server;
     return new Promise((resolve, reject) => {
       this.db.all(sql, params, (err, rows) => {
         if (err) {
-          this.server.errorLogging("Error running sql: " + sql);
-          this.server.errorLogging(err);
+          Server.errorLogging("Error running sql: " + sql);
+          Server.errorLogging(err);
           reject(err);
         } else {
           resolve(rows);

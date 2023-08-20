@@ -28,8 +28,12 @@ To choose the color of the pixel you want to place, click on the black square be
 
 ## Placing a pixel
 
-Once you've chosen a color, it's easy to place the pixel: just click where you want to place it. A blinking placeholder indicates the position where it will be placed.
+Once you've chosen a color, it's easy to place the pixel: just click where you want to place it. A blinking placeholder indicates the position where it will be placed. You can place up to ten pixels without saving your design. Once you've placed ten pixels or less, you can click on save to the left of the color choice button at the top right of the screen. This will send the transaction and save your design on the blockchain and on Kanvas.
+
+::: warning Be careful to save your drawing !
+Be careful not to leave the page if you haven't saved, otherwise your entire design will be lost, as it will not have been sent or saved on the blockchain.
+:::
 
 You must then validate the transaction if you're using a third-party application (Konio, Kondor etc...).
 
-The pixel continues to blink until the transaction is validated. When the transaction is successful, information appears in a green rectangle in the bottom right-hand corner. If it fails, the error is also displayed, but in a red rectangle.
+The pixels continue to blink until the transaction is validated. When the transaction is successful, information appears in a green rectangle in the bottom right-hand corner. If it fails, the error is also displayed, but in a red rectangle.

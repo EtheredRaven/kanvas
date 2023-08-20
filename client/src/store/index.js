@@ -22,6 +22,7 @@ export const createStore = (app) => {
       walletsList: JSON.parse(window.localStorage.getItem("wallets")) || [],
       activeWallet: null,
       activeAccount: null,
+      pixelsToPlace: [],
       tokenBalance: {},
       pixelsAmount: {},
       kanvasContract: getKanvasContract(),
@@ -129,6 +130,23 @@ export const createStore = (app) => {
       },
     },
     mutations: {
+      addPixelToPlace(state, pixelToPlace) {
+        state.pixelsToPlace = [...state.pixelsToPlace, pixelToPlace];
+      },
+      removePixelToPlace(state, pixelToPlace) {
+        let i = state.pixelsToPlace.indexOf(pixelToPlace);
+        if (i > -1) {
+          let startArray = i == 0 ? [] : state.pixelsToPlace.slice(0, i);
+          let endArray =
+            i == state.pixelsToPlace.length - 1
+              ? []
+              : state.pixelsToPlace.slice(i + 1, state.pixelsToPlace.length);
+          state.pixelsToPlace = [...startArray, ...endArray];
+        }
+      },
+      removePixelsToPlace(state) {
+        state.pixelsToPlace = [];
+      },
       setActiveWallet(state, newActiveWallet) {
         state.activeWallet = newActiveWallet;
         window.localStorage.setItem("lastWallet", newActiveWallet.name);

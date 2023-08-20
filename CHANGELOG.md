@@ -1,3 +1,11 @@
+# 1.2.0 (2023-08-20)
+
+- **Added batches of pixels functionnality, along with docs related to this functionnality**
+- Added visual bounds to the world and better zooming out function
+- Corrected a bug that would stop listening to blocks after a long running time period
+- Added SafeMath to the contract
+- Corrected a bug with hex and colors
+
 # 1.1.3 (2023-08-16)
 
 - Added links to KoinDX for launch

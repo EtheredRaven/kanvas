@@ -13,8 +13,8 @@ export default function ({ graphics, vue }) {
   (graphics.t == 0 || graphics.t == graphics.periodicity) &&
     (graphics.tSign = -graphics.tSign);
 
-  vue.loadingPixels.forEach((px) => {
-    graphics.animateLoadingPixel(px, graphics.t);
+  vue.$store.state.pixelsToPlace.forEach((px) => {
+    graphics.animateLoadingPixel(px.graphics, graphics.t);
   });
 
   // Draw pixel placeholder if connected to a wallet

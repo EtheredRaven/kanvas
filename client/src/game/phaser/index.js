@@ -10,7 +10,7 @@ function launch(containerId, vue) {
   return new Phaser.Game({
     width: Math.floor(window.visualViewport.width), //  substract the menu width
     height: Math.floor(window.visualViewport.height),
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#F8F8F8",
     type: Phaser.AUTO,
     pixelArt: true,
     parent: containerId,

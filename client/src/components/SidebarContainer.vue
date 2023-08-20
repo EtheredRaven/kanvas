@@ -16,12 +16,19 @@
       <LinkIcon href="../" text="Home" icon="home" />
       <LinkIcon
         href="https://app.koindx.com/swap?input=15DJN4a8SgrbGhhGksSBASiSYjGnMU8dGL&output=1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS"
+        target="_blank"
         text="Buy on KoinDX"
         icon="credit-card"
       />
-      <LinkIcon href="https://konio.io/" text="Mobile wallet" icon="mobile" />
+      <LinkIcon
+        href="https://konio.io/"
+        target="_blank"
+        text="Mobile wallet"
+        icon="mobile"
+      />
       <LinkIcon
         href="../docs/introduction/whatiskanvas.html"
+        target="_blank"
         text="Docs"
         icon="book"
       />

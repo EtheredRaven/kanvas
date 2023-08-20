@@ -1,4 +1,4 @@
-import { hexToHexNumber, hexToRgb, rgbToHex } from "../../utils/colors";
+import { hexToHexNumber, hexToRgb } from "../../utils/colors";
 //import { koinos } from "koinos-proto-js";
 //import { utils } from "koilib";
 
@@ -6,7 +6,10 @@ export default function ({ graphics, vue }) {
   graphics.zoomOnCanvas = function (pointer, dz) {
     // Zoom on the canvas, triggered with the middle mouse button
     let oldZoom = graphics.cameras.main.zoom;
-    let newZoom = Math.min(20, Math.max(1, oldZoom * (1 - Math.sign(dz) / 8)));
+    let newZoom = Math.min(
+      20,
+      Math.max(0.7, oldZoom * (1 - Math.sign(dz) / 8))
+    );
 
     // Special zoom treshold for smooth lines
     if (newZoom > 8) {
@@ -42,9 +45,18 @@ export default function ({ graphics, vue }) {
   };
 
   graphics.placePixel = async function () {
-    // Place a pixel
+    // Place a pixel virtually on the client (do not send the transaction, transaction is send in the next function in batches of pixels)
     // Verify if the game is initialized and that there is a wallet
     if (!vue.activeAccountAddress) {
+      return;
+    }
+
+    const MAX_PIXELS_PER_TX = 10;
+
+    if (vue.$store.state.pixelsToPlace.length >= MAX_PIXELS_PER_TX) {
+      vue.$error(
+        "You must click on the save button before placing more pixels !"
+      );
       return;
     }
 
@@ -59,24 +71,8 @@ export default function ({ graphics, vue }) {
       .image(pixelPosX + 0.5, pixelPosY + 0.5, "pixel")
       .setTint(hexNumberColor)
       .setOrigin(0.5, 0.5);
-    vue.loadingPixels.push(loadingPixel); // Store the loading pixels to animate them in sync in the update loop
-
-    // Create and send the transaction
-    const kanvas = vue.$store.state.kanvasContract;
-
-    try {
-      /*let nonce = vue.$store.state.activeAccount.nonce;
-      let nextNonce = nonce + 1;
-      vue.$store.commit("setActiveAccountNonce", nextNonce);
-
-      const message = koinos.chain.value_type.create({
-        uint64_value: String(nextNonce),
-      });
-      const nextNonceEncoded = utils.encodeBase64url(
-        koinos.chain.value_type.encode(message).finish()
-      );*/
-
-      const { transaction } = await kanvas.place_pixel({
+    vue.$store.commit("addPixelToPlace", {
+      pixelTransactionArgs: {
         from: vue.activeAccountAddress,
         pixel_to_place: {
           posX: pixelPosX,
@@ -87,28 +83,77 @@ export default function ({ graphics, vue }) {
           alpha: 255,
           metadata: "",
         },
+      },
+      graphics: loadingPixel,
+      hexNumberColor: hexNumberColor,
+    }); // Store the loading pixels to animate them in sync in the update loop
+  };
+
+  graphics.sendTransactionToPlacePixels = async function () {
+    // Send a transaction of batches of pixels
+    const kanvas = vue.$store.state.kanvasContract;
+
+    try {
+      /*
+      // Unused, for tests with nonce changes
+      let nonce = vue.$store.state.activeAccount.nonce;
+      let nextNonce = nonce + 1;
+      vue.$store.commit("setActiveAccountNonce", nextNonce);
+
+      const message = koinos.chain.value_type.create({
+        uint64_value: String(nextNonce),
       });
+      const nextNonceEncoded = utils.encodeBase64url(
+        koinos.chain.value_type.encode(message).finish()
+      );*/
+
+      // Avoid proxy from vue
+      let pixels = [];
+      vue.$store.state.pixelsToPlace.forEach((tx) => {
+        let newTx = {};
+        Object.assign(newTx, tx.pixelTransactionArgs);
+        let newPixelToPlace = {};
+        Object.assign(newPixelToPlace, newTx.pixel_to_place);
+        newTx.pixel_to_place = newPixelToPlace;
+        pixels.push(newTx);
+      });
+      console.log(pixels);
+
+      const { transaction } = await kanvas.place_pixels({
+        place_pixel_arguments: pixels,
+      });
+
+      vue.$info(
+        "Saving in progress !",
+        "Transaction has been sent to the blockchain and is being processed."
+      );
 
       await transaction.wait();
       vue.$info(
-        "Pixel placed",
-        rgbToHex(rgbColor.r, rgbColor.g, rgbColor.b) +
-          " placed on (" +
-          pixelPosX +
-          " ; " +
-          pixelPosY +
-          ")"
+        "Pixels placed and saved !",
+        "Check transaction on <a target='_blank' href='https://koinosblocks.com/tx/" +
+          transaction.id +
+          "' style='color:white'>Koinos blocks</a>"
       );
 
-      graphics.destroyPixel(loadingPixel);
-      graphics.pixelGraphics.fillStyle(hexNumberColor);
-      graphics.pixelGraphics.fillRect(pixelPosX, pixelPosY, 1, 1);
+      vue.$store.state.pixelsToPlace.forEach((px) => {
+        graphics.destroyPixel(px, false);
+        graphics.pixelGraphics.fillStyle(px.hexNumberColor);
+        graphics.pixelGraphics.fillRect(
+          px.pixelTransactionArgs.pixel_to_place.posX,
+          px.pixelTransactionArgs.pixel_to_place.posY,
+          1,
+          1
+        );
+      });
       vue.$store.commit("setPixelsAmount", {
         amount: Math.min(
           await vue.$store.getters.getTokenBalance(),
-          (await vue.$store.getters.getPixelsAmount()) + 1
+          (await vue.$store.getters.getPixelsAmount()) +
+            vue.$store.state.pixelsToPlace.length
         ),
       });
+      vue.$store.commit("removePixelsToPlace");
     } catch (err) {
       let error = err;
       if (err.message) {
@@ -132,7 +177,9 @@ export default function ({ graphics, vue }) {
       }
 
       vue.$error(error);
-      graphics.destroyPixel(loadingPixel);
+      vue.$store.state.pixelsToPlace.forEach((px) => {
+        graphics.destroyPixel(px);
+      });
     }
   };
 

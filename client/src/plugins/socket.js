@@ -1,5 +1,6 @@
 export default {
   install(app) {
+    // This plugin avoid having a duplicate of socketio events, deleting the previous one
     app.config.globalProperties.$socket = window.io.connect();
     let socket = app.config.globalProperties.$socket;
     var baseSocketOn = socket.on;

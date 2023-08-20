@@ -8,7 +8,7 @@ export default {
         {
           title: title,
           description:
-            "More info in the <a href='../docs/playing/troubleshooting.html' style='color: white'>troubleshooting docs</a>",
+            "More info in the <a href='../docs/playing/troubleshooting.html' target='_blank' style='color: white'>troubleshooting docs</a>",
         },
         {
           hideProgressBar: true,

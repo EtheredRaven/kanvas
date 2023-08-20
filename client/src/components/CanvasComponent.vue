@@ -54,7 +54,6 @@ export default {
     return {
       gameGraphics: null,
       sceneInstance: null,
-      loadingPixels: [],
       pixelsArray: null,
       pixelsMap: {},
       canvasDimensions: null,
@@ -73,6 +72,7 @@ export default {
       this.pointerX = x;
       this.pointerY = y;
       this.hoveredPixel = pixel;
+      pixel && console.log(pixel.owner);
     },
   },
 };
