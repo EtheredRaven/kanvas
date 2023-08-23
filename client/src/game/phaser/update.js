@@ -13,7 +13,10 @@ export default function ({ graphics, vue }) {
   (graphics.t == 0 || graphics.t == graphics.periodicity) &&
     (graphics.tSign = -graphics.tSign);
 
-  vue.$store.state.pixelsToPlace.forEach((px) => {
+  (graphics.pixelsToPlace.length
+    ? graphics.pixelsToPlace
+    : vue.$store.state.pixelsToPlace
+  ).forEach((px) => {
     graphics.animateLoadingPixel(px.graphics, graphics.t);
   });
 

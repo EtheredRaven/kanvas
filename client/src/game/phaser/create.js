@@ -26,4 +26,5 @@ export default function ({ graphics, vue }) {
   graphics.t = 0;
   graphics.tSign = 1;
   graphics.periodicity = 20;
+  graphics.pixelsToPlace = [];
 }

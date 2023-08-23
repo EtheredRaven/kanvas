@@ -21,7 +21,6 @@ export default {
     },
     placePixels() {
       window.Client.game.graphics.sendTransactionToPlacePixels();
-      console.log("hello");
     },
   },
   props: {

@@ -10,7 +10,7 @@ head:
 
 ## A crypto-game on Koinos
 
-Kanvas is a decentralized crypto-game based on the first feeless smart-contract blockchain, [Koinos](./whatiskoinos) ! It was created in June 2023 by Red Raven, an experienced crypto developer that has been coding in the Cosmos and Ethereum ecosystems since 2017.
+Kanvas is a decentralized crypto-game based on the first feeless smart-contract blockchain, [Koinos](./whatiskoinos) ! It was created in July 2023 by Red Raven, an experienced crypto developer that has been coding in the Cosmos and Ethereum ecosystems since 2017.
 
 ::: tip What is a crypto-game ?
 A crypto-game is a game in which some or all of the data or mechanisms are decentralized, i.e. stored on a blockchain via a smart-contract, for example. The level of decentralization can range from a game where every action is a transaction on the blockchain (totally decentralized) to a game on a classic server with only a token to reward players (token-governed game).

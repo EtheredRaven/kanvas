@@ -117,7 +117,6 @@ export default function ({ graphics, vue }) {
         newTx.pixel_to_place = newPixelToPlace;
         pixels.push(newTx);
       });
-      console.log(pixels);
 
       const { transaction } = await kanvas.place_pixels({
         place_pixel_arguments: pixels,
@@ -127,6 +126,8 @@ export default function ({ graphics, vue }) {
         "Saving in progress !",
         "Transaction has been sent to the blockchain and is being processed."
       );
+      graphics.pixelsToPlace = [...vue.$store.state.pixelsToPlace];
+      vue.$store.commit("removePixelsToPlace");
 
       await transaction.wait();
       vue.$info(
@@ -136,7 +137,7 @@ export default function ({ graphics, vue }) {
           "' style='color:white'>Koinos blocks</a>"
       );
 
-      vue.$store.state.pixelsToPlace.forEach((px) => {
+      graphics.pixelsToPlace.forEach((px) => {
         graphics.destroyPixel(px, false);
         graphics.pixelGraphics.fillStyle(px.hexNumberColor);
         graphics.pixelGraphics.fillRect(
@@ -150,10 +151,9 @@ export default function ({ graphics, vue }) {
         amount: Math.min(
           await vue.$store.getters.getTokenBalance(),
           (await vue.$store.getters.getPixelsAmount()) +
-            vue.$store.state.pixelsToPlace.length
+            graphics.pixelsToPlace.length
         ),
       });
-      vue.$store.commit("removePixelsToPlace");
     } catch (err) {
       let error = err;
       if (err.message) {
@@ -181,6 +181,7 @@ export default function ({ graphics, vue }) {
         graphics.destroyPixel(px);
       });
     }
+    graphics.pixelsToPlace = [];
   };
 
   graphics.moveCanvasOnMouseMove = function () {

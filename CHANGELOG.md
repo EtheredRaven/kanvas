@@ -1,3 +1,9 @@
+# 1.2.1 (2023-08-23)
+
+- Corrected minor bugs
+- Better cameras bounds on the top and on the left
+- You can now resume placing pixels in batches just after sending it, instead of waiting for its validation
+
 # 1.2.0 (2023-08-20)
 
 - **Added batches of pixels functionnality, along with docs related to this functionnality**
@@ -34,6 +40,6 @@
 - Add first part of documentation
 - Optimization of UI link (Vue 3) and game GUI (PhaserJS)
 
-# 1.0.0 (2023-06-15)
+# 1.0.0 (2023-07-15)
 
 Initial version

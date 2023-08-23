@@ -1,5 +1,5 @@
 module.exports = async function (Server) {
-  const TOTAL_NUMBER_OF_EVENTS = 4400; // The events to take on the contract to init the db (passed events)
+  const TOTAL_NUMBER_OF_EVENTS = 7200; // The events to take on the contract to init the db (passed events)
   const MAX_EVENTS_PER_CALL = 200;
   const CALL_NUMBER = Math.ceil(TOTAL_NUMBER_OF_EVENTS / MAX_EVENTS_PER_CALL);
   const BLOCKS_PROCESSING_INTERVAL = 1000;

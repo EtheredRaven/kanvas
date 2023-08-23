@@ -8,10 +8,12 @@ export default function ({ graphics, vue }) {
   graphics.initCamera = function () {
     // Init the camera once we get the local params from the blockchain
     graphics.cameras.main.setBounds(
-      0,
-      0,
-      Number(vue.canvasDimensions.canvas_width),
-      Number(vue.canvasDimensions.canvas_height),
+      -Math.floor(window.visualViewport.width) / 2,
+      -Math.floor(window.visualViewport.height) / 4,
+      Number(vue.canvasDimensions.canvas_width) +
+        Math.floor(window.visualViewport.width),
+      Number(vue.canvasDimensions.canvas_height) +
+        Math.floor(window.visualViewport.height) / 2,
       true
     );
 
