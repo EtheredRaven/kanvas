@@ -32,7 +32,7 @@ try {
     res.redirect("https://" + req.hostname + req.url);
   });
 } catch (e) {
-  console.log(e)
+  e;
 }
 
 // LOGGING
