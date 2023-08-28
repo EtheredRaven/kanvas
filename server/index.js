@@ -13,21 +13,25 @@ Server.app.all("*", (req, res, next) => {
 });
 
 var httpServer = require("http").Server(Server.app);
-var httpsServer = require("https").Server(
-  {
-    key: fs.readFileSync("cert/privkey.pem"),
-    cert: fs.readFileSync("cert/fullchain.pem"),
-  },
-  Server.app
-);
-
 Server.io = require("socket.io")(httpServer);
 Server.httpListeningPort = 80;
 httpServer.listen(process.env.PORT || Server.httpListeningPort, () => {});
 
-Server.httpsListeningPort = 443;
-httpsServer.listen(process.env.HTTPS_PORT || Server.httpsListeningPort);
-Server.io.attach(httpsServer);
+try {
+  var httpsServer = require("https").Server(
+    {
+      key: fs.readFileSync("cert/privkey.pem"),
+      cert: fs.readFileSync("cert/fullchain.pem"),
+    },
+    Server.app
+  );
+
+  Server.httpsListeningPort = 443;
+  httpsServer.listen(process.env.HTTPS_PORT || Server.httpsListeningPort);
+  Server.io.attach(httpsServer);
+} catch (e) {
+  console.log(e);
+}
 
 // LOGGING
 require("./src/logging")(Server);
