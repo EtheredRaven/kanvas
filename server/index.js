@@ -14,8 +14,9 @@ Server.app.all("*", (req, res, next) => {
 
 var httpServer = require("http").Server(Server.app);
 Server.io = require("socket.io")(httpServer);
-Server.httpListeningPort = 80;
+Server.httpListeningPort = process.env.httpPort || 80;
 httpServer.listen(process.env.PORT || Server.httpListeningPort, () => {});
+console.log("Http server runnning on port " + Server.httpListeningPort);
 
 try {
   var httpsServer = require("https").Server(
