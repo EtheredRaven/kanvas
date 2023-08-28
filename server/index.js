@@ -30,7 +30,7 @@ try {
   httpsServer.listen(process.env.HTTPS_PORT || Server.httpsListeningPort);
   Server.io.attach(httpsServer);
 } catch (e) {
-  console.log(e);
+  e;
 }
 
 // LOGGING
