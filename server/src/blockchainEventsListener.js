@@ -161,7 +161,7 @@ module.exports = async function (Server) {
   };
 
   // Check for events in the new blocks and process them
-  /*let lastBlockHeight = Number(
+  let lastBlockHeight = Number(
     (await Server.client.blockStore.getHighestBlock()).topology.height
   );
   setInterval(async () => {
@@ -210,7 +210,7 @@ module.exports = async function (Server) {
       }
       Server.infoLogging("Processed block", block.block_height, block.block_id);
     }
-  }, BLOCKS_PROCESSING_INTERVAL);*/
+  }, BLOCKS_PROCESSING_INTERVAL);
 
   // Old processing function
   /*void (async () => {
@@ -239,7 +239,7 @@ module.exports = async function (Server) {
 
   /*let block = await Server.client.blockStore.getBlocksById([
     "0x12206c6f212829ada1a29a5f76341b7b2bbe87fd30585ee49946b0afef1af90e8510",
-  ]);*/
+  ]);
   let block = await Server.client.blockStore.getBlocksByHeight(
     "0x12208bc173edc126acee50f34f3a962a5dc46f6d18842b2629604e4f33b0a9afde8d",
     8186122,
