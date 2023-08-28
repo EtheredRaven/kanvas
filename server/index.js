@@ -7,10 +7,6 @@ var express = require("express");
 Server.app = express();
 
 // HTTP TO HTTPS REDIRECTION
-Server.app.all("*", (req, res, next) => {
-  if (req.secure) return next();
-  res.redirect("https://" + req.hostname + req.url);
-});
 
 var httpServer = require("http").Server(Server.app);
 Server.io = require("socket.io")(httpServer);
@@ -30,6 +26,11 @@ try {
   Server.httpsListeningPort = 443;
   httpsServer.listen(process.env.HTTPS_PORT || Server.httpsListeningPort);
   Server.io.attach(httpsServer);
+
+  Server.app.all("*", (req, res, next) => {
+    if (req.secure) return next();
+    res.redirect("https://" + req.hostname + req.url);
+  });
 } catch (e) {
   e;
 }
