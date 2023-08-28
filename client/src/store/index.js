@@ -333,9 +333,7 @@ export const createStore = (app) => {
             description:
               "The first collaborative and decentralized canvas, based on the first feeless smart-contract blockchain, Koinos !",
             url: "kanvas-app.com",
-            icons: [
-              "https://walletconnect.com/_next/static/media/logo_mark.84dd8525.svg",
-            ],
+            icons: ["https://kanvas-app.com/app/img/icon100x100.png"],
           },
           modalOptions: {
             explorerRecommendedWalletIds: "NONE",

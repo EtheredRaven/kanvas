@@ -161,7 +161,7 @@ module.exports = async function (Server) {
   };
 
   // Check for events in the new blocks and process them
-  let lastBlockHeight = Number(
+  /*let lastBlockHeight = Number(
     (await Server.client.blockStore.getHighestBlock()).topology.height
   );
   setInterval(async () => {
@@ -210,7 +210,7 @@ module.exports = async function (Server) {
       }
       Server.infoLogging("Processed block", block.block_height, block.block_id);
     }
-  }, BLOCKS_PROCESSING_INTERVAL);
+  }, BLOCKS_PROCESSING_INTERVAL);*/
 
   // Old processing function
   /*void (async () => {
@@ -237,10 +237,29 @@ module.exports = async function (Server) {
   // Uncomment to init from blockchain state, don't forget to modify the TOTAL_NUMBER_OF_EVENTS
   //await initPixelMap();
 
-  /*
-  const block = await Server.client.blockStore.getBlocksById([
-    "0x12208ce822871191e9cbd2369dcaa0424147db7b4f8a73471eebfcdeadd0b42b32e4",
-  ]);
-  let events = block.block_items[0].receipt.transaction_receipts[0].events
-  console.log(block.block_items[0].block.transactions[0].operations); */
+  /*let block = await Server.client.blockStore.getBlocksById([
+    "0x12206c6f212829ada1a29a5f76341b7b2bbe87fd30585ee49946b0afef1af90e8510",
+  ]);*/
+  let block = await Server.client.blockStore.getBlocksByHeight(
+    "0x12208bc173edc126acee50f34f3a962a5dc46f6d18842b2629604e4f33b0a9afde8d",
+    8186122,
+    1
+  );
+  //block = block.block_items[0];
+  console.log(block);
+  /*let transactionReceipts = block.receipt.transaction_receipts;
+  let receiptId = block.receipt.id;
+  if (transactionReceipts) {
+    for (let j = 0; j < transactionReceipts.length; j++) {
+      let txReceipt = transactionReceipts[j];
+      let events = txReceipt.events;
+      if (events) {
+        for (let i = 0; i < events.length; i++) {
+          // Process each event
+          let event = events[i];
+          await processEvent(event, receiptId);
+        }
+      }
+    }
+  }*/
 };
