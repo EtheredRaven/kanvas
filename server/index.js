@@ -11,7 +11,7 @@ Server.app = express();
 var httpServer = require("http").Server(Server.app);
 Server.io = require("socket.io")(httpServer);
 Server.httpListeningPort = process.env.httpPort || 80;
-httpServer.listen(process.env.PORT || Server.httpListeningPort, () => {});
+httpServer.listen(Server.httpListeningPort, () => {});
 console.log("Http server runnning on port " + Server.httpListeningPort);
 
 try {
@@ -32,7 +32,7 @@ try {
     res.redirect("https://" + req.hostname + req.url);
   });
 } catch (e) {
-  e;
+  console.log(e)
 }
 
 // LOGGING
