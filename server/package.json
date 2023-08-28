@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "serve": "nodemon index.js",
-    "test_serve": "cross-env httpPort=8081 nodemon index.js"
+    "install_and_run": "cd db;touch data.db;cd ..;mkdir logs;mkdir cert;npm install;cross-env httpPort=8081 node index.js;",
+    "test_serve": "cross-env httpPort=8081 node index.js"
   },
   "author": "",
   "license": "ISC",
