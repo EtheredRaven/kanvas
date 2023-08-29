@@ -6,14 +6,14 @@ Server = {};
 var express = require("express");
 Server.app = express();
 
-// HTTP TO HTTPS REDIRECTION
-
+// HTT¨P
 var httpServer = require("http").Server(Server.app);
 Server.io = require("socket.io")(httpServer);
-Server.httpListeningPort = process.env.httpPort || 80;
-httpServer.listen(Server.httpListeningPort, () => {});
+Server.httpListeningPort = process.env.HTTP_PORT || 80;
+httpServer.listen(Server.httpListeningPort);
 console.log("Http server runnning on port " + Server.httpListeningPort);
 
+// HTTPS
 try {
   var httpsServer = require("https").Server(
     {
@@ -23,10 +23,12 @@ try {
     Server.app
   );
 
-  Server.httpsListeningPort = 443;
-  httpsServer.listen(process.env.HTTPS_PORT || Server.httpsListeningPort);
+  Server.httpsListeningPort = process.env.HTTPS_PORT || 443;
+  httpsServer.listen(Server.httpsListeningPort);
+  console.log("Https server runnning on port " + Server.httpsListeningPort);
   Server.io.attach(httpsServer);
 
+  // HTTP TO HTTPS REDIRECTION
   Server.app.all("*", (req, res, next) => {
     if (req.secure) return next();
     res.redirect("https://" + req.hostname + req.url);
@@ -50,6 +52,7 @@ Server.app.get("/", function (req, res) {
   res.sendFile(__dirname + "/../client/public/homepage/index.html");
 });
 Server.app.use("/app/", express.static(__dirname + "/../client/dist"));
+Server.app.use("/app/img", express.static(__dirname + "/../client/public/img"));
 Server.app.get("/app/", function (req, res) {
   res.sendFile(__dirname + "/../client/dist/index.html");
 });
