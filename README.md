@@ -10,9 +10,7 @@ This project has been developed using **node v16.15.0**. Make sure to get this n
 
 ## Project setup
 
-### Server (nodejs + express + socketio)
-
-#### Get node
+### Get node
 
 Kanvas was tested on node v16.15.0. Here are some instructions if you don't have it, via Node Version Manager.
 
@@ -27,7 +25,7 @@ nvm install v16.15.0 # Install this version
 node -v #Verify it worked, you should get 16.15.0
 ```
 
-#### Installing Kanvas locally
+### Installing Kanvas locally
 
 ```cmd
 git clone https://github.com/EtheredRaven/kanvas.git
@@ -40,11 +38,11 @@ The server is now running on http://localhost (and not https because there is no
 
 For the next times you launch the server, you can only use `npm run serve` in the server folder.
 
-#### Play the game
+### Play the game
 
 You can now play the game. You will need some $KAN and $KOIN to test the pixel placement. Check [our docs](https://kanvas-app.com/docs/playing/howtobuykoin.html) on our official website to check the process.
 
-#### Compiles and hot-reloads for development
+## Compiles and hot-reloads for development
 
 This part is for developers only. You will need these commands if you modify some files.
 
@@ -55,7 +53,7 @@ Go back to the project root folder.
 ```cmd
 cd client
 npm install
-npm docs:build
+npm run docs:build
 npm run build
 ```
 
