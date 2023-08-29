@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "serve": "nodemon index.js",
-    "install_and_run": "cd db;touch data.db;cd ..;mkdir logs;mkdir cert;npm install;cross-env HTTP_PORT=80 node index.js;",
+    "install_and_serve": "mkdir logs;mkdir cert;npm install;node index.js;",
     "test_serve": "cross-env HTTP_PORT=80 nodemon index.js"
   },
   "author": "",

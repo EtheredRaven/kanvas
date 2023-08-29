@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Kanvas</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./app/favicon.ico" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      sizes="32x32"
+      href="./app/favicon.ico"
+    />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      sizes="16x16"
+      href="./app/favicon.ico"
+    />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content="" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="Kanvas" />
+    <meta name="twitter:title" content="Kanvas" />
+    <meta
+      name="twitter:description"
+      content="A collaborative canvas on the first free-to-use blockchain, Koinos"
+    />
+    <meta name="twitter:creator" content="Red Raven" />
+    <meta property="og:title" content="Kanvas" />
+    <meta property="og:type" content="Article" />
+    <meta property="og:url" content="https://kanvas-app.com" />
+    <meta
+      property="og:description"
+      content="A collaborative canvas on the first free-to-use blockchain, Koinos"
+    />
+    <meta property="og:site_name" content="Kanvas" />
+    <link rel="stylesheet" media="all" href="css/app.css" />
+    <script>
+      var viewportmeta = document.querySelector('meta[name="viewport"]');
+      if (viewportmeta) {
+        if (screen.width < 375) {
+          var newScale = screen.width / 375;
+          viewportmeta.content =
+            "width=375, minimum-scale=" +
+            newScale +
+            ", maximum-scale=1.0, user-scalable=no, initial-scale=" +
+            newScale +
+            "";
+        } else {
+          viewportmeta.content =
+            "width=device-width, maximum-scale=1.0, initial-scale=1.0";
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class="page">
+      <div class="main">
+        <div class="header js-header" id="header">
+          <div class="header__center center">
+            <button class="header__burger js-header-burger">
+              <span></span>
+            </button>
+            <div class="header__wrap js-header-wrap">
+              <nav class="header__nav">
+                <img
+                  src="../app/img/icon.png"
+                  alt="icon"
+                  style="width: 36px; margin-left: 114px"
+                />
+                <span class="menu_kanvas_header">Kanvas</span>
+                <a
+                  class="header__item socials telegramsocial"
+                  target="_blank"
+                  href="https://t.me/KanvasOfficial"
+                  ><img class="socialimage" src="img/telegram.png"
+                /></a>
+                <a
+                  class="header__item socials twittersocial"
+                  target="_blank"
+                  href="https://twitter.com/KanvasOfficial"
+                  ><img class="socialimage" src="img/twitter.png"
+                /></a>
+                <a
+                  class="header__item"
+                  href="./docs/introduction/whatiskanvas.html"
+                  >Docs</a
+                >
+                <a class="header__item" href="#concept">The concept</a
+                ><a class="header__item" href="#tokenomics">Tokenomics</a
+                ><a class="header__item" href="#roadmap">Roadmap</a>
+                <a class="header__item" href="#buy">Buy</a>
+              </nav>
+            </div>
+          </div>
+          <div class="header__bg js-header-bg"></div>
+        </div>
+        <div class="main__center center">
+          <div class="main__wrap">
+            <h1 class="main__title title title_big" data-aos>
+              <span class="title__box">
+                <span
+                  class="title__text small__title__text"
+                  style="font-size: 40px"
+                  >Welcome to</span
+                >
+              </span>
+              <span class="title__box" style="overflow: visible">
+                <span class="title__text">
+                  Kanvas
+                  <span class="title__color"> !</span>
+                </span>
+              </span>
+            </h1>
+            <div
+              class="main__info info"
+              data-aos="animation-scale-y"
+              data-aos-delay="400"
+            >
+              The first collaborative and decentralized canvas, based on the
+              first feeless smart-contract blockchain, Koinos !
+              <img
+                src="../app/img/icon.png"
+                style="
+                  width: 20px;
+                  height: auto;
+                  vertical-align: middle;
+                  margin-top: -3px;
+                "
+              />
+            </div>
+            <div
+              class="main__control"
+              data-aos="animation-scale-y"
+              data-aos-delay="550"
+            >
+              <a
+                class="main__btn btn btn_purple"
+                href="https://app.koindx.com/swap?input=15DJN4a8SgrbGhhGksSBASiSYjGnMU8dGL&output=1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS"
+                target="_blank"
+                >Buy some $KAN !</a
+              ><a class="main__link" href="./app/">
+                <div class="main__icon">
+                  <img class="main__pic" src="img/play.svg" alt="" />
+                </div>
+                <div class="main__text">And play the game !</div>
+              </a>
+            </div>
+            <div
+              class="main__scroll"
+              data-aos="animation-scale-y"
+              data-aos-delay="650"
+            >
+              <a class="main__link" href="#speed">
+                <div class="main__icon">
+                  <img class="main__pic" src="img/scroll.svg" alt="" />
+                </div>
+                <div class="main__text">Scroll to learn more</div>
+              </a>
+            </div>
+          </div>
+          <div class="main__view">
+            <div class="main__preview"></div>
+            <div class="main__preview">
+              <img
+                class="main__pic"
+                src="img/test_welcome_2.png"
+                alt=""
+                loading="lazy"
+              />
+            </div>
+          </div>
+          <div class="main__circles">
+            <div class="main__circle">
+              <img
+                src="img/bitcoin_symbol.png"
+                style="width: 55%; height: auto"
+              />
+            </div>
+            <div class="main__circle js-rellax" data-rellax-speed="2"></div>
+            <div class="main__circle js-rellax" data-rellax-speed="1">
+              <img src="img/kanvas_logo.png" style="width: 50%; height: auto" />
+            </div>
+            <div class="main__circle js-rellax" data-rellax-speed="2"></div>
+            <div class="main__circle js-rellax" data-rellax-speed="3"></div>
+            <div class="main__circle js-rellax" data-rellax-speed="0.5">
+              <img src="img/koinos_logo.png" style="height: 70%; width: auto" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="features js-features">
+        <div class="features__center center">
+          <div class="features__head" data-aos="animation-scale-y">
+            <div class="features__stage stage">What is Kanvas ?</div>
+            <div class="features__box">
+              <h2 class="features__title title" id="concept">The concept</h2>
+              <div class="features__info info">
+                Discover what makes our platform and game, Kanvas, so special
+                and worth taking part in !
+              </div>
+            </div>
+          </div>
+          <div class="features__body">
+            <div class="features__container">
+              <div class="features__slider js-features-slider">
+                <div class="features__slide">
+                  <div class="features__details">
+                    <div class="features__preview">
+                      <img
+                        class="features__pic"
+                        src="img/categories/community.png"
+                        loading="lazy"
+                        alt=""
+                      />
+                    </div>
+                    <div class="features__category">A collaborative canvas</div>
+                    <div class="features__text">
+                      Kanvas concept is simple : a blank 1000x1000 canvas on
+                      which users can place colored pixels. This collaborative
+                      game has raised a great deal of interest, following the
+                      r/place event on Reddit.<br /><br />
+                      <a target="_blank" href="./app/" class="features__link"
+                        >Play the game</a
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="features__slide">
+                  <div class="features__details">
+                    <div class="features__preview">
+                      <img
+                        class="features__pic"
+                        src="img/categories/blockchain2.png"
+                        loading="lazy"
+                        alt=""
+                      />
+                    </div>
+                    <div class="features__category">But decentralized !</div>
+                    <div class="features__text">
+                      Canvas data, including pixels, are stored on a blockchain
+                      and, thus, decentralized. This means that access to and
+                      use of this data is entirely public and not under the
+                      control of a single stakeholder or server!
+                      <br /><br />
+                      <a
+                        target="_blank"
+                        href="https://koinosblocks.com/address/1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS"
+                        class="features__link"
+                        >Check the smart-contract</a
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="features__slide">
+                  <div class="features__details">
+                    <div class="features__preview">
+                      <img
+                        class="features__pic"
+                        src="img/categories/kanvascoin.png"
+                        loading="lazy"
+                        alt=""
+                      />
+                    </div>
+                    <div class="features__category">
+                      Backed by a utility token
+                    </div>
+                    <div class="features__text">
+                      You can place on the canvas a number of pixels equal to
+                      the number of Kanvas tokens ($KAN) you own. When another
+                      user places a pixel on top of one of yours, you can place
+                      a new one.<br /><br />
+                      <a href="#buy" class="features__link"
+                        >Check how to get $KAN</a
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="features__slide">
+                  <div class="features__details">
+                    <div class="features__preview">
+                      <img
+                        class="features__pic"
+                        src="img/categories/flame.png"
+                        loading="lazy"
+                        alt=""
+                      />
+                    </div>
+                    <div class="features__category">
+                      On a feeless platform !
+                    </div>
+                    <div class="features__text">
+                      Kanvas is a smart-contract and token on the first feeless
+                      blockchain. When you place a pixel, there are no
+                      transaction fees! $KAN are not consumed, and you can
+                      resell them when you're done playing!<br /><br /><a
+                        target="_blank"
+                        href="https://koinos.io/"
+                        class="features__link"
+                        >Check Koinos project</a
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="features__slide">
+                  <div class="features__details">
+                    <div class="features__preview">
+                      <img
+                        class="features__pic"
+                        src="img/categories/rocket.png"
+                        loading="lazy"
+                        alt=""
+                      />
+                    </div>
+                    <div class="features__category">With a high potential</div>
+                    <div class="features__text">
+                      $KAN is the third token in the Koinos blockchain. It has
+                      real utility as an access capability to the Kanvas game.
+                      It will be released in several stages as liquidity on
+                      KoinDX and with events.<br /><br />
+                      <a
+                        target="_blank"
+                        href="https://app.koindx.com/swap?input=15DJN4a8SgrbGhhGksSBASiSYjGnMU8dGL&output=1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS"
+                        class="features__link"
+                        >Buy some $KAN !</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="features__status js-features-status"></div>
+          </div>
+        </div>
+        <div class="features__circle js-rellax" data-rellax-speed="-.7"></div>
+        <div class="features__bg" data-aos data-aos-duration="1000">
+          <img class="features__pic" src="img/features-pic-1.svg" alt="" />
+        </div>
+      </div>
+      <div class="quality">
+        <div class="quality__head">
+          <div class="quality__center center">
+            <div class="quality__top" data-aos="animation-scale-y">
+              <div class="quality__stage stage">
+                What are the characteristics of $KAN ?
+              </div>
+              <h2
+                class="quality__title title"
+                id="tokenomics"
+                style="text-align: left"
+              >
+                Tokenomics : <br />statistics & info<span class="title__color"
+                  >.</span
+                >
+              </h2>
+            </div>
+            <div
+              class="quality__info info"
+              data-aos="animation-scale-y"
+              data-aos-delay="200"
+            >
+              Kanvas ($KAN) is a community-driven token on the Koinos
+              blockchain, representing the maximum number of pixels its owner
+              can place simultaneously on the canvas
+            </div>
+          </div>
+          <div class="quality__line">
+            <img class="quality__pic" src="img/line-3.svg" alt="" />
+          </div>
+          <div class="quality__preview">
+            <img
+              class="quality__pic js-parallax"
+              data-scale="1.2"
+              data-orientation="left"
+              src="../app/img/icon.png"
+              loading="lazy"
+              alt=""
+            />
+          </div>
+        </div>
+        <div class="quality__body">
+          <div class="quality__col">
+            <div class="plan__title title title_sm quality__title">TOKEN</div>
+            <div class="quality__item" data-aos="animation-scale-x-left">
+              <div class="quality__icon">
+                <img
+                  class="quality__pic"
+                  src="img/categories/kanvascoin_white.png"
+                  loading="lazy"
+                  alt=""
+                />
+              </div>
+              <div class="quality__details">
+                <div class="quality__data">
+                  <div class="quality__text">Symbol</div>
+                  <div class="quality__category">$KAN</div>
+                </div>
+                <div class="quality__data">
+                  <div class="quality__text">Blockchain</div>
+                  <div class="quality__category">Koinos</div>
+                </div>
+                <div class="quality__data">
+                  <div class="quality__text">Total supply</div>
+                  <div class="quality__category">3 000 000 $KAN</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="quality__col">
+            <div class="plan__title title title_sm quality__title">
+              CREATION
+            </div>
+            <div
+              class="quality__item"
+              data-aos="animation-scale-x-right"
+              data-aos-delay="200"
+            >
+              <div class="quality__icon">
+                <img
+                  class="quality__pic"
+                  src="img/categories/rocket2.png"
+                  loading="lazy"
+                  alt=""
+                />
+              </div>
+              <div class="quality__details">
+                <div class="quality__data">
+                  <div class="quality__text">Author & developper</div>
+                  <div class="quality__category">Red Raven</div>
+                </div>
+                <div class="quality__data">
+                  <div class="quality__text">Launch</div>
+                  <div class="quality__category">
+                    July 15<sup>th</sup>, 2023
+                  </div>
+                </div>
+                <div class="quality__data">
+                  <div class="quality__text">Earliness of the project</div>
+                  <div class="quality__category">
+                    3<sup>rd</sup> token created on Koinos
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="quality__col">
+            <div class="plan__title title title_sm quality__title">
+              ALLOCATION
+            </div>
+            <div class="quality__item" data-aos="animation-scale-x-left">
+              <div class="quality__icon">
+                <img
+                  class="quality__pic"
+                  src="img/categories/distribution.png"
+                  loading="lazy"
+                  alt=""
+                />
+              </div>
+              <div class="quality__details">
+                <div class="quality__data">
+                  <div class="quality__text">Events, marketing & dev</div>
+                  <div class="quality__category">33% = 1M</div>
+                </div>
+                <div class="quality__data">
+                  <div class="quality__text">Initial DEX liquidity</div>
+                  <div class="quality__category">17% = 500K</div>
+                </div>
+                <div class="quality__data">
+                  <div class="quality__text">Next liquidity releases</div>
+                  <div class="quality__category">50% = 1.5M</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="quality__col">
+            <div class="plan__title title title_sm quality__title">LINKS</div>
+            <div
+              class="quality__item"
+              data-aos="animation-scale-x-right"
+              data-aos-delay="200"
+            >
+              <div class="quality__icon">
+                <img
+                  class="quality__pic"
+                  src="img/categories/documents.png"
+                  loading="lazy"
+                  alt=""
+                />
+              </div>
+              <div class="quality__details">
+                <div class="quality__data">
+                  <div class="quality__text">Contract explorer</div>
+                  <div class="quality__category">
+                    <a
+                      href="https://koinosblocks.com/address/1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS"
+                      style="color: #5956e9"
+                      target="_blank"
+                      >Check on Koinosblocks</a
+                    >
+                  </div>
+                </div>
+                <div class="quality__data">
+                  <div class="quality__text">Documentation</div>
+                  <div class="quality__category">
+                    <a
+                      href="./docs/introduction/whatiskanvas.html"
+                      style="color: #5956e9"
+                      target="_blank"
+                      >Check it here</a
+                    >
+                  </div>
+                </div>
+                <div class="quality__data">
+                  <div class="quality__text">Exchange</div>
+                  <div class="quality__category">
+                    <a
+                      href="https://app.koindx.com/swap?input=15DJN4a8SgrbGhhGksSBASiSYjGnMU8dGL&output=1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS"
+                      style="color: #5956e9"
+                      target="_blank"
+                      >Buy it here</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="quality__circles">
+          <div class="quality__circle"></div>
+          <div class="quality__circle"></div>
+        </div>
+      </div>
+      <div class="roadmap">
+        <div class="roadmap__center center">
+          <div class="roadmap__head">
+            <div class="roadmap__wrap" data-aos="animation-scale-y">
+              <div class="roadmap__stage stage">
+                What is planned for the future of Kanvas ?
+              </div>
+              <h2 class="roadmap__title title" id="roadmap">
+                Roadmap<span class="title__color">.</span>
+              </h2>
+              <div class="roadmap__info">
+                Find out what we plan to do this year and the next one to turn
+                this project into the new Koinos gem !
+              </div>
+            </div>
+            <div class="roadmap__view" data-aos>
+              <div class="roadmap__calendar">
+                <img
+                  class="roadmap__pic"
+                  src="img/roadmap-pic.png"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+              <div class="roadmap__bg">
+                <img
+                  class="roadmap__pic js-parallax"
+                  data-scale="1.5"
+                  data-orientation="left"
+                  src="img/roadmap-pic-1.png"
+                  alt=""
+                />
+              </div>
+            </div>
+          </div>
+          <div class="roadmap__body">
+            <div class="roadmap__category">Earlier</div>
+            <div class="roadmap__box">
+              <div class="roadmap__top">
+                <div class="roadmap__col">
+                  <div class="roadmap__desc">
+                    <div class="roadmap__category">2023</div>
+                    <div class="roadmap__year">Jul.</div>
+                  </div>
+                </div>
+                <div class="roadmap__col">
+                  <div class="roadmap__desc">
+                    <div class="roadmap__category">2023</div>
+                    <div class="roadmap__year">Oct.</div>
+                  </div>
+                </div>
+                <div class="roadmap__col">
+                  <div class="roadmap__desc">
+                    <div class="roadmap__category">2024</div>
+                    <div class="roadmap__year">Jan.</div>
+                  </div>
+                </div>
+                <div class="roadmap__col">
+                  <div class="roadmap__desc">
+                    <div class="roadmap__category">2024</div>
+                    <div class="roadmap__year">Apr.</div>
+                  </div>
+                </div>
+              </div>
+              <div class="roadmap__lines">
+                <div class="roadmap__line">
+                  <div class="roadmap__progress" style="width: 33.33%" data-aos>
+                    Phase 1 : Genesis
+                  </div>
+                </div>
+                <div class="roadmap__line">
+                  <div
+                    class="roadmap__progress"
+                    style="width: 50%"
+                    data-aos
+                    data-aos-delay="200"
+                  >
+                    Phase 2 : Growth
+                  </div>
+                </div>
+                <div class="roadmap__line">
+                  <div
+                    class="roadmap__progress"
+                    style="width: 100%"
+                    data-aos
+                    data-aos-delay="400"
+                  >
+                    Phase 3 : Take off
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="roadmap__category">Later</div>
+          </div>
+        </div>
+        <div class="roadmap__circles">
+          <div class="roadmap__circle"></div>
+          <div class="roadmap__circle"></div>
+        </div>
+        <div
+          class="roadmap__preview"
+          data-aos
+          data-aos-duration="1000"
+          data-aos-delay="300"
+        >
+          <img class="roadmap__pic" src="img/roadmap-pic-2.svg" alt="" />
+        </div>
+      </div>
+      <div class="plan js-plan">
+        <div class="plan__center center">
+          <div class="plan__body">
+            <div
+              class="plan__item js-plan-item"
+              data-aos="animation-translate-y"
+            >
+              <div class="plan__star">
+                <img src="img/pin.png" alt="pin" style="width: 60%" />
+              </div>
+              <div class="plan__category">
+                <div class="plan__icon">
+                  <img class="plan__pic" src="img/smile-1.svg" alt="" />
+                </div>
+                <div class="plan__text">Phase 1</div>
+              </div>
+              <h3 class="plan__title title title_sm">Genesis</h3>
+              <span class="roadmap__item"
+                ><span class="checked">✔</span>Website, contract & socials</span
+              ><br />
+              <span class="roadmap__item"
+                ><span class="checked">✔</span>Listing on KoinDX & launch</span
+              ><br />
+              <span class="roadmap__item"
+                ><span class="checked">✔</span>Documentation release</span
+              ><br />
+              <span class="roadmap__item"
+                ><span class="checked">〜</span>Listing on Coingecko</span
+              ><br />
+              <span class="roadmap__item"
+                ><span class="checked">〜</span>Batch pixel drawing</span
+              ><br />
+              <span class="roadmap__item"
+                ><span class="checked">〜</span>Artistic contest</span
+              ><br />
+              <span class="roadmap__item"
+                ><span class="checked">〜</span>100 holders</span
+              >
+            </div>
+            <div
+              class="plan__item js-plan-item"
+              data-aos="animation-translate-y"
+              data-aos-delay="200"
+            >
+              <div class="plan__category">
+                <div class="plan__icon">
+                  <img class="plan__pic" src="img/smile-2.svg" alt="" />
+                </div>
+                <div class="plan__text">Phase 2</div>
+              </div>
+              <h3 class="plan__title title title_sm">Growth</h3>
+              <span class="roadmap__item"
+                ><span class="checked">〜</span>Marketing campaign</span
+              ><br />
+              <span class="roadmap__item"
+                ><span class="checked">〜</span>New drawing tools</span
+              ><br />
+              <span class="roadmap__item"
+                ><span class="checked">〜</span>Pixels protection</span
+              ><br />
+              <span class="roadmap__item"
+                ><span class="checked">〜</span>$KAN transfer protection</span
+              ><br />
+              <span class="roadmap__item"
+                ><span class="checked">〜</span>Security audit</span
+              ><br />
+              <span class="roadmap__item"
+                ><span class="checked">〜</span>Listing on Coinmarketcap</span
+              ><br />
+              <span class="roadmap__item"
+                ><span class="checked">〜</span>1 000 holders</span
+              >
+            </div>
+            <div
+              class="plan__item js-plan-item"
+              data-aos="animation-translate-y"
+              data-aos-delay="400"
+            >
+              <div class="plan__category">
+                <div class="plan__icon">
+                  <img class="plan__pic" src="img/smile-2.svg" alt="" />
+                </div>
+                <div class="plan__text">Phase 3</div>
+              </div>
+              <h3 class="plan__title title title_sm">Take-off</h3>
+              <span class="roadmap__item"
+                ><span class="checked">〜</span>Kanvas pixel art NFTs</span
+              ><br />
+              <span class="roadmap__item"
+                ><span class="checked">〜</span>Artists partnerships</span
+              ><br />
+              <span class="roadmap__item"
+                ><span class="checked">〜</span>Kanvas merchandise</span
+              ><br />
+              <span class="roadmap__item"
+                ><span class="checked">〜</span>More DEX/CEX listings</span
+              ><br />
+              <span class="roadmap__item"
+                ><span class="checked">〜</span>Community events</span
+              ><br />
+              <span class="roadmap__item"
+                ><span class="checked">〜</span>5 000 holders</span
+              >
+              <br />
+              <span class="roadmap__item"
+                ><span class="checked">〜</span>More to come in late 2024
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="plan__circle js-rellax" data-rellax-speed="-1"></div>
+      </div>
+      <div class="design">
+        <div class="design__center center">
+          <div class="design__wrap" data-aos="animation-translate-y">
+            <div class="design__stage stage">How to play Kanvas ?</div>
+            <h2 class="design__title title" id="buy">
+              Buying $KAN and $KOIN<span class="title__color">.</span>
+            </h2>
+            <div class="design__info info">
+              You can buy $KAN on
+              <a
+                href="https://app.koindx.com/swap?input=15DJN4a8SgrbGhhGksSBASiSYjGnMU8dGL&output=1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS"
+                >KoinDX</a
+              >. Follow the steps down below to get some tokens in order to get
+              access to Kanvas game in details. You can find more info about the
+              whole process in the
+              <a href="./docs/playing/howtobuykoin.html">docs</a>
+            </div>
+          </div>
+          <div class="design__hand" data-aos data-aos-duration="600">
+            <img
+              style="width: 100%"
+              src="img/categories/buy.png"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="design__circles">
+            <div class="design__circle js-rellax" data-rellax-speed="1"></div>
+            <div class="design__circle"></div>
+            <div class="design__circle js-rellax" data-rellax-speed=".5"></div>
+          </div>
+          <div class="design__body">
+            <div class="design__container">
+              <div class="design__slider js-design-slider">
+                <div
+                  class="design__slide"
+                  data-aos="animation-translate-y"
+                  data-aos-delay="0"
+                >
+                  <div class="design__view">
+                    <div class="design__preview">
+                      <img
+                        class="design__pic"
+                        src="img/categories/kondor.png"
+                        loading="lazy"
+                        alt=""
+                      />
+                    </div>
+                  </div>
+                  <div class="design__details">
+                    <div class="design__category">Step 1</div>
+                    <div class="design__info">Install Kondor</div>
+                    <div class="design__text">
+                      Kondor is a Koinos browser wallet to safely store your
+                      tokens. Download, install and setup the Chrome extension.
+                    </div>
+                    <a
+                      class="design__link"
+                      target="_blank"
+                      href="https://chrome.google.com/webstore/detail/kondor/ghipkefkpgkladckmlmdnadmcchefhjl"
+                      >Download Kondor<svg class="icon icon-arrow-right">
+                        <use
+                          xlink:href="img/sprite.svg#icon-arrow-right"
+                        ></use></svg
+                    ></a>
+                  </div>
+                </div>
+                <div
+                  class="design__slide"
+                  data-aos="animation-translate-y"
+                  data-aos-delay="400"
+                >
+                  <div class="design__view">
+                    <div class="design__preview" style="width: 60%">
+                      <img
+                        class="design__pic"
+                        src="img/categories/koinoscoin.png"
+                        loading="lazy"
+                        alt=""
+                      />
+                    </div>
+                  </div>
+                  <div class="design__details">
+                    <div class="design__category">Step 2</div>
+                    <div class="design__info">Get $KOIN</div>
+                    <div class="design__text">
+                      $KOIN is the native token of the Koinos platform. You will
+                      need it, to generate MANA in order to perform transactions
+                      !
+                    </div>
+                    <a
+                      class="design__link"
+                      target="_blank"
+                      href="https://www.mexc.com/fr-FR/exchange/KOIN_USDT"
+                      >Buy $KOIN on MEXC<svg class="icon icon-arrow-right">
+                        <use
+                          xlink:href="img/sprite.svg#icon-arrow-right"
+                        ></use></svg
+                    ></a>
+                  </div>
+                </div>
+                <div class="design__slide" data-aos="animation-translate-y">
+                  <div class="design__view">
+                    <div class="design__preview">
+                      <img
+                        class="design__pic"
+                        src="img/categories/withdrawkoin.png"
+                        loading="lazy"
+                        alt=""
+                      />
+                    </div>
+                  </div>
+                  <div class="design__details">
+                    <div class="design__category">Step 3</div>
+                    <div class="design__info">Transfer $KOIN</div>
+                    <div class="design__text">
+                      Withdraw your $KOIN from your MEXC account to send them to
+                      your private Kondor wallet (unique public adress).
+                    </div>
+                    <a
+                      class="design__link"
+                      target="_blank"
+                      href="https://blog.mexc.com/how-to-withdraw-crypto/"
+                      >MEXC withdrawing tutorial<svg
+                        class="icon icon-arrow-right"
+                      >
+                        <use
+                          xlink:href="img/sprite.svg#icon-arrow-right"
+                        ></use></svg
+                    ></a>
+                  </div>
+                </div>
+                <div class="design__slide" data-aos="animation-translate-y">
+                  <div class="design__view">
+                    <div class="design__preview">
+                      <img
+                        class="design__pic"
+                        src="img/categories/koindx.png"
+                        loading="lazy"
+                        alt=""
+                      />
+                    </div>
+                  </div>
+                  <div class="design__details">
+                    <div class="design__category">Step 4</div>
+                    <div class="design__info">Buy $KAN</div>
+                    <div class="design__text">
+                      Go on
+                      <a
+                        target="_blank"
+                        href="https://app.koindx.com/swap?input=15DJN4a8SgrbGhhGksSBASiSYjGnMU8dGL&output=1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS"
+                        style="color: #5956e9"
+                        >KoinDX</a
+                      >
+                      and look for $KAN token. You can now swap your $KOIN for
+                      $KAN tokens and enjoy playing Kanvas game !
+                    </div>
+                    <a
+                      class="design__link"
+                      href="./docs/playing/howtobuykan.html"
+                      >Check the docs<svg class="icon icon-arrow-right">
+                        <use
+                          xlink:href="img/sprite.svg#icon-arrow-right"
+                        ></use></svg
+                    ></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accord js-accord">
+        <div class="accord__center center">
+          <div class="accord__row">
+            <div class="accord__details">
+              <div class="accord__top" data-aos="animation-scale-y">
+                <div class="accord__title title title_sm" id="faq">
+                  Frequently Asked Questions.
+                </div>
+                <div class="accord__text">
+                  This section will try to answer most questions you could have
+                  about the project. If you didn't find what you were looking
+                  for, do not hesitate to join our Telegram community to ask us
+                  !
+                </div>
+              </div>
+            </div>
+            <div class="accord__wrap">
+              <div
+                class="accord__item js-accord-item"
+                data-aos="animation-scale-y"
+              >
+                <div class="accord__head js-accord-head">
+                  <div class="accord__icon">
+                    <img class="accord__pic" src="img/layout-3.svg" alt="" />
+                  </div>
+                  <div class="accord__category">
+                    What sets your project apart from other crypto canvas
+                    projects?
+                  </div>
+                </div>
+                <div class="accord__body js-accord-body">
+                  The Kanvas project is a crypto canvas on the Koinos
+                  blockchain. Koinos is the first smart-contract platform to be
+                  entirely free of charge, i.e. there are no transaction fees.
+                  Each transaction uses mana, which you obtain free of charge
+                  simply by holding Koin, the native currency of Koinos. You'll
+                  also need to buy $KAN to place pixels. However, the act of
+                  placing a pixel costs you nothing, and you can always resell
+                  your Koin and $KAN once you've finished playing!
+                </div>
+              </div>
+              <div
+                class="accord__item js-accord-item"
+                data-aos="animation-scale-y"
+              >
+                <div class="accord__head js-accord-head">
+                  <div class="accord__icon">
+                    <img class="accord__pic" src="img/layout-3.svg" alt="" />
+                  </div>
+                  <div class="accord__category">How can I buy $KAN ?</div>
+                </div>
+                <div class="accord__body js-accord-body">
+                  You can follow the steps described above. You can also check
+                  the <a href="./docs/playing/howtobuykan.html">docs.</a>
+                </div>
+              </div>
+              <div
+                class="accord__item js-accord-item"
+                data-aos="animation-scale-y"
+                id="howtoimport"
+              >
+                <div class="accord__head js-accord-head">
+                  <div class="accord__icon">
+                    <img class="accord__pic" src="img/layout-3.svg" alt="" />
+                  </div>
+                  <div class="accord__category">How can I help ?</div>
+                </div>
+                <div class="accord__body js-accord-body">
+                  There are many ways to help the project. First, you can play
+                  the Kanvas game. You can also tell your friends and social
+                  networks about the project, so that as many people as possible
+                  know about it and it goes viral! Finally, you can help us with
+                  tasks such as creating memes, animating the community,
+                  creating images or translating certain texts.
+                </div>
+              </div>
+              <div
+                class="accord__item js-accord-item"
+                data-aos="animation-scale-y"
+              >
+                <div class="accord__head js-accord-head">
+                  <div class="accord__icon">
+                    <img class="accord__pic" src="img/layout-3.svg" alt="" />
+                  </div>
+                  <div class="accord__category">
+                    What happens if I have placed all my pixels and transfer my
+                    $KAN to another address to place new ones with this account?
+                  </div>
+                </div>
+                <div class="accord__body js-accord-body">
+                  Of course, Kanvas developers have taken this case into
+                  account! In this case, all the pixels you placed with your
+                  previous address will be removed from the canvas. In this way,
+                  $KAN cannot be used to place more pixels than their capacity.
+                </div>
+              </div>
+              <div
+                class="accord__item js-accord-item"
+                data-aos="animation-scale-y"
+              >
+                <div class="accord__head js-accord-head">
+                  <div class="accord__icon">
+                    <img class="accord__pic" src="img/layout-3.svg" alt="" />
+                  </div>
+                  <div class="accord__category">How large is the canvas ?</div>
+                </div>
+                <div class="accord__body js-accord-body">
+                  The canvas is 1000 pixels by 1000 pixels. Its size can be
+                  modified by the developer if required.
+                </div>
+              </div>
+              <div
+                class="accord__item js-accord-item"
+                data-aos="animation-scale-y"
+                id="howtoimport"
+              >
+                <div class="accord__head js-accord-head">
+                  <div class="accord__icon">
+                    <img class="accord__pic" src="img/layout-3.svg" alt="" />
+                  </div>
+                  <div class="accord__category">
+                    What is the expected return on investment ? Wen moon ?
+                  </div>
+                </div>
+                <div class="accord__body js-accord-body">
+                  We're sorry, but we can't predict the token's future price or
+                  popularity. It is therefore impossible to answer this
+                  question! We're developing the project as best we can, and
+                  it's up to the community to make the difference!
+                </div>
+              </div>
+              <div
+                class="accord__item js-accord-item"
+                data-aos="animation-scale-y"
+              >
+                <div class="accord__head js-accord-head">
+                  <div class="accord__icon">
+                    <img class="accord__pic" src="img/layout-3.svg" alt="" />
+                  </div>
+                  <div class="accord__category">
+                    My swap failed, how to fix it ?
+                  </div>
+                </div>
+                <div class="accord__body js-accord-body">
+                  In this case, you can try to put a higher slippage tolerance
+                  on the decentealized exchange. However, note that it will cost
+                  you more Koin to do so!
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="offer">
+        <div class="offer__center center">
+          <div class="offer__container">
+            <div class="offer__head">
+              <h2 class="offer__title title" data-aos="animation-scale-y">
+                Ready to take part in our project ?
+              </h2>
+              <div
+                class="offer__info info"
+                data-aos="animation-scale-y"
+                data-aos-delay="150"
+              >
+                Join our community to help us build the future of Kanvas !
+              </div>
+              <div
+                class="offer__btn"
+                data-aos="animation-scale-y"
+                data-aos-delay="300"
+              >
+                <a
+                  class="btn btn_white"
+                  href="https://app.koindx.com/swap?input=15DJN4a8SgrbGhhGksSBASiSYjGnMU8dGL&output=1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS"
+                  >Buy some $KAN to play !</a
+                >
+              </div>
+            </div>
+            <div class="offer__circles">
+              <div class="offer__circle"></div>
+              <div class="offer__circle"></div>
+            </div>
+          </div>
+          <div class="offer__circle"></div>
+        </div>
+        <div
+          class="offer__view"
+          data-aos
+          data-aos-delay="400"
+          data-aos-offset="0"
+        >
+          <div class="offer__preview"></div>
+          <div class="offer__preview"></div>
+          <div class="offer__preview"></div>
+          <div class="offer__preview"></div>
+        </div>
+      </div>
+      <div class="footer js-footer">
+        <div class="footer__center center">
+          <div class="footer__bottom">
+            <a class="footer__company" target="_blank" href="#" target="_blank"
+              ><img
+                class="footer__pic"
+                src="../app/img/icon.png"
+                loading="lazy"
+                alt=""
+                style="width: 26px"
+            /></a>
+            <div class="footer__copyright">© 2023, Kanvas</div>
+            <a class="footer__scroll js-link-scroll" href="#header">
+              <div class="footer__icon">
+                <img class="footer__pic" src="img/scroll.svg" alt="" />
+              </div>
+              <div class="footer__text">Back to top</div>
+            </a>
+          </div>
+          <div class="footer__copyright" style="margin-bottom: 26px">
+            <a href="./docs/introduction/whatiskanvas.html">Documentation</a
+            ><br />
+            <a target="_blank" href="https://t.me/KanvasOfficial"
+              >Telegram group</a
+            ><br />
+            <a target="_blank" href="https://twitter.com/KanvasOfficial"
+              >Twitter account</a
+            ><br /><br />
+            Market prices for cryptocurrencies such as $KAN are extremely
+            volatile and can change unpredictably in a very short time. By
+            buying $KAN, you acknowledge that you understand the risks you may
+            face in the cryptocurrency market such as complete loss of value.
+            Kanvas project may not be accounted responsible for your decisions.
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/app.js"></script>
+    <script src="js/common.js"></script>
+  </body>
+</html>

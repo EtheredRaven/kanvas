@@ -1,7 +1,5 @@
 client/.DS_Store
 client/node_modules
-client/dist
-client/docs/.vitepress/dist
 client/docs/.vitepress/cache
 
 
@@ -21,7 +19,6 @@ server/node_modules
 server/dist
 server/cert
 server/logs
-server/db/data.db
 
 
 # local env files

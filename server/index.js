@@ -52,7 +52,6 @@ Server.app.get("/", function (req, res) {
   res.sendFile(__dirname + "/../client/public/homepage/index.html");
 });
 Server.app.use("/app/", express.static(__dirname + "/../client/dist"));
-Server.app.use("/app/img", express.static(__dirname + "/../client/public/img"));
 Server.app.get("/app/", function (req, res) {
   res.sendFile(__dirname + "/../client/dist/index.html");
 });
