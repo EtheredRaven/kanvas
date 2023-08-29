@@ -27,7 +27,7 @@ nvm install v16.15.0 # Install this version
 node -v #Verify it worked, you should get 16.15.0
 ```
 
-## Installing Kanvas locally
+#### Installing Kanvas locally
 
 ```cmd
 git clone https://github.com/EtheredRaven/kanvas.git
@@ -40,11 +40,11 @@ The server is now running on http://localhost (and not https because there is no
 
 For the next times you launch the server, you can only use `npm run serve` in the server folder.
 
-## Play the game
+#### Play the game
 
 You can now play the game. You will need some $KAN and $KOIN to test the pixel placement. Check [our docs](https://kanvas-app.com/docs/playing/howtobuykoin.html) on our official website to check the process.
 
-## Compiles and hot-reloads for development
+#### Compiles and hot-reloads for development
 
 This part is for developers only. You will need these commands if you modify some files.
 
@@ -52,7 +52,7 @@ This part is for developers only. You will need these commands if you modify som
 
 Go back to the project root folder.
 
-```
+```cmd
 cd client
 npm install
 npm docs:build
@@ -63,7 +63,7 @@ npm run build
 
 Go back to the project root folder.
 
-```
+```cmd
 cd server
 npm run serve
 ```
