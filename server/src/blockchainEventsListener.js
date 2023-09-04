@@ -165,50 +165,59 @@ module.exports = async function (Server) {
     (await Server.client.blockStore.getHighestBlock()).topology.height
   );
   setInterval(async () => {
-    let newBlock = (await Server.client.blockStore.getHighestBlock()).topology;
-    let newBlockHeight = Number(newBlock.height);
-    let blocksToProcess = [];
+    try {
+      let newBlock = (await Server.client.blockStore.getHighestBlock())
+        .topology;
+      let newBlockHeight = Number(newBlock.height);
+      let blocksToProcess = [];
 
-    // Construct all the missed blocks in this interval to process
-    if (newBlockHeight >= lastBlockHeight) {
-      let currentBlockHeight = newBlockHeight;
-      let currentBlockId = newBlock.id;
+      // Construct all the missed blocks in this interval to process
+      if (newBlockHeight >= lastBlockHeight) {
+        let currentBlockHeight = newBlockHeight;
+        let currentBlockId = newBlock.id;
 
-      while (currentBlockHeight >= lastBlockHeight) {
-        const { block_items } =
-          await Server.client.blockStore.getBlocksByHeight(
-            currentBlockId,
-            currentBlockHeight,
-            1
-          );
+        while (currentBlockHeight >= lastBlockHeight) {
+          const { block_items } =
+            await Server.client.blockStore.getBlocksByHeight(
+              currentBlockId,
+              currentBlockHeight,
+              1
+            );
 
-        blocksToProcess.push(block_items[0]);
-        currentBlockId = block_items[0].block.header.previous;
-        currentBlockHeight--;
+          blocksToProcess.push(block_items[0]);
+          currentBlockId = block_items[0].block.header.previous;
+          currentBlockHeight--;
+        }
+
+        lastBlockHeight = newBlockHeight + 1;
       }
 
-      lastBlockHeight = newBlockHeight + 1;
-    }
-
-    // Process it
-    for (let i = blocksToProcess.length - 1; i >= 0; i--) {
-      let block = blocksToProcess[i];
-      let transactionReceipts = block.receipt.transaction_receipts;
-      let receiptId = block.receipt.id;
-      if (transactionReceipts) {
-        for (let j = 0; j < transactionReceipts.length; j++) {
-          let txReceipt = transactionReceipts[j];
-          let events = txReceipt.events;
-          if (events) {
-            for (let i = 0; i < events.length; i++) {
-              // Process each event
-              let event = events[i];
-              await processEvent(event, receiptId);
+      // Process it
+      for (let i = blocksToProcess.length - 1; i >= 0; i--) {
+        let block = blocksToProcess[i];
+        let transactionReceipts = block.receipt.transaction_receipts;
+        let receiptId = block.receipt.id;
+        if (transactionReceipts) {
+          for (let j = 0; j < transactionReceipts.length; j++) {
+            let txReceipt = transactionReceipts[j];
+            let events = txReceipt.events;
+            if (events) {
+              for (let i = 0; i < events.length; i++) {
+                // Process each event
+                let event = events[i];
+                await processEvent(event, receiptId);
+              }
             }
           }
         }
+        Server.infoLogging(
+          "Processed block",
+          block.block_height,
+          block.block_id
+        );
       }
-      Server.infoLogging("Processed block", block.block_height, block.block_id);
+    } catch (err) {
+      Server.errorLogging("Error while retrieving last block", err);
     }
   }, BLOCKS_PROCESSING_INTERVAL);
 
@@ -238,15 +247,24 @@ module.exports = async function (Server) {
   //await initPixelMap();
 
   /*let block = await Server.client.blockStore.getBlocksById([
-    "0x12206c6f212829ada1a29a5f76341b7b2bbe87fd30585ee49946b0afef1af90e8510",
+    "0x12201a4b7c004ce7c9fe4836951599dc290cd430efe68f134f36df2c5318d8adf5e7",
   ]);
-  let block = await Server.client.blockStore.getBlocksByHeight(
+  /*let block = await Server.client.blockStore.getBlocksByHeight(
     "0x12208bc173edc126acee50f34f3a962a5dc46f6d18842b2629604e4f33b0a9afde8d",
     8186122,
     1
   );
-  //block = block.block_items[0];
-  console.log(block);
+  block = block.block_items[0];
+  let blockOperations = block.block.transactions[0].operations;
+  blockOperations.forEach((ops) => {
+    let isCallContract = !!ops.call_contract;
+    if (isCallContract) {
+      if (ops.call_contract.contract_id == Server.koindxCoreAddress) {
+        console.log(ops.call_contract.args);
+      }
+    }
+  });*/
+
   /*let transactionReceipts = block.receipt.transaction_receipts;
   let receiptId = block.receipt.id;
   if (transactionReceipts) {

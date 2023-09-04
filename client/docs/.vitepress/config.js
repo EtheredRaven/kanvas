@@ -31,7 +31,7 @@ export default defineConfig({
         link: "https://app.koindx.com/swap?input=15DJN4a8SgrbGhhGksSBASiSYjGnMU8dGL&output=1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS",
       },
       {
-        text: "1.2.1",
+        text: "1.2.2",
         items: [
           {
             text: "Changelog",

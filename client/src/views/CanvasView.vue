@@ -1,4 +1,5 @@
 <script>
+import Wallet from "../components/Wallet";
 import CanvasComponent from "../components/CanvasComponent";
 import ColorPicker from "../components/ColorPicker.vue";
 import ManaBar from "@/components/ManaBar.vue";
@@ -10,6 +11,7 @@ export default {
     ColorPicker,
     ManaBar,
     SavingButton,
+    Wallet,
   },
   computed: {
     currentAccount: function () {
@@ -19,11 +21,21 @@ export default {
       return this.$store.state.pixelsToPlace;
     },
   },
+  methods: {
+    preventNextClick() {
+      this.$store.commit("preventNextClick", true);
+    },
+  },
 };
 </script>
 
 <template>
   <div>
+    <Wallet
+      ref="wallet"
+      v-on:dropdown-opened="$refs.menu.closeDropdown()"
+      @click="preventNextClick"
+    />
     <div v-if="currentAccount && currentAccount.address">
       <ColorPicker />
       <SavingButton

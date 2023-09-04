@@ -40,6 +40,16 @@
         v-on:click="createAccount"
       />
     </div>
+    <div
+      class="sp-accounts-new"
+      v-else-if="activeWallet.name == 'WalletConnect'"
+    >
+      <LinkIcon
+        icon="Cross"
+        text="Delete account"
+        v-on:click="deleteWalletConnect"
+      />
+    </div>
   </div>
 </template>
 <script>
@@ -85,6 +95,9 @@ export default defineComponent({
     },
     async changeKondorAccounts() {
       await this.$store.dispatch("changeKondorAccounts");
+    },
+    async deleteWalletConnect() {
+      await this.$store.dispatch("deleteWalletConnect");
     },
   },
 });

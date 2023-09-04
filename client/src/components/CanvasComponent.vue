@@ -22,6 +22,7 @@ export default {
     PixelProperties,
   },
   created() {
+    this.$socket.emit("get_pixel_map_data");
     InitSocketFunctions(this);
   },
   async mounted() {

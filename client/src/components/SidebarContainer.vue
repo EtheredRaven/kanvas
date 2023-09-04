@@ -15,6 +15,12 @@
       <LinkIcon link="/" text="Pixel map" icon="delicious" />
       <LinkIcon href="../" text="Home" icon="home" />
       <LinkIcon
+        link="/pricechart"
+        target="_blank"
+        text="Price chart"
+        icon="stats-dots"
+      />
+      <LinkIcon
         href="https://app.koindx.com/swap?input=15DJN4a8SgrbGhhGksSBASiSYjGnMU8dGL&output=1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS"
         target="_blank"
         text="Buy on KoinDX"

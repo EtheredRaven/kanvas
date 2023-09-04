@@ -8,9 +8,15 @@ module.exports = function (Server) {
     Server.infoLogging(socket, "New connection to Websocket");
     socket.accounts = [];
 
-    socket.emit("pixel_map_data", {
-      pixels: Server.pixels,
-      canvas_dimensions: Server.canvasDimensions,
+    socket.on("get_pixel_map_data", () => {
+      socket.emit("got_pixel_map_data", {
+        pixels: Server.pixels,
+        canvas_dimensions: Server.canvasDimensions,
+      });
+    });
+
+    socket.on("get_price_history", () => {
+      socket.emit("got_price_history", Server.priceHistory);
     });
 
     socket.on("disconnect", function (reason) {

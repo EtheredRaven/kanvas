@@ -300,6 +300,13 @@ export const createStore = (app) => {
           (w) => w.name != walletName
         );
       },
+      async deleteWalletConnect({ dispatch }) {
+        if (window.walletConnectKoinos) {
+          dispatch("deleteWallet", "WalletConnect");
+          await window.walletConnectKoinos.disconnect();
+          delete window.walletConnectKoinos;
+        }
+      },
       async changeKondorAccounts({ state, commit, dispatch }) {
         let accounts;
         try {
@@ -348,8 +355,7 @@ export const createStore = (app) => {
 
         if (newConnection) {
           // Timeout to take time to propagate the disconnection
-          dispatch("deleteWallet", "WalletConnect");
-          await window.walletConnectKoinos.disconnect();
+          await dispatch("deleteWalletConnect");
           setTimeout(async () => {
             const accounts = await window.walletConnectKoinos.connect(
               ...walletConnectParams
