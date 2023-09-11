@@ -5,7 +5,7 @@
 <script>
 import { createChart } from "lightweight-charts";
 
-let series;
+let series = {};
 let chart;
 
 // Function to get the correct series constructor name for current series type.
@@ -16,8 +16,8 @@ function getChartSeriesConstructorName(type) {
 // Creates the chart series and sets the data.
 const addSeriesAndData = (type, seriesOptions, data) => {
   const seriesConstructor = getChartSeriesConstructorName(type);
-  series = chart[seriesConstructor](seriesOptions);
-  series.setData(data);
+  series[seriesOptions.name] = chart[seriesConstructor](seriesOptions);
+  series[seriesOptions.name].setData(data);
 };
 
 // Auto resizes the chart when the browser window is resized.
@@ -29,22 +29,32 @@ const resizeHandler = (container) => {
 
 export default {
   props: {
-    type: {
+    priceSeriesType: {
       type: String,
       default: "line",
     },
-    data: {
+    priceSeriesData: {
       type: Array,
       required: true,
+    },
+    priceSeriesOptions: {
+      type: Object,
+    },
+    volumeSeriesType: {
+      type: String,
+      default: "histogram",
+    },
+    volumeSeriesData: {
+      type: Array,
+    },
+    volumeSeriesOptions: {
+      type: Object,
     },
     autosize: {
       default: true,
       type: Boolean,
     },
     chartOptions: {
-      type: Object,
-    },
-    seriesOptions: {
       type: Object,
     },
     timeScaleOptions: {
@@ -61,7 +71,16 @@ export default {
   mounted() {
     // Create the Lightweight Charts Instance using the container ref.
     chart = createChart(this.$refs.chartContainer, this.chartOptions);
-    addSeriesAndData(this.type, this.seriesOptions, this.data);
+    addSeriesAndData(
+      this.priceSeriesType,
+      this.priceSeriesOptions,
+      this.priceSeriesData
+    );
+    addSeriesAndData(
+      this.volumeSeriesType,
+      this.volumeSeriesOptions,
+      this.volumeSeriesData
+    );
 
     if (this.priceScaleOptions) {
       chart.priceScale().applyOptions(this.priceScaleOptions);
@@ -114,24 +133,47 @@ export default {
         resizeHandler(this.$refs.chartContainer)
       );
     },
-    type() {
-      if (series && chart) {
-        chart.removeSeries(series);
+    priceSeriesType() {
+      if (series.price && chart) {
+        chart.removeSeries(series.price);
       }
-      addSeriesAndData(this.type, this.seriesOptions, this.data);
+      addSeriesAndData(
+        this.priceSeriesType,
+        this.priceSeriesOptions,
+        this.priceSeriesData
+      );
     },
-    data(newData) {
-      if (!series) return;
-      series.setData(newData);
+    priceSeriesData(newData) {
+      if (!series.price) return;
+      series.price.setData(newData);
       chart.timeScale().fitContent();
+    },
+    priceSeriesOptions(newOptions) {
+      if (!series.price) return;
+      series.price.applyOptions(newOptions);
+    },
+    volumeSeriesType() {
+      if (series.volume && chart) {
+        chart.removeSeries(series.volume);
+      }
+      addSeriesAndData(
+        this.volumeSeriesType,
+        this.volumeSeriesOptions,
+        this.volumeSeriesData
+      );
+    },
+    volumeSeriesData(newData) {
+      if (!series.volume) return;
+      series.volume.setData(newData);
+      chart.timeScale().fitContent();
+    },
+    volumeSeriesOptions(newOptions) {
+      if (!series.volume) return;
+      series.volume.applyOptions(newOptions);
     },
     chartOptions(newOptions) {
       if (!chart) return;
       chart.applyOptions(newOptions);
-    },
-    seriesOptions(newOptions) {
-      if (!series) return;
-      series.applyOptions(newOptions);
     },
     priceScaleOptions(newOptions) {
       if (!chart) return;
@@ -160,20 +202,20 @@ export default {
       toolTip.style = `
       background:white;
       color:black;
-      width: ${toolTipWidth}; 
-      height: ${toolTipHeight}; 
-      position: absolute; 
-      display: none; 
-      padding: 1.2rem 1.5rem; 
-      box-sizing: border-box; 
-      font-size: 1.3rem; 
-      text-align: left; 
-      z-index: 1000; 
-      top: 12px; 
-      left: 12px; 
-      pointer-events: none; 
+      width: ${toolTipWidth};
+      height: ${toolTipHeight};
+      position: absolute;
+      display: none;
+      padding: 1.2rem 1.5rem;
+      box-sizing: border-box;
+      font-size: 1.3rem;
+      text-align: left;
+      z-index: 1000;
+      top: 12px;
+      left: 12px;
+      pointer-events: none;
       border-radius: 2px;
-      font-family: Inter, sans-serif; 
+      font-family: Inter, sans-serif;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       box-shadow: 0 0.8rem 1.6rem -0.3rem rgba(140, 148, 159, 0.15);
@@ -198,8 +240,15 @@ export default {
             (dateStr + 60 * dateObj.getTimezoneOffset()) * 1000
           );
           toolTip.style.display = "block";
-          const data = param.seriesData.get(series);
-          const price = data.value !== undefined ? data.value : data.close;
+          const dataPrice = param.seriesData.get(series.price);
+          const price =
+            dataPrice.value !== undefined ? dataPrice.value : dataPrice.close;
+          const dataVolume = param.seriesData.get(series.volume);
+          const volumeValue =
+            dataVolume.value !== undefined
+              ? dataVolume.value
+              : dataVolume.close;
+
           toolTip.innerHTML = `
             <div style="display:flex;flex-wrap:no-wrap;justify-content:space-between;gap: 2.5rem;">
               <span>${date.toLocaleDateString()}</span>
@@ -208,6 +257,10 @@ export default {
             <div style="margin-top: 1rem;font-weight:bold">
               <span style="color:#707070;">Price: </span>
 			        $${Math.round(this.valuePrecision * price) / this.valuePrecision}
+			      </div>
+            <div style="margin-top: 1rem;font-weight:bold">
+              <span style="color:#707070;">Volume: </span>
+			        $${Math.round(volumeValue)}
 			      </div>`;
 
           const y = param.point.y;

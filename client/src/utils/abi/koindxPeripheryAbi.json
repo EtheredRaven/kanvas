@@ -1,128 +1,93 @@
 {
   "methods": {
-    "name": {
-      "input": "core.name_arguments",
-      "return": "core.str",
-      "description": "Get name of the token",
-      "entry_point": 2191741823,
-      "read_only": true
-    },
-    "symbol": {
-      "input": "core.symbol_arguments",
-      "return": "core.str",
-      "description": "Get the symbol of the token",
-      "entry_point": 3077209249,
-      "read_only": true
-    },
-    "decimals": {
-      "input": "core.decimals_arguments",
-      "return": "core.uint32",
-      "description": "Get the decimals of the token",
-      "entry_point": 4001430831,
-      "read_only": true
-    },
-    "get_info": {
-      "input": "core.get_info_arguments",
-      "return": "core.info",
-      "description": "Get name, symbol and decimals",
-      "entry_point": 3179243600,
-      "read_only": true
-    },
-    "total_supply": {
-      "input": "core.total_supply_arguments",
-      "return": "core.uint64",
-      "description": "Get total supply",
-      "entry_point": 2967091508,
-      "read_only": true
-    },
-    "balance_of": {
-      "input": "core.balance_of_arguments",
-      "return": "core.uint64",
-      "description": "Get balance of an account",
-      "entry_point": 1550980247,
-      "read_only": true
-    },
-    "allowance": {
-      "input": "core.allowance_arguments",
-      "return": "core.uint64",
-      "description": "Get allowance of an account",
-      "entry_point": 854630305,
-      "read_only": true
-    },
-    "transfer": {
-      "input": "core.transfer_arguments",
-      "return": "core.empty_object",
-      "description": "transfer tokens of an account",
-      "entry_point": 670398154,
+    "authorize_update": {
+      "argument": "periphery.authorize_update_arguments",
+      "return": "periphery.boole",
+      "description": "Authorize of protocol",
+      "entry_point": 2417988571,
       "read_only": false
     },
-    "approve": {
-      "input": "core.approve_arguments",
-      "return": "core.empty_object",
-      "description": "Sets `value` as the allowance of `spender` over the caller's tokens.",
-      "entry_point": 1960973952,
-      "read_only": false
-    },
-    "get_reserves": {
-      "input": "core.get_reserves_arguments",
-      "return": "core.get_reserves_result",
-      "description": "get reserves of a pool",
-      "entry_point": 1829526207,
+    "get_config": {
+      "argument": "periphery.get_config_arguments",
+      "return": "periphery.configs_object",
+      "description": "Get configs of protocol",
+      "entry_point": 3159346644,
       "read_only": true
     },
-    "get_tokens": {
-      "input": "core.get_tokens_arguments",
-      "return": "core.get_tokens_result",
-      "description": "get tokens of a pool",
-      "entry_point": 2103140055,
+    "set_config": {
+      "argument": "periphery.set_config_arguments",
+      "return": "periphery.empty_object",
+      "description": "Set configs of protocol",
+      "entry_point": 1269140617,
+      "read_only": false
+    },
+    "get_pair": {
+      "argument": "periphery.get_pair_arguments",
+      "return": "periphery.address",
+      "description": "get address of a pair",
+      "entry_point": 4024190401,
       "read_only": true
     },
-    "initialize": {
-      "input": "core.initialize_arguments",
-      "return": "core.empty_object",
-      "description": "initializing core contract",
-      "entry_point": 1192148610,
+    "create_pair": {
+      "argument": "periphery.create_pair_arguments",
+      "return": "periphery.empty_object",
+      "description": "Create pair if it doesn't exist",
+      "entry_point": 678105445,
       "read_only": false
     },
-    "mint": {
-      "input": "core.mint_arguments",
-      "return": "core.uint64",
-      "description": "mint tokens of pool",
-      "entry_point": 3698268091,
+    "add_liquidity": {
+      "argument": "periphery.add_liquidity_arguments",
+      "return": "periphery.add_liquidity_result",
+      "description": "Add liquidity to pair",
+      "entry_point": 117856717,
       "read_only": false
     },
-    "burn": {
-      "input": "core.burn_arguments",
-      "return": "core.burn_result",
-      "description": "burn tokens of pool",
-      "entry_point": 2241834181,
+    "remove_liquidity": {
+      "argument": "periphery.remove_liquidity_arguments",
+      "return": "periphery.remove_liquidity_result",
+      "description": "Remove liquidity from pair",
+      "entry_point": 650612145,
       "read_only": false
     },
-    "swap": {
-      "input": "core.swap_arguments",
-      "return": "core.empty_object",
-      "description": "swap tokens contract",
-      "entry_point": 3662136052,
+    "swap_tokens_in": {
+      "argument": "periphery.swap_tokens_in_arguments",
+      "return": "periphery.empty_object",
+      "description": "Swap tokens with exact input",
+      "entry_point": 2335548678,
       "read_only": false
     },
-    "skim": {
-      "input": "core.skim_arguments",
-      "return": "core.empty_object",
-      "description": "synchronizes the number of tokens with the reserves",
-      "entry_point": 1989814226,
+    "swap_tokens_out": {
+      "argument": "periphery.swap_tokens_out_arguments",
+      "return": "periphery.empty_object",
+      "description": "Swap tokens with exact output",
+      "entry_point": 3761082301,
       "read_only": false
     },
-    "sync": {
-      "input": "core.sync_arguments",
-      "return": "core.empty_object",
-      "description": "synchronizes the pool values ​​with the number of tokens",
-      "entry_point": 1976000254,
-      "read_only": false
+    "get_quote": {
+      "argument": "periphery.get_quote_arguments",
+      "return": "periphery.uint64",
+      "description": "Get quote depending on reservations",
+      "entry_point": 1066984845,
+      "read_only": true
+    },
+    "get_amount_out": {
+      "argument": "periphery.get_amount_out_arguments",
+      "return": "periphery.uint64",
+      "description": "Get amounts out",
+      "entry_point": 562360101,
+      "read_only": true
+    },
+    "get_amount_in": {
+      "argument": "periphery.get_amount_in_arguments",
+      "return": "periphery.uint64",
+      "description": "Get amounts in",
+      "entry_point": 1161269195,
+      "read_only": true
     }
   },
   "types": {
     "nested": {
-      "core": {
+      "periphery": {
         "nested": {
           "str": {
             "fields": {
@@ -151,6 +116,17 @@
               }
             }
           },
+          "address": {
+            "fields": {
+              "value": {
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              }
+            }
+          },
           "boole": {
             "fields": {
               "value": {
@@ -162,219 +138,53 @@
           "empty_object": {
             "fields": {}
           },
-          "info": {
+          "configs_object": {
             "fields": {
-              "name": {
-                "type": "string",
-                "id": 1
-              },
-              "symbol": {
-                "type": "string",
-                "id": 2
-              },
-              "decimals": {
-                "type": "uint32",
-                "id": 3
-              }
-            }
-          },
-          "token_object": {
-            "fields": {
-              "isNameservice": {
+              "feeOn": {
                 "type": "bool",
                 "id": 1
               },
-              "nameservice": {
-                "type": "string",
-                "id": 2
-              },
-              "tokenAddress": {
+              "feeTo": {
                 "type": "bytes",
-                "id": 3,
+                "id": 2,
                 "options": {
                   "(koinos.btype)": "ADDRESS"
                 }
               }
             }
           },
-          "config_object": {
+          "pair_key": {
             "fields": {
-              "initialized": {
-                "type": "bool",
+              "tokenA": {
+                "type": "bytes",
                 "id": 1
               },
-              "periphery": {
-                "type": "bytes",
-                "id": 2,
-                "options": {
-                  "(koinos.btype)": "ADDRESS"
-                }
-              },
-              "tokenA": {
-                "type": "token_object",
-                "id": 3
-              },
               "tokenB": {
-                "type": "token_object",
-                "id": 4
-              },
-              "kLast": {
-                "type": "string",
-                "id": 5
-              },
-              "reserveA": {
-                "type": "uint64",
-                "id": 6,
-                "options": {
-                  "jstype": "JS_STRING"
-                }
-              },
-              "reserveB": {
-                "type": "uint64",
-                "id": 7,
-                "options": {
-                  "jstype": "JS_STRING"
-                }
-              },
-              "blockTime": {
-                "type": "uint64",
-                "id": 8,
-                "options": {
-                  "jstype": "JS_STRING"
-                }
+                "type": "bytes",
+                "id": 2
               }
             }
           },
-          "name_arguments": {
-            "fields": {}
-          },
-          "symbol_arguments": {
-            "fields": {}
-          },
-          "decimals_arguments": {
-            "fields": {}
-          },
-          "get_info_arguments": {
-            "fields": {}
-          },
-          "total_supply_arguments": {
-            "fields": {}
-          },
-          "balance_of_arguments": {
+          "authorize_update_arguments": {
             "fields": {
-              "owner": {
+              "hash": {
                 "type": "bytes",
-                "id": 1,
-                "options": {
-                  "(koinos.btype)": "ADDRESS"
-                }
+                "id": 1
               }
             }
           },
-          "allowance_arguments": {
-            "fields": {
-              "owner": {
-                "type": "bytes",
-                "id": 1,
-                "options": {
-                  "(koinos.btype)": "ADDRESS"
-                }
-              },
-              "spender": {
-                "type": "bytes",
-                "id": 2,
-                "options": {
-                  "(koinos.btype)": "ADDRESS"
-                }
-              }
-            }
+          "get_config_arguments": {
+            "fields": {}
           },
-          "transfer_arguments": {
+          "set_config_arguments": {
             "fields": {
-              "from": {
-                "type": "bytes",
-                "id": 1,
-                "options": {
-                  "(koinos.btype)": "ADDRESS"
-                }
-              },
-              "to": {
-                "type": "bytes",
-                "id": 2,
-                "options": {
-                  "(koinos.btype)": "ADDRESS"
-                }
-              },
               "value": {
-                "type": "uint64",
-                "id": 3,
-                "options": {
-                  "jstype": "JS_STRING"
-                }
-              }
-            }
-          },
-          "approve_arguments": {
-            "fields": {
-              "owner": {
-                "type": "bytes",
-                "id": 1,
-                "options": {
-                  "(koinos.btype)": "ADDRESS"
-                }
-              },
-              "spender": {
-                "type": "bytes",
-                "id": 2,
-                "options": {
-                  "(koinos.btype)": "ADDRESS"
-                }
-              },
-              "value": {
-                "type": "uint64",
-                "id": 3,
-                "options": {
-                  "jstype": "JS_STRING"
-                }
-              }
-            }
-          },
-          "get_reserves_arguments": {
-            "fields": {}
-          },
-          "get_reserves_result": {
-            "fields": {
-              "kLast": {
-                "type": "string",
+                "type": "configs_object",
                 "id": 1
-              },
-              "reserveA": {
-                "type": "uint64",
-                "id": 2,
-                "options": {
-                  "jstype": "JS_STRING"
-                }
-              },
-              "reserveB": {
-                "type": "uint64",
-                "id": 3,
-                "options": {
-                  "jstype": "JS_STRING"
-                }
-              },
-              "blockTime": {
-                "type": "uint64",
-                "id": 4,
-                "options": {
-                  "jstype": "JS_STRING"
-                }
               }
             }
           },
-          "get_tokens_arguments": {
-            "fields": {}
-          },
-          "get_tokens_result": {
+          "get_pair_arguments": {
             "fields": {
               "tokenA": {
                 "type": "bytes",
@@ -392,28 +202,16 @@
               }
             }
           },
-          "initialize_arguments": {
+          "create_pair_arguments": {
             "fields": {
               "tokenA": {
-                "type": "token_object",
-                "id": 1
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
               },
               "tokenB": {
-                "type": "token_object",
-                "id": 2
-              }
-            }
-          },
-          "mint_arguments": {
-            "fields": {
-              "to": {
-                "type": "bytes",
-                "id": 1,
-                "options": {
-                  "(koinos.btype)": "ADDRESS"
-                }
-              },
-              "fee": {
                 "type": "bytes",
                 "id": 2,
                 "options": {
@@ -422,208 +220,263 @@
               }
             }
           },
-          "burn_arguments": {
-            "fields": {
-              "to": {
-                "type": "bytes",
-                "id": 1,
-                "options": {
-                  "(koinos.btype)": "ADDRESS"
-                }
-              },
-              "fee": {
-                "type": "bytes",
-                "id": 2,
-                "options": {
-                  "(koinos.btype)": "ADDRESS"
-                }
-              }
-            }
-          },
-          "burn_result": {
-            "fields": {
-              "amountA": {
-                "type": "uint64",
-                "id": 1,
-                "options": {
-                  "jstype": "JS_STRING"
-                }
-              },
-              "amountB": {
-                "type": "uint64",
-                "id": 2,
-                "options": {
-                  "jstype": "JS_STRING"
-                }
-              }
-            }
-          },
-          "swap_arguments": {
-            "fields": {
-              "to": {
-                "type": "bytes",
-                "id": 1,
-                "options": {
-                  "(koinos.btype)": "ADDRESS"
-                }
-              },
-              "amountA": {
-                "type": "uint64",
-                "id": 2,
-                "options": {
-                  "jstype": "JS_STRING"
-                }
-              },
-              "amountB": {
-                "type": "uint64",
-                "id": 3,
-                "options": {
-                  "jstype": "JS_STRING"
-                }
-              }
-            }
-          },
-          "skim_arguments": {
-            "fields": {
-              "to": {
-                "type": "bytes",
-                "id": 1,
-                "options": {
-                  "(koinos.btype)": "ADDRESS"
-                }
-              }
-            }
-          },
-          "sync_arguments": {
-            "fields": {}
-          },
-          "initialize_event": {
+          "add_liquidity_arguments": {
             "fields": {
               "tokenA": {
-                "type": "string",
-                "id": 1
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
               },
               "tokenB": {
-                "type": "string",
-                "id": 2
-              }
-            }
-          },
-          "mint_event": {
-            "fields": {
-              "sender": {
-                "type": "bytes",
-                "id": 1,
-                "options": {
-                  "(koinos.btype)": "ADDRESS"
-                }
-              },
-              "amountA": {
-                "type": "uint64",
-                "id": 2,
-                "options": {
-                  "(koinos.btype)": "ADDRESS"
-                }
-              },
-              "amountB": {
-                "type": "uint64",
-                "id": 3,
-                "options": {
-                  "(koinos.btype)": "ADDRESS"
-                }
-              }
-            }
-          },
-          "burn_event": {
-            "fields": {
-              "to": {
-                "type": "bytes",
-                "id": 1,
-                "options": {
-                  "(koinos.btype)": "ADDRESS"
-                }
-              },
-              "sender": {
                 "type": "bytes",
                 "id": 2,
                 "options": {
                   "(koinos.btype)": "ADDRESS"
                 }
               },
-              "amountA": {
+              "amountADesired": {
                 "type": "uint64",
                 "id": 3,
                 "options": {
-                  "(koinos.btype)": "ADDRESS"
+                  "jstype": "JS_STRING"
                 }
               },
-              "amountB": {
+              "amountBDesired": {
                 "type": "uint64",
                 "id": 4,
                 "options": {
-                  "(koinos.btype)": "ADDRESS"
-                }
-              }
-            }
-          },
-          "swap_event": {
-            "fields": {
-              "to": {
-                "type": "bytes",
-                "id": 1,
-                "options": {
-                  "(koinos.btype)": "ADDRESS"
+                  "jstype": "JS_STRING"
                 }
               },
-              "sender": {
-                "type": "bytes",
-                "id": 2,
-                "options": {
-                  "(koinos.btype)": "ADDRESS"
-                }
-              },
-              "amountInA": {
-                "type": "uint64",
-                "id": 3,
-                "options": {
-                  "(koinos.btype)": "ADDRESS"
-                }
-              },
-              "amountInB": {
-                "type": "uint64",
-                "id": 4,
-                "options": {
-                  "(koinos.btype)": "ADDRESS"
-                }
-              },
-              "amountOutA": {
+              "amountAMin": {
                 "type": "uint64",
                 "id": 5,
                 "options": {
-                  "(koinos.btype)": "ADDRESS"
+                  "jstype": "JS_STRING"
                 }
               },
-              "amountOutB": {
+              "amountBMin": {
                 "type": "uint64",
                 "id": 6,
                 "options": {
-                  "(koinos.btype)": "ADDRESS"
+                  "jstype": "JS_STRING"
                 }
               }
             }
           },
-          "sync_event": {
+          "add_liquidity_result": {
             "fields": {
-              "reserveA": {
+              "liquidity": {
                 "type": "uint64",
                 "id": 1,
                 "options": {
                   "jstype": "JS_STRING"
                 }
               },
-              "reserveB": {
+              "amountA": {
                 "type": "uint64",
                 "id": 2,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "amountB": {
+                "type": "uint64",
+                "id": 3,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              }
+            }
+          },
+          "remove_liquidity_arguments": {
+            "fields": {
+              "tokenA": {
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "tokenB": {
+                "type": "bytes",
+                "id": 2,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
+              "liquidity": {
+                "type": "uint64",
+                "id": 3,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "amountAMin": {
+                "type": "uint64",
+                "id": 4,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "amountBMin": {
+                "type": "uint64",
+                "id": 5,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              }
+            }
+          },
+          "remove_liquidity_result": {
+            "fields": {
+              "amountA": {
+                "type": "uint64",
+                "id": 1,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "amountB": {
+                "type": "uint64",
+                "id": 2,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              }
+            }
+          },
+          "swap_tokens_in_arguments": {
+            "fields": {
+              "amountIn": {
+                "type": "uint64",
+                "id": 1,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "amountOutMin": {
+                "type": "uint64",
+                "id": 2,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "path": {
+                "rule": "repeated",
+                "type": "string",
+                "id": 3
+              },
+              "receiver": {
+                "type": "bytes",
+                "id": 4,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              }
+            }
+          },
+          "swap_tokens_out_arguments": {
+            "fields": {
+              "amountOut": {
+                "type": "uint64",
+                "id": 1,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "amountInMax": {
+                "type": "uint64",
+                "id": 2,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "path": {
+                "rule": "repeated",
+                "type": "string",
+                "id": 3
+              },
+              "receiver": {
+                "type": "bytes",
+                "id": 4,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              }
+            }
+          },
+          "get_quote_arguments": {
+            "fields": {
+              "amount": {
+                "type": "uint64",
+                "id": 1,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "reserveA": {
+                "type": "uint64",
+                "id": 2,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "reserveB": {
+                "type": "uint64",
+                "id": 3,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              }
+            }
+          },
+          "get_amount_out_arguments": {
+            "fields": {
+              "amountIn": {
+                "type": "uint64",
+                "id": 1,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "reserveA": {
+                "type": "uint64",
+                "id": 2,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "reserveB": {
+                "type": "uint64",
+                "id": 3,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              }
+            }
+          },
+          "get_amount_in_arguments": {
+            "fields": {
+              "amountOut": {
+                "type": "uint64",
+                "id": 1,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "reserveA": {
+                "type": "uint64",
+                "id": 2,
+                "options": {
+                  "jstype": "JS_STRING"
+                }
+              },
+              "reserveB": {
+                "type": "uint64",
+                "id": 3,
                 "options": {
                   "jstype": "JS_STRING"
                 }

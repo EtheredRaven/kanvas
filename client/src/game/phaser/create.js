@@ -1,4 +1,4 @@
-export default function ({ graphics, vue }) {
+export default function ({ graphics }) {
   // Init game canvas
   graphics.renderer.clearBeforeRender = false;
   graphics.cameras.main.setRoundPixels(false);
@@ -12,15 +12,6 @@ export default function ({ graphics, vue }) {
   // Graphics drawers
   graphics.pixelGraphics = graphics.add.graphics();
   graphics.selectorGraphics = graphics.add.graphics();
-
-  // Draw background
-  graphics.pixelGraphics.fillStyle(0xffffff);
-  graphics.pixelGraphics.fillRect(
-    0,
-    0,
-    Number(vue.canvasDimensions.canvas_width),
-    Number(vue.canvasDimensions.canvas_height)
-  );
 
   // Counter for animations
   graphics.t = 0;

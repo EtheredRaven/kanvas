@@ -1,3 +1,10 @@
+# 1.2.3 (2023-09-12)
+
+- Corrected WalletConnect bug (could not be used)
+- Corrected some blank screen bug for new users
+- Added volume in the price chart
+- Changed the Koindx contracts to V2
+
 # 1.2.2 (2023-09-04)
 
 - Added price chart

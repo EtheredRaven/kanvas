@@ -9,25 +9,44 @@ const date = new Date();
 export default {
   data() {
     return {
+      tokenDecimals: 100000000,
       tokenSupply: 3000000, // TODO : retrieve from contract
-      priceHistory: [],
-      serieType: "area",
-      valuePrecision: valuePrecision,
-      seriesOptions: {
-        topColor: "rgba(89, 86, 233, 0.56)",
-        bottomColor: "rgba(89, 86, 233, 0.0)",
-        lineColor: "rgba(89, 86, 233, 1)",
-        lineWidth: 2,
-        lineType: 0,
-        symbol: "KAN",
-        lastPriceAnimation: 1,
-        priceFormat: {
-          type: "custom",
-          formatter: (number) =>
-            "$ " + Math.round(number * valuePrecision) / valuePrecision,
-          minMove: 1 / valuePrecision,
+      priceSeries: {
+        data: [],
+        type: "area",
+        options: {
+          name: "price",
+          topColor: "rgba(89, 86, 233, 0.56)",
+          bottomColor: "rgba(89, 86, 233, 0.0)",
+          lineColor: "rgba(89, 86, 233, 1)",
+          lineWidth: 2,
+          lineType: 0,
+          symbol: "KAN",
+          lastPriceAnimation: 1,
+          priceFormat: {
+            type: "custom",
+            formatter: (number) =>
+              "$ " + Math.round(number * valuePrecision) / valuePrecision,
+            minMove: 1 / valuePrecision,
+          },
+        },
+        priceScaleId: "right",
+      },
+      volumeSeries: {
+        data: [],
+        type: "histogram",
+        options: {
+          name: "volume",
+          color: "#26a69a",
+          priceFormat: {
+            type: "custom",
+            formatter: (number) => "$ " + Math.round(number),
+            minMove: 1,
+          },
+          priceScaleId: "left",
         },
       },
+      valuePrecision: valuePrecision,
       chartOptions: {
         localization: {},
         grid: {
@@ -50,10 +69,16 @@ export default {
         rightPriceScale: {
           scaleMargins: {
             top: 0.2,
-            bottom: 0.2,
           },
           borderVisible: false,
           ticksVisible: true,
+          visible: true,
+        },
+        leftPriceScale: {
+          scaleMargins: {
+            top: 0.8,
+          },
+          borderVisible: false,
           visible: true,
         },
         watermark: {
@@ -73,29 +98,65 @@ export default {
   mounted() {
     this.$socket.emit("get_price_history");
     this.$socket.on("got_price_history", (priceHistory) => {
-      this.priceHistory = priceHistory.map((price) => {
-        return this.formatPrice(price);
-      });
+      let priceSeriesData = [];
+      let volumeSeriesData = [];
+      for (let i = 0; i < priceHistory.length; i++) {
+        let row = priceHistory[i];
+        let formattedRow = this.formatPriceAndVolume(row);
+        priceSeriesData.push(formattedRow.price);
+        volumeSeriesData.push(formattedRow.volume);
+      }
+
+      this.priceSeries.data = priceSeriesData;
+      this.volumeSeries.data = volumeSeriesData;
     });
 
-    this.$socket.on("new_price", (newPrice) => {
-      this.priceHistory = [...this.priceHistory, this.formatPrice(newPrice)];
+    this.$socket.on("new_price", (newRow) => {
+      let formattedNewRow = this.formatPriceAndVolume(newRow);
+      this.priceSeries.data = [...this.priceSeries.data, formattedNewRow.price];
+      this.volumeSeries.data = [
+        ...this.volumeSeries.data,
+        formattedNewRow.volume,
+      ];
     });
   },
   computed: {
+    volume24h() {
+      if (!this.volumeSeries.data.length) return null;
+      let volume24h = 0;
+      for (
+        let i = Math.max(
+          0,
+          this.volumeSeries.data.length - 1 - dayIntervalInArrayIndex
+        );
+        i < this.volumeSeries.data.length - 1;
+        i++
+      ) {
+        let volumeData = this.volumeSeries.data[i].value;
+        console.log(volumeData);
+        volume24h += volumeData;
+      }
+
+      console.log(volume24h);
+      return volume24h;
+    },
     tokenPrice() {
-      if (!this.priceHistory.length) return null;
+      if (!this.priceSeries.data.length) return null;
       return (
         Math.round(
-          this.priceHistory[this.priceHistory.length - 1].value * valuePrecision
+          this.priceSeries.data[this.priceSeries.data.length - 1].value *
+            valuePrecision
         ) / valuePrecision
       );
     },
     tokenPriceEvolution() {
       if (!this.tokenPrice) return null;
       let lastDayPrice =
-        this.priceHistory[
-          Math.max(0, this.priceHistory.length - 1 - dayIntervalInArrayIndex)
+        this.priceSeries.data[
+          Math.max(
+            0,
+            this.priceSeries.data.length - 1 - dayIntervalInArrayIndex
+          )
         ].value;
       let evolution = !lastDayPrice
         ? 1000000
@@ -107,10 +168,21 @@ export default {
     },
   },
   methods: {
-    formatPrice(price) {
+    formatPriceAndVolume(row) {
+      let time = row.timestamp - date.getTimezoneOffset() * 60;
+
       return {
-        time: price.timestamp - date.getTimezoneOffset() * 60,
-        value: price.kan_price_in_koin * price.koin_price_in_dollars,
+        price: {
+          time: time,
+          value: row.kan_price_in_koin * row.koin_price_in_dollars,
+        },
+        volume: {
+          time: time,
+          value:
+            (row.volume_in_kan / this.tokenDecimals) *
+            row.kan_price_in_koin *
+            row.koin_price_in_dollars,
+        },
       };
     },
   },
@@ -155,14 +227,21 @@ export default {
         <span class="tokenValue" v-if="tokenPrice">
           {{ "$" + (tokenPrice * tokenSupply).toLocaleString() }}</span
         >
+        <span class="tokenLabel" style="margin-left: 1.5rem">Volume (24h)</span>
+        <span class="tokenValue" v-if="tokenPrice">
+          {{ "$" + Math.round(volume24h).toLocaleString() }}</span
+        >
       </div>
       <div class="marketCap" v-if="tokenPrice"></div>
     </div>
     <PriceChart
-      v-bind:data="priceHistory"
+      v-bind:priceSeriesData="priceSeries.data"
+      v-bind:priceSeriesType="priceSeries.type"
+      v-bind:priceSeriesOptions="priceSeries.options"
+      v-bind:volumeSeriesData="volumeSeries.data"
+      v-bind:volumeSeriesType="volumeSeries.type"
+      v-bind:volumeSeriesOptions="volumeSeries.options"
       v-bind:chartOptions="chartOptions"
-      v-bind:type="serieType"
-      v-bind:seriesOptions="seriesOptions"
       v-bind:valuePrecision="valuePrecision"
     />
   </div>

@@ -1,11 +1,6 @@
 import kanvasContractAbi from "./kanvasContractAbi.json";
 import kapNameServiceAbi from "./kapNameServiceAbi.json";
 import kapProfileAbi from "./kapProfileAbi.json";
-import koindxPeripheryAbi from "./koindxPeripheryAbi.json";
+import koindxCoreAbi from "./koindxCoreAbi.json";
 
-export {
-  kanvasContractAbi,
-  kapNameServiceAbi,
-  kapProfileAbi,
-  koindxPeripheryAbi,
-};
+export { kanvasContractAbi, kapNameServiceAbi, kapProfileAbi, koindxCoreAbi };

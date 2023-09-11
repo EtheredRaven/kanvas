@@ -304,7 +304,6 @@ export const createStore = (app) => {
         if (window.walletConnectKoinos) {
           dispatch("deleteWallet", "WalletConnect");
           await window.walletConnectKoinos.disconnect();
-          delete window.walletConnectKoinos;
         }
       },
       async changeKondorAccounts({ state, commit, dispatch }) {
@@ -347,6 +346,7 @@ export const createStore = (app) => {
             enableExplorer: false,
           },
         });
+        console.log(window.walletConnectKoinos);
 
         const walletConnectParams = [
           [ChainIds.Mainnet],

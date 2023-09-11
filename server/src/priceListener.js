@@ -6,7 +6,7 @@ module.exports = async function (Server) {
     "https://api.coingecko.com/api/v3/simple/price?ids=koinos&vs_currencies=usd";
 
   Server.priceHistory = await Server.db.all(
-    "SELECT timestamp, kan_price_in_koin, koin_price_in_dollars FROM price_history"
+    "SELECT timestamp, kan_price_in_koin, koin_price_in_dollars, volume_in_kan FROM price_history"
   );
 
   setInterval(async () => {
@@ -31,10 +31,10 @@ module.exports = async function (Server) {
     let KANPriceInKoin;
     try {
       const kanKoinReserves = (
-        await Server.koindxPeripheryContract.functions.get_reserves({})
+        await Server.koindxCoreContract.functions.get_reserves({})
       ).result;
       KANPriceInKoin =
-        Number(kanKoinReserves.reserveB) / Number(kanKoinReserves.reserveA);
+        Number(kanKoinReserves.reserveA) / Number(kanKoinReserves.reserveB);
     } catch (err) {
       Server.errorLogging("Retrieving KAN price", err);
     }
@@ -49,23 +49,17 @@ module.exports = async function (Server) {
         timestamp: currentTimestamp,
         kan_price_in_koin: KANPriceInKoin,
         koin_price_in_dollars: koinPriceInUSD,
+        volume_in_kan: Server.volumeInToken,
       };
+      let newPriceArray = Object.values(newPrice);
       await Server.db.run(
-        "INSERT OR IGNORE INTO price_history (timestamp, kan_price_in_koin, koin_price_in_dollars) VALUES (?, ?, ?) ",
-        [
-          newPrice.timestamp,
-          newPrice.kan_price_in_koin,
-          newPrice.koin_price_in_dollars,
-        ]
+        "INSERT OR IGNORE INTO price_history (timestamp, kan_price_in_koin, koin_price_in_dollars, volume_in_kan) VALUES (?, ?, ?, ?) ",
+        newPriceArray
       );
       Server.priceHistory.push(newPrice);
       Server.io.sockets.emit("new_price", newPrice);
-      Server.infoLogging(
-        "New price inserted",
-        currentTimestamp,
-        KANPriceInKoin,
-        koinPriceInUSD
-      );
+      Server.volumeInToken = 0;
+      Server.infoLogging("New price inserted", ...newPriceArray);
     } catch (err) {
       Server.errorLogging("Inserting new price", err);
     }

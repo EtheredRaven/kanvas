@@ -5,6 +5,17 @@ export default function ({ graphics, vue }) {
     graphics.hasMovedDuringClick = false;
   };
 
+  graphics.initBackground = function () {
+    // Draw background
+    graphics.pixelGraphics.fillStyle(0xffffff);
+    graphics.pixelGraphics.fillRect(
+      0,
+      0,
+      Number(vue.canvasDimensions.canvas_width),
+      Number(vue.canvasDimensions.canvas_height)
+    );
+  };
+
   graphics.initCamera = function () {
     // Init the camera once we get the local params from the blockchain
     graphics.cameras.main.setBounds(
@@ -19,6 +30,7 @@ export default function ({ graphics, vue }) {
 
     graphics.cameraInitialized = true;
   };
+
   graphics.initPixelMap = function () {
     // For each pixel in the array
     vue.pixelsArray.forEach((pixel) => {

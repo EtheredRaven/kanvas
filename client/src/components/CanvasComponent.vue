@@ -39,6 +39,7 @@ export default {
           Client.game.graphics = Client.game.graphics.scene.scenes[0];
           this.sceneInstance = Client.game.graphics;
 
+          this.sceneInstance.initBackground();
           this.sceneInstance.initCamera();
           this.sceneInstance.initPixelMap();
           clearInterval(graphicsLoadingInterval);

@@ -1,5 +1,6 @@
 const { Contract, Provider, Signer } = require("koilib");
 const kanvasContractAbi = require("../../client/src/utils/abi/kanvasContractAbi.json");
+const koindxCoreAbi = require("../../client/src/utils/abi/koindxCoreAbi.json");
 const koindxPeripheryAbi = require("../../client/src/utils/abi/koindxPeripheryAbi.json");
 const { Client } = require("koinos-rpc");
 
@@ -20,13 +21,18 @@ module.exports = async function (Server) {
   });
 
   // Koindx pair contract
-  Server.koindxPeripheryAddress = "13KfdWTz3n4E9XmvuREwdcfBawdKLFk3YF";
+  Server.koindxCoreAddress = "1DMSDo8hmZN2Cui6eMM6tKjpjkBCTmrRR4"; //
+  Server.koindxCoreContract = new Contract({
+    id: Server.koindxCoreAddress,
+    abi: koindxCoreAbi,
+    provider: Server.provider,
+  });
+
+  // Koindx pairs management contract
+  Server.koindxPeripheryAddress = "17e1q6Fh5RgnuA8K7v4KvXXH4k9qHgsT5s"; //
   Server.koindxPeripheryContract = new Contract({
     id: Server.koindxPeripheryAddress,
     abi: koindxPeripheryAbi,
     provider: Server.provider,
   });
-
-  Server.koindxCoreAddress = "14WeQjBk7F4C58xUquRGLK1KiqRjwj5Y4J";
-  // TODO : ajouter l'adresse et le contrat
 };
