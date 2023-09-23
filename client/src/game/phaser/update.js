@@ -25,7 +25,7 @@ export default function ({ graphics, vue }) {
 
   // Try to place a pixel only if the user is not moving the canvas
   graphics.moveCanvasOnMouseMove() &&
-    graphics.placePixelIfClicked() &&
+    graphics.actionIfClicked() &&
     graphics.resetMovingVariables();
 
   // Update pixel properties

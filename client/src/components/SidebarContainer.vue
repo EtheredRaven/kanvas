@@ -21,7 +21,13 @@
         icon="stats-dots"
       />
       <LinkIcon
-        href="https://app.koindx.com/swap?input=15DJN4a8SgrbGhhGksSBASiSYjGnMU8dGL&output=1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS"
+        link="/leaderboard"
+        target="_blank"
+        text="Leaderboard"
+        icon="trophy"
+      />
+      <LinkIcon
+        href="https://app.koindx.com/swap?input=koin&output=1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS"
         target="_blank"
         text="Buy on KoinDX"
         icon="credit-card"

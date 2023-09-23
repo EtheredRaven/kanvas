@@ -17,4 +17,8 @@ export function InitSocketFunctions(vue) {
   vue.$socket.on("pixel_placed", (pixelPlaced) => {
     vue.sceneInstance && vue.sceneInstance.drawPixel(pixelPlaced);
   });
+
+  vue.$socket.on("pixel_erased", ({ posX, posY }) => {
+    vue.sceneInstance && vue.sceneInstance.erasePixelOnPosition(posX, posY);
+  });
 }

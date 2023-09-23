@@ -1,3 +1,10 @@
+# 1.3.0 (2023-09-23)
+
+- Added an API price for Konio
+- Corrected a volume bug due to KoinDX contract update
+- **Added an eraser for both client and blockchain sides**
+- **Added a leaderboard**
+
 # 1.2.3 (2023-09-12)
 
 - Corrected WalletConnect bug (could not be used)

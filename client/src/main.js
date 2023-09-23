@@ -23,6 +23,11 @@ app.use(alertPopups);
 import socket from "./plugins/socket";
 app.use(socket);
 
+// Table
+import Vue3EasyDataTable from "vue3-easy-data-table";
+import "vue3-easy-data-table/dist/style.css";
+app.component("EasyDataTable", Vue3EasyDataTable);
+
 // Store
 const store = createStore(app);
 app.use(store);

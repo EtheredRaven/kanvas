@@ -32,13 +32,22 @@ export default function ({ graphics, vue }) {
     );
   };
 
-  graphics.placePixelIfClicked = function () {
-    // Place a pixel if it is not prevented (clicking on another component) and not moving
+  graphics.actionIfClicked = function () {
+    // Do the click action (like place) if clicked if it is not prevented (clicking on another component) and not moving
 
     // If there was a click and the mouse didn't moved
     if (graphics.lastMouseClick && !graphics.hasMovedDuringClick) {
       // Place a pixel if it's not prevented (it's prevented if the user click on the color or wallet selector)
-      !vue.$store.state.preventNextClick && graphics.placePixel();
+      if (!vue.$store.state.preventNextClick) {
+        switch (vue.$store.state.selectedTool) {
+          case vue.$store.state.tools.DRAW:
+            graphics.placePixel();
+            break;
+          case vue.$store.state.tools.ERASE:
+            graphics.erasePixel();
+            break;
+        }
+      }
       vue.$store.commit("preventNextClick", false);
     }
     return true;
@@ -94,19 +103,6 @@ export default function ({ graphics, vue }) {
     const kanvas = vue.$store.state.kanvasContract;
 
     try {
-      /*
-      // Unused, for tests with nonce changes
-      let nonce = vue.$store.state.activeAccount.nonce;
-      let nextNonce = nonce + 1;
-      vue.$store.commit("setActiveAccountNonce", nextNonce);
-
-      const message = koinos.chain.value_type.create({
-        uint64_value: String(nextNonce),
-      });
-      const nextNonceEncoded = utils.encodeBase64url(
-        koinos.chain.value_type.encode(message).finish()
-      );*/
-
       // Avoid proxy from vue
       let pixels = [];
       vue.$store.state.pixelsToPlace.forEach((tx) => {
@@ -182,6 +178,55 @@ export default function ({ graphics, vue }) {
       });
     }
     graphics.pixelsToPlace = [];
+  };
+
+  graphics.erasePixel = async function () {
+    let posX = Math.floor(graphics.input.activePointer.worldX);
+    let posY = Math.floor(graphics.input.activePointer.worldY);
+    if (vue.$store.state.pixelsToPlace.length) {
+      // If it's only client-side
+      let pixelToErase;
+      for (let i = 0; i < vue.$store.state.pixelsToPlace.length; i++) {
+        let px = vue.$store.state.pixelsToPlace[i];
+        let pxVars = px.pixelTransactionArgs.pixel_to_place;
+        if (pxVars.posX == posX && pxVars.posY == posY) {
+          pixelToErase = px;
+          break;
+        }
+      }
+
+      pixelToErase && graphics.destroyPixel(pixelToErase);
+    } else {
+      let pixelToErase = vue.pixelsMap[posX + ";" + posY];
+
+      if (pixelToErase) {
+        if (pixelToErase.owner != vue.activeAccountAddress) {
+          vue.$error("You cannot erase a pixel you did not place !");
+          return;
+        }
+
+        const kanvas = vue.$store.state.kanvasContract;
+
+        const { transaction } = await kanvas.erase_pixel({
+          from: vue.activeAccountAddress,
+          posX,
+          posY,
+        });
+
+        vue.$info(
+          "Saving in progress !",
+          "Transaction has been sent to the blockchain and is being processed."
+        );
+        await transaction.wait();
+
+        vue.$info(
+          "Pixel erased on position (" + posX + ";" + posY + ")",
+          "Check transaction on <a target='_blank' href='https://koinosblocks.com/tx/" +
+            transaction.id +
+            "' style='color:white'>Koinos blocks</a>"
+        );
+      }
+    }
   };
 
   graphics.moveCanvasOnMouseMove = function () {

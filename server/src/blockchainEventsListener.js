@@ -55,6 +55,18 @@ module.exports = async function (Server) {
   const BLOCKS_PROCESSING_INTERVAL = 1000;
   Server.volumeInToken = 0; // Init the token volume
 
+  let updatePixelsAmount = async function (accId, newAmount) {
+    await Server.db.run(
+      "REPLACE INTO accounts VALUES (?, (SELECT token_balance FROM accounts WHERE id = ?), ?)",
+      [accId, accId, newAmount]
+    );
+    Server.io.to(accId).emit("update_pixels_amount", {
+      address: accId,
+      amount: newAmount,
+    });
+    Server.infoLogging("Pixel amount updated", accId, newAmount);
+  };
+
   let processEvent = async function (event, txId) {
     if (event.source != Server.kanvasContractAddress) return;
 
@@ -135,17 +147,6 @@ module.exports = async function (Server) {
       );
 
       // Update pixels amount in the server db (to avoid calling the blockchain each time a socket or the server needs it)
-      let updatePixelsAmount = async function (accId, newAmount) {
-        await Server.db.run(
-          "REPLACE INTO accounts VALUES (?, (SELECT token_balance FROM accounts WHERE id = ?), ?)",
-          [accId, accId, newAmount]
-        );
-        Server.io.to(accId).emit("update_pixels_amount", {
-          address: accId,
-          amount: newAmount,
-        });
-        Server.infoLogging("Pixel amount updated", accId, newAmount);
-      };
       await updatePixelsAmount(
         eventArgs.pixel_placed.owner,
         Number(eventArgs.owner_pixel_count)
@@ -158,6 +159,23 @@ module.exports = async function (Server) {
 
       // Emit it to all the sockets so that it is added to their client canvases
       Server.io.emit("pixel_placed", eventArgs.pixel_placed);
+    } else if (eventDecoded.name == "kanvascontract.pixel_erased_event") {
+      let sqlArgs = [eventArgs.posX, eventArgs.posY, eventArgs.from];
+      await Server.db.run(
+        "DELETE FROM pixels WHERE posX = ? AND posY = ? AND owner = ?",
+        sqlArgs
+      );
+      Server.infoLogging("Pixel erased", ...sqlArgs);
+
+      await updatePixelsAmount(
+        eventArgs.from,
+        Number(eventArgs.owner_new_pixel_count)
+      );
+
+      Server.io.emit("pixel_erased", {
+        posX: eventArgs.posX,
+        posY: eventArgs.posY,
+      });
     }
     //}
   };

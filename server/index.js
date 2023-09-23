@@ -67,8 +67,14 @@
     res.sendFile(__dirname + "/../client/docs/.vitepress/dist/index.html");
   });
 
+  // API
+  const getLatestPrice = require("./src/api/getLatestPrice")(Server);
+  Server.app.get("/api/get_latest_price/", async function (req, res) {
+    return res.send(await getLatestPrice());
+  });
+
   require("./src/contracts")(Server);
-  require("./src/pixelMapUpdating")(Server);
+  require("./src/serverDataFetching")(Server);
   require("./src/socket")(Server);
   require("./src/blockchainEventsListener")(Server);
   require("./src/priceListener")(Server);

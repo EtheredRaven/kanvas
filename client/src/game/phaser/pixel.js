@@ -66,4 +66,14 @@ export default function ({ graphics, vue }) {
     removeInStore && vue.$store.commit("removePixelToPlace", loadingPixel);
     loadingPixel.graphics.destroy();
   };
+
+  graphics.erasePixelOnPosition = function (posX, posY) {
+    let pixelCoordinates = posX + ";" + posY;
+    let pixel = vue.pixelsMap[pixelCoordinates];
+    if (pixel) {
+      vue.pixelsMap[pixelCoordinates] = undefined;
+      graphics.pixelGraphics.fillStyle(0xffffff);
+      graphics.pixelGraphics.fillRect(parseInt(posX), parseInt(posY), 1, 1);
+    }
+  };
 }

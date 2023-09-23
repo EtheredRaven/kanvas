@@ -17,7 +17,12 @@ import {
 export const createStore = (app) => {
   return createVuexStore({
     state: {
+      tools: {
+        DRAW: 1,
+        ERASE: 2,
+      },
       selectedColor: "#000000",
+      selectedTool: 1,
       preventNextClick: false,
       walletsList: JSON.parse(window.localStorage.getItem("wallets")) || [],
       activeWallet: null,
@@ -130,6 +135,9 @@ export const createStore = (app) => {
       },
     },
     mutations: {
+      setSelectedTool(state, newSelectedTool) {
+        state.selectedTool = newSelectedTool;
+      },
       addPixelToPlace(state, pixelToPlace) {
         state.pixelsToPlace = [...state.pixelsToPlace, pixelToPlace];
       },

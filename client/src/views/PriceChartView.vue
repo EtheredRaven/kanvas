@@ -54,7 +54,7 @@ export default {
             color: "#eee",
           },
           vertLines: {
-            color: "#F8F8F8",
+            color: "#FAFAFA",
           },
         },
         timeScale: {
@@ -64,7 +64,7 @@ export default {
         layout: {
           background: { type: "solid", color: "transparent" },
           textColor: "#333",
-          fontFamily: "'Inter', sans-serif",
+          fontFamily: "'Poppins', sans-serif",
         },
         rightPriceScale: {
           scaleMargins: {
@@ -133,11 +133,9 @@ export default {
         i++
       ) {
         let volumeData = this.volumeSeries.data[i].value;
-        console.log(volumeData);
         volume24h += volumeData;
       }
 
-      console.log(volume24h);
       return volume24h;
     },
     tokenPrice() {

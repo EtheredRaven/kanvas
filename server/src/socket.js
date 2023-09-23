@@ -19,6 +19,10 @@ module.exports = function (Server) {
       socket.emit("got_price_history", Server.priceHistory);
     });
 
+    socket.on("get_leaderboard_data", () => {
+      socket.emit("got_leaderboard_data", Server.leaderboardData);
+    });
+
     socket.on("disconnect", function (reason) {
       Server.disconnect(socket, reason);
     });

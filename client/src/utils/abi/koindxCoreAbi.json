@@ -38,43 +38,36 @@
     "balance_of": {
       "argument": "core.balance_of_arguments",
       "return": "core.uint64",
-      "description": "Get balance of an account",
+      "description": "Get balance of an account 7",
       "entry_point": 1550980247,
       "read_only": true
     },
     "allowance": {
       "argument": "core.allowance_arguments",
       "return": "core.uint64",
-      "description": "Get allowance of an account",
+      "description": "Get balance of an account2",
       "entry_point": 854630305,
       "read_only": true
     },
     "transfer": {
       "argument": "core.transfer_arguments",
       "return": "core.empty_object",
-      "description": "transfer tokens of an account",
+      "description": "Get balance of an account 6",
       "entry_point": 670398154,
       "read_only": false
     },
     "approve": {
       "argument": "core.approve_arguments",
       "return": "core.empty_object",
-      "description": "Sets `value` as the allowance of `spender` over the caller's tokens.",
+      "description": "Get balance of an account 3",
       "entry_point": 1960973952,
       "read_only": false
     },
     "get_reserves": {
       "argument": "core.get_reserves_arguments",
       "return": "core.get_reserves_result",
-      "description": "get reserves of a pool",
+      "description": "initializing core contract",
       "entry_point": 1829526207,
-      "read_only": true
-    },
-    "get_tokens": {
-      "argument": "core.get_tokens_arguments",
-      "return": "core.get_tokens_result",
-      "description": "get tokens of a pool",
-      "entry_point": 2103140055,
       "read_only": true
     },
     "initialize": {
@@ -87,40 +80,40 @@
     "mint": {
       "argument": "core.mint_arguments",
       "return": "core.uint64",
-      "description": "mint tokens of pool",
+      "description": "mint core contract",
       "entry_point": 3698268091,
       "read_only": false
     },
     "burn": {
       "argument": "core.burn_arguments",
       "return": "core.burn_result",
-      "description": "burn tokens of pool",
+      "description": "mint core contract",
       "entry_point": 2241834181,
       "read_only": false
     },
     "swap": {
       "argument": "core.swap_arguments",
       "return": "core.empty_object",
-      "description": "swap tokens contract",
+      "description": "swap core contract",
       "entry_point": 3662136052,
       "read_only": false
     },
     "skim": {
       "argument": "core.skim_arguments",
       "return": "core.empty_object",
-      "description": "synchronizes the number of tokens with the reserves",
+      "description": "swap core contract",
       "entry_point": 1989814226,
       "read_only": false
     },
     "sync": {
       "argument": "core.sync_arguments",
       "return": "core.empty_object",
-      "description": "synchronizes the pool values ​​with the number of tokens",
+      "description": "swap core contract",
       "entry_point": 1976000254,
       "read_only": false
     }
   },
-  "types": {
+  "koilib_types": {
     "nested": {
       "core": {
         "nested": {
@@ -178,67 +171,43 @@
               }
             }
           },
-          "token_object": {
-            "fields": {
-              "isNameservice": {
-                "type": "bool",
-                "id": 1
-              },
-              "nameservice": {
-                "type": "string",
-                "id": 2
-              },
-              "tokenAddress": {
-                "type": "bytes",
-                "id": 3,
-                "options": {
-                  "(koinos.btype)": "ADDRESS"
-                }
-              }
-            }
-          },
           "config_object": {
             "fields": {
-              "initialized": {
-                "type": "bool",
-                "id": 1
-              },
-              "periphery": {
+              "tokenA": {
                 "type": "bytes",
                 "id": 2,
                 "options": {
                   "(koinos.btype)": "ADDRESS"
                 }
               },
-              "tokenA": {
-                "type": "token_object",
-                "id": 3
-              },
               "tokenB": {
-                "type": "token_object",
-                "id": 4
+                "type": "bytes",
+                "id": 3,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
               },
               "kLast": {
                 "type": "string",
-                "id": 5
+                "id": 4
               },
               "reserveA": {
                 "type": "uint64",
-                "id": 6,
+                "id": 5,
                 "options": {
                   "jstype": "JS_STRING"
                 }
               },
               "reserveB": {
                 "type": "uint64",
-                "id": 7,
+                "id": 6,
                 "options": {
                   "jstype": "JS_STRING"
                 }
               },
               "blockTime": {
                 "type": "uint64",
-                "id": 8,
+                "id": 7,
                 "options": {
                   "jstype": "JS_STRING"
                 }
@@ -371,10 +340,7 @@
               }
             }
           },
-          "get_tokens_arguments": {
-            "fields": {}
-          },
-          "get_tokens_result": {
+          "initialize_arguments": {
             "fields": {
               "tokenA": {
                 "type": "bytes",
@@ -389,18 +355,6 @@
                 "options": {
                   "(koinos.btype)": "ADDRESS"
                 }
-              }
-            }
-          },
-          "initialize_arguments": {
-            "fields": {
-              "tokenA": {
-                "type": "token_object",
-                "id": 1
-              },
-              "tokenB": {
-                "type": "token_object",
-                "id": 2
               }
             }
           },
@@ -499,13 +453,26 @@
           },
           "initialize_event": {
             "fields": {
+              "pair": {
+                "type": "bytes",
+                "id": 1,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
+              },
               "tokenA": {
-                "type": "string",
-                "id": 1
+                "type": "bytes",
+                "id": 2,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
               },
               "tokenB": {
-                "type": "string",
-                "id": 2
+                "type": "bytes",
+                "id": 3,
+                "options": {
+                  "(koinos.btype)": "ADDRESS"
+                }
               }
             }
           },

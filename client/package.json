@@ -29,6 +29,7 @@
     "vue": "^3.2.13",
     "vue-color-kit": "^1.0.5",
     "vue-router": "^4.0.3",
+    "vue3-easy-data-table": "^1.5.47",
     "vuex": "^4.0.0"
   },
   "devDependencies": {

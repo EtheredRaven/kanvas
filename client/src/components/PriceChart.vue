@@ -106,7 +106,7 @@ export default {
       chart = null;
     }
     if (series) {
-      series = null;
+      series = {};
     }
     window.removeEventListener("resize", resizeHandler);
   },
@@ -215,7 +215,7 @@ export default {
       left: 12px;
       pointer-events: none;
       border-radius: 2px;
-      font-family: Inter, sans-serif;
+      font-family: Poppins, sans-serif;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       box-shadow: 0 0.8rem 1.6rem -0.3rem rgba(140, 148, 159, 0.15);

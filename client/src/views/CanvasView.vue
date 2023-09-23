@@ -1,9 +1,11 @@
 <script>
-import Wallet from "../components/Wallet";
-import CanvasComponent from "../components/CanvasComponent";
-import ColorPicker from "../components/ColorPicker.vue";
+import Wallet from "@/components/Wallet";
+import CanvasComponent from "@/components/CanvasComponent";
+import ColorPicker from "@/components/ColorPicker.vue";
 import ManaBar from "@/components/ManaBar.vue";
 import SavingButton from "@/components/SavingButton.vue";
+import EraseButton from "@/components/EraseButton.vue";
+import DrawButton from "@/components/DrawButton.vue";
 
 export default {
   components: {
@@ -11,6 +13,8 @@ export default {
     ColorPicker,
     ManaBar,
     SavingButton,
+    EraseButton,
+    DrawButton,
     Wallet,
   },
   computed: {
@@ -38,13 +42,36 @@ export default {
     />
     <div v-if="currentAccount && currentAccount.address">
       <ColorPicker />
-      <SavingButton
-        v-bind:tooltip="pixelsToPlace.length ? pixelsToPlace.length : ''"
-        tooltipColor="#9B0046"
-        textColor="white"
-      />
+      <div class="actionButtonsContainer topActionButtonsContainer">
+        <SavingButton
+          v-bind:tooltip="pixelsToPlace.length ? pixelsToPlace.length : ''"
+        />
+      </div>
+      <div class="actionButtonsContainer bottomActionButtonsContainer">
+        <EraseButton />
+        <DrawButton />
+      </div>
     </div>
     <CanvasComponent />
     <ManaBar />
   </div>
 </template>
+
+<style>
+.actionButtonsContainer {
+  position: fixed;
+  display: flex;
+  gap: 1rem;
+}
+
+.topActionButtonsContainer {
+  top: 9rem;
+  right: 7rem;
+}
+
+.bottomActionButtonsContainer {
+  top: 14rem;
+  right: 2rem;
+  flex-direction: column-reverse;
+}
+</style>
