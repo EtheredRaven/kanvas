@@ -1,0 +1,228 @@
+body {
+  background: #202020;
+  color: rgba(255, 255, 255, 0.87);
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+  font-family: "Poppins";
+}
+canvas {
+  image-rendering: optimizeSpeed;
+  -webkit-interpolation-mode: nearest-neighbor;
+  -ms-touch-action: none;
+  touch-action: none;
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+}
+:-webkit-full-screen #canvas {
+  width: 100%;
+  height: 100%;
+}
+div.gm4html5_div_class {
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+}
+/* START - Login Dialog Box */
+div.gm4html5_login {
+  padding: 20px;
+  position: absolute;
+  background-color: #404040;
+  color: #00ff00;
+  border-radius: 15px;
+  box-shadow: #101010 20px 20px 40px;
+}
+div.gm4html5_cancel_button {
+  float: right;
+}
+div.gm4html5_login_button {
+  float: left;
+}
+div.gm4html5_login_header {
+  text-align: center;
+}
+/* END - Login Dialog Box */
+:-webkit-full-screen {
+  width: 100%;
+  height: 100%;
+}
+#loading_screen {
+  display: none !important;
+}
+
+a,
+a:hover,
+a:focus,
+a:active {
+  color: #333;
+  outline: medium none;
+  text-decoration: none;
+}
+
+.btn.active.focus,
+.btn.active:focus,
+.btn.focus,
+.btn.focus:active,
+.btn:active:focus,
+.btn:focus {
+  outline: medium none;
+}
+
+#ribbon {
+  background: #fff none repeat scroll 0 0;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  font-weight: 400;
+  padding: 15px;
+  position: fixed;
+  right: -269px;
+  text-align: center;
+  top: -125px;
+  transform: rotate(45deg);
+  transform-origin: 0 0 0;
+  width: 500px;
+}
+
+#ribbon i {
+  font-size: 21px;
+  padding-right: 5px;
+  vertical-align: middle;
+}
+
+.dataTable-sorter::before {
+  bottom: 8px;
+}
+.dataTable-sorter::after {
+  top: 8px;
+}
+
+.dataTable-wrapper {
+  position: relative;
+  padding: 16px;
+}
+
+.dataTable-loading {
+  min-height: 420px;
+}
+
+.dataTable-loading::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #999 rgba(255, 255, 255, 0.87) rgba(255, 255, 255, 0.87)
+    rgba(255, 255, 255, 0.87);
+
+  transform: rotate(0deg) translate3d(-50%, -50%, 0);
+  transform-origin: 0 0;
+
+  animation-name: spin;
+  animation-duration: 500ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg) translate3d(-50%, -50%, 0);
+  }
+  to {
+    transform: rotate(360deg) translate3d(-50%, -50%, 0);
+  }
+}
+
+.dataTable-top {
+  display: none;
+}
+
+.dataTable-bottom {
+  padding: 0px !important;
+  display: flex;
+  margin-top: 24px;
+}
+
+.leaderboardTitle {
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 28px;
+}
+
+.dataTable-pagination {
+  margin: auto;
+}
+
+.dataTable-pagination a {
+  color: rgba(255, 255, 255, 0.87) !important;
+}
+
+.dataTable-pagination a:hover {
+  color: #22252a !important;
+}
+
+.dataTable-pagination .active a {
+  color: #22252a !important;
+}
+
+.first-row {
+  background-color: #ffdb52;
+  color: #22252a !important;
+}
+
+.second-row {
+  background-color: #4b4b4b;
+}
+
+.third-row {
+  background-color: #342f24;
+}
+
+.leaderboardIcon {
+  height: 24px;
+  margin-right: 0.8rem;
+  margin-bottom: -1px;
+}
+
+.lastWeekWinnerIcon {
+  height: 19px;
+  margin-right: 6px;
+  margin-bottom: -3px;
+}
+
+.lastWeekWinnerContainer {
+  margin: 16px;
+  background-color: #ffdb5220;
+  padding: 8px 12px;
+  border-radius: 8px px;
+  border-radius: 8px;
+}
+
+.lastWeekWinner {
+  font-size: 20px;
+  margin-bottom: 2px;
+}
+
+.lastWeekWinnerAddress {
+  font-size: 14px;
+}
+
+.yourHighscoreIcon {
+  height: 18px;
+  margin-right: 6px;
+  margin-bottom: -1px;
+}
+
+.leaderboardSubTitle {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.leaderboard thead th:nth-child(4),
+.leaderboard tbody tr td:nth-child(4) {
+  display: none;
+}

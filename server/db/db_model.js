@@ -22,6 +22,12 @@ class DbModel {
     await this.db.run(
       `CREATE INDEX IF NOT EXISTS price_history_timestamp_index ON price_history(timestamp);`
     );
+    await this.db.run(
+      `CREATE TABLE IF NOT EXISTS space_striker (id INTEGER PRIMARY KEY AUTOINCREMENT, address TEXT, ip TEXT, highscore INTEGER, last_connexion_timestamp INTEGER, highscore_tries INTEGER, highscore_timestamp INTEGER, CONSTRAINT addressIpCouple UNIQUE(address,ip));`
+    );
+    await this.db.run(
+      `CREATE TABLE IF NOT EXISTS space_striker_winners (id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp INTEGER, address TEXT, highscore INTEGER, highscore_tries INTEGER);`
+    );
 
     /*try {
       await this.db.run(

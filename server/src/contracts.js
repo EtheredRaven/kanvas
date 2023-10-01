@@ -1,4 +1,4 @@
-const { Contract, Provider, Signer } = require("koilib");
+const { Contract, Provider, utils } = require("koilib");
 const kanvasContractAbi = require("../../client/src/utils/abi/kanvasContractAbi.json");
 const koindxCoreAbi = require("../../client/src/utils/abi/koindxCoreAbi.json");
 const koindxPeripheryAbi = require("../../client/src/utils/abi/koindxPeripheryAbi.json");
@@ -11,14 +11,6 @@ module.exports = async function (Server) {
   ];
   Server.provider = new Provider(Server.PROVIDERS_URL); // koilib
   Server.client = new Client(Server.PROVIDERS_URL); // koinos-rpc
-
-  // Kanvas contract
-  Server.kanvasContractAddress = "1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS";
-  Server.kanvasContract = new Contract({
-    id: Server.kanvasContractAddress,
-    abi: kanvasContractAbi,
-    provider: Server.provider,
-  });
 
   // Koindx pair contract
   Server.koindxCoreAddress = "1DMSDo8hmZN2Cui6eMM6tKjpjkBCTmrRR4"; //
@@ -35,4 +27,30 @@ module.exports = async function (Server) {
     abi: koindxPeripheryAbi,
     provider: Server.provider,
   });
+
+  Server.initKoinContractWithSigner = (signer) => {
+    signer.provider = Server.provider;
+    return new Contract({
+      id: "15DJN4a8SgrbGhhGksSBASiSYjGnMU8dGL",
+      abi: utils.tokenAbi,
+      provider: Server.provider,
+      signer: signer,
+    }).functions;
+  };
+
+  // Kanvas contract
+  Server.kanvasContractAddress = "1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS";
+  Server.initKanvasContractWithSigner = (signer) => {
+    let contractArgs = {
+      id: Server.kanvasContractAddress,
+      abi: kanvasContractAbi,
+      provider: Server.provider,
+    };
+    if (signer) {
+      signer.provider = Server.provider;
+      contractArgs.signer = signer;
+    }
+    return new Contract(contractArgs);
+  };
+  Server.kanvasContract = Server.initKanvasContractWithSigner();
 };

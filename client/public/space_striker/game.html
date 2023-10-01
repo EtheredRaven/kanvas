@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta charset="utf-8" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Poppins"
+      rel="stylesheet"
+    />
+
+    <link href="./game.css" rel="stylesheet" type="text/css" />
+    <script src="./libs/axios.min.js"></script>
+    <link
+      href="./libs/vanilla-datatables/vanilla-datatables.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script
+      src="./libs/vanilla-datatables/vanilla-datatables.min.js"
+      type="text/javascript"
+    ></script>
+    <title>Space Striker</title>
+  </head>
+
+  <body>
+    <div class="gm4html5_div_class" id="gm4html5_div_id" style="display: flex">
+      <div style="margin-right: auto;margin-left: auto;">
+        <div class="leaderboardTitle">
+          <img
+            src="./img/trophy.svg"
+            alt="icon"
+            class="leaderboardIcon"
+          />Leaderboard</span>
+        </div>
+        <div class="leaderboardSubTitle" id="bestHighscoreContainer">
+          Best highscore on <span id="lastBestHighscoreTime"></span> - reset in <span id="remainingTime"></span>
+        </div>
+        <div class="lastWeekWinnerContainer">
+          <div class="lastWeekWinner">
+            <img
+              src="./img/profile.svg"
+              alt="icon"
+              class="yourHighscoreIcon"
+            />Your highscore
+          </div>
+          <span id="yourHighscore" class="lastWeekWinnerAddress"></span>
+        </div>
+        <table class="leaderboard"></table>
+        <div class="lastWeekWinnerContainer">
+          <div class="lastWeekWinner">
+            <img
+              src="./img/winner.svg"
+              alt="icon"
+              class="lastWeekWinnerIcon"
+            />Last winner
+          </div>
+          <span id="lastWeekWinnerAddress" class="lastWeekWinnerAddress"></span>
+        </div>
+      </div>
+
+      <!-- Create the canvas element the game draws to -->
+      <canvas id="canvas" width="576" height="960" style="margin: auto">
+        <p>Your browser doesn't support HTML5 canvas.</p>
+      </canvas>
+    </div>
+
+    <!-- Run the game code -->
+
+    <script>
+      // Canvas resize
+      let ratio = 576 / 960;
+      let can = document.getElementById("canvas");
+      can.height = window.innerHeight - 5;
+      can.width = ratio * window.innerHeight;
+
+      // Function to add colors for 1, 2 and 3
+      let addRankColors = function () {
+        let table = document.getElementsByClassName("dataTable-container");
+        if (table && table.length) {
+          let rows = table[0]
+            .getElementsByTagName("tbody")[0]
+            .getElementsByTagName("tr");
+          rows[0].classList.add("first-row");
+          rows[1].classList.add("second-row");
+          rows[2].classList.add("third-row");
+        }
+      };
+
+      let refreshLeaderboardTimeoutOnReset;
+      // Counter before reset refresh handling
+      setInterval(() => {
+        if (!leaderboardData || !leaderboardData.length || !leaderboardData[0].Highscore) return;
+
+        let remainingTime =
+          leaderboardData[0].Date + 24 *60 * 60 * 1000 - Date.now();
+        let formattedRemainingTime;
+        if (remainingTime <= 0) {
+
+          !refreshLeaderboardTimeoutOnReset && (refreshLeaderboardTimeoutOnReset = setTimeout(() => {
+            window.location = "index.html"
+          }, 2000));
+          formattedRemainingTime = "00:00:00";
+        } else {
+          let remainingTimeDate = new Date(remainingTime);
+          var hours = "0" + remainingTimeDate.getUTCHours();
+          var minutes = "0" + remainingTimeDate.getUTCMinutes();
+          var seconds = "0" + remainingTimeDate.getUTCSeconds();
+          formattedRemainingTime =
+            hours.substr(-2) +
+            ":" +
+            minutes.substr(-2) +
+            ":" +
+            seconds.substr(-2);
+        }
+        let remainingTimeEl = document.getElementById("remainingTime");
+        remainingTimeEl.innerHTML != formattedRemainingTime && (remainingTimeEl.innerHTML = formattedRemainingTime);
+      }, 200);
+
+      let leaderboardData;
+      let refreshYourHighscore = function (data) {
+        let highscore;
+        let highscoreRank;
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const address = urlParams.get("address");
+
+        for (let i = 0; i < data.length; i++) {
+          let row = data[i];
+          if (row.Address == address) {
+            highscore = row.Highscore;
+            highscoreRank = i + 1;
+            break;
+          }
+        }
+
+        let htmlToWrite;
+        if(highscoreRank != undefined && highscore != undefined){
+          htmlToWrite = "Your rank is " + highscoreRank + " with " + highscore + " ★"
+        } else {
+          htmlToWrite = "You did not play for this session !"
+        }
+        document.getElementById("yourHighscore").innerHTML = htmlToWrite;
+      };
+
+      axios
+        .get("../api/get_last_week_winner")
+        .then(function (response) {
+          document.getElementById("lastWeekWinnerAddress").innerHTML =
+            response.data.address + " - " + response.data.highscore + " ★";
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+      let table;
+      window.refreshLeaderboard = () => {
+        table && table.destroy();
+        axios
+          .get("../api/get_leaderboard")
+          .then(function (response) {
+            leaderboardData = response.data;
+            refreshYourHighscore(response.data);
+            if(leaderboardData && leaderboardData.length){
+              let lastBestHighscoreDate = new Date(leaderboardData[0].Date);
+              var hours = "0" + lastBestHighscoreDate.getUTCHours();
+              var minutes = "0" + lastBestHighscoreDate.getUTCMinutes();
+              var seconds = "0" + lastBestHighscoreDate.getUTCSeconds();
+            
+              let lastBestHighscoreTimeEl = document.getElementById("lastBestHighscoreTime");
+              lastBestHighscoreTimeEl.innerHTML = lastBestHighscoreDate.toLocaleString();
+              
+              document.getElementById("bestHighscoreContainer").style.display = "block";
+            } else {
+              document.getElementById("bestHighscoreContainer").style.display = "none";
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+
+        table = new DataTable(".leaderboard", {
+          fixedColumns: true,
+          ajax: {
+            url: "../api/get_leaderboard",
+            content: {
+              type: "json",
+              headings: true,
+            },
+          },
+          labels: {
+              placeholder: "",
+              perPage: "",
+              noRows: "No highscore to display",
+              info: "",
+          },
+          columns: [
+          {
+            select: 3,
+            hidden: true,
+            render: function(data) {
+                return (new Date(Number(data))).toLocaleString();
+            }
+        }
+          ],
+          searchable: false,
+        });
+
+        // Remove demo loader
+        table.on("datatable.ajax.loaded", function () {
+          // IE9
+          this.wrapper.className = this.wrapper.className.replace(
+            " dataTable-loading",
+            ""
+          );
+        });
+
+        // Add colors when changing ranking page
+        table.on("datatable.page", function (page) {
+          page == 1 && addRankColors();
+        });
+
+        // Init the colors once the table is loaded
+        let tryToColor = setInterval(() => {
+          try {
+            addRankColors();
+            clearInterval(tryToColor);
+          } catch (err) {}
+        }, 50);
+      };
+      window.refreshLeaderboard();
+      setInterval(window.refreshLeaderboard, 1000*60*5);
+    </script>
+    <script
+      type="text/javascript"
+      src="html5game/Space Striker.js?FEWXB=360463902"
+    ></script>
+  </body>
+</html>

@@ -48,6 +48,9 @@
   Server.db = new DbWrapper("db/data.db", Server);
   await new DbModel(Server.db).loadModels();
 
+  // Requirements
+  require("./src/contracts")(Server);
+
   // PATHS DEFINITIONS
   Server.app.use("/", express.static(__dirname + "/../client/public/homepage"));
   Server.app.get("/", function (req, res) {
@@ -67,13 +70,40 @@
     res.sendFile(__dirname + "/../client/docs/.vitepress/dist/index.html");
   });
 
+  // SPACE STRIKER GAME
+  Server.app.use(
+    "/space_striker/",
+    express.static(__dirname + "/../client/public/space_striker")
+  );
+  Server.app.get("/", function (req, res) {
+    res.sendFile(__dirname + "/../client/public/space_striker/index.html");
+  });
+  const spaceStrikerApi = require("./src/api/spaceStriker")(Server);
+  Server.app.get("/api/associate_login/", async function (req, res) {
+    return res.send(await spaceStrikerApi.associateLogin(req));
+  });
+  Server.app.get("/api/get_login/", async function (req, res) {
+    return res.send(await spaceStrikerApi.getLogin(req));
+  });
+  Server.app.get("/api/get_highscore/", async function (req, res) {
+    return res.send(await spaceStrikerApi.getHighscore(req));
+  });
+  Server.app.get("/api/save_highscore/", async function (req, res) {
+    return res.send(await spaceStrikerApi.saveHighscore(req));
+  });
+  Server.app.get("/api/get_leaderboard/", async function (req, res) {
+    return res.send(await spaceStrikerApi.getLeaderboard(req));
+  });
+  Server.app.get("/api/get_last_week_winner/", async function (req, res) {
+    return res.send(await spaceStrikerApi.getLastWeekWinner(req));
+  });
+
   // API
   const getLatestPrice = require("./src/api/getLatestPrice")(Server);
   Server.app.get("/api/get_latest_price/", async function (req, res) {
     return res.send(await getLatestPrice());
   });
 
-  require("./src/contracts")(Server);
   require("./src/serverDataFetching")(Server);
   require("./src/socket")(Server);
   require("./src/blockchainEventsListener")(Server);

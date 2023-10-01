@@ -14,7 +14,7 @@ export default {
         src="../../public/img/trophy.svg"
         alt="icon"
         class="leaderboardIcon"
-      />Pixelers leadeboard
+      />Pixelers leaderboard
     </div>
     <LeaderboardTable />
   </div>
