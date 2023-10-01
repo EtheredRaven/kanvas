@@ -34,7 +34,7 @@
 
   <body>
     <div class="gm4html5_div_class" id="gm4html5_div_id" style="display: flex">
-      <div style="margin-right: auto;margin-left: auto;">
+      <div style="margin-right: 50px;margin-left: auto;">
         <div class="leaderboardTitle">
           <img
             src="./img/trophy.svg"
@@ -62,14 +62,14 @@
               src="./img/winner.svg"
               alt="icon"
               class="lastWeekWinnerIcon"
-            />Last winner
+            />Last winner - <span id="lastWinnerTimestamp"></span>
           </div>
           <span id="lastWeekWinnerAddress" class="lastWeekWinnerAddress"></span>
         </div>
       </div>
 
       <!-- Create the canvas element the game draws to -->
-      <canvas id="canvas" width="576" height="960" style="margin: auto">
+      <canvas id="canvas" width="576" height="960" style="margin-right: auto;margin-left:50px;">
         <p>Your browser doesn't support HTML5 canvas.</p>
       </canvas>
     </div>
@@ -102,7 +102,7 @@
         if (!leaderboardData || !leaderboardData.length || !leaderboardData[0].Highscore) return;
 
         let remainingTime =
-          leaderboardData[0].Date + 24 *60 * 60 * 1000 - Date.now();
+          leaderboardData[0].Date + 24 * 60 * 60 * 1000 - Date.now();
         let formattedRemainingTime;
         if (remainingTime <= 0) {
 
@@ -155,8 +155,13 @@
       axios
         .get("../api/get_last_week_winner")
         .then(function (response) {
-          document.getElementById("lastWeekWinnerAddress").innerHTML =
+          if(response.data.address){
+            document.getElementById("lastWeekWinnerAddress").innerHTML =
             response.data.address + " - " + response.data.highscore + " ★";
+            document.getElementById("lastWinnerTimestamp").innerHTML = new Date(Number(response.data.timestamp)).toLocaleString()
+          } else {
+            document.getElementById("lastWeekWinnerAddress").innerHTML = "There is no previous winner !"
+          }
         })
         .catch(function (error) {
           console.log(error);
@@ -242,7 +247,7 @@
     </script>
     <script
       type="text/javascript"
-      src="html5game/Space Striker.js?FEWXB=360463902"
+      src="html5game/Space Striker.js?NPSZB=104367724"
     ></script>
   </body>
 </html>

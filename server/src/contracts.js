@@ -2,6 +2,7 @@ const { Contract, Provider, utils } = require("koilib");
 const kanvasContractAbi = require("../../client/src/utils/abi/kanvasContractAbi.json");
 const koindxCoreAbi = require("../../client/src/utils/abi/koindxCoreAbi.json");
 const koindxPeripheryAbi = require("../../client/src/utils/abi/koindxPeripheryAbi.json");
+const kapNameServiceAbi = require("../../client/src/utils/abi/kapNameServiceAbi.json");
 const { Client } = require("koinos-rpc");
 
 module.exports = async function (Server) {
@@ -27,6 +28,12 @@ module.exports = async function (Server) {
     abi: koindxPeripheryAbi,
     provider: Server.provider,
   });
+
+  Server.kapNameServiceContract = new Contract({
+    id: "13tmzDmfqCsbYT26C4CmKxq86d33senqH3",
+    abi: kapNameServiceAbi,
+    provider: Server.provider,
+  }).functions;
 
   Server.initKoinContractWithSigner = (signer) => {
     signer.provider = Server.provider;
