@@ -19,6 +19,8 @@ server/node_modules
 server/dist
 server/cert
 server/logs
+server/src/api/spaceStrikerSecret.js
+
 
 
 # local env files

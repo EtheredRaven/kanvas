@@ -1,4 +1,5 @@
 const { Signer } = require("koilib");
+const spaceStrikerSecret = require("./spaceStrikerSecret");
 
 module.exports = function (Server) {
   // Init checking function for winner
@@ -84,6 +85,24 @@ module.exports = function (Server) {
       );
     } catch (err) {
       Server.errorLogging("Space Striker", "Error while sending the KOIN", err);
+    }
+  };
+
+  let initLeaderboard = async function () {
+    // Init the leaderboard reset
+    let leaderboard = await ret.getLeaderboard();
+    if (leaderboard.length) {
+      let leaderTimestamp = leaderboard[0].Date;
+      let timeDiff =
+        timeWithoutHighscoreBeatenToReset -
+        (Date.now() - Number(leaderTimestamp));
+
+      Server.infoLogging(
+        "Space Striker",
+        "Reset timer started with ",
+        new Date(timeDiff).toUTCString()
+      );
+      Server.resetSpaceStrikerTimeout = setTimeout(resetSpaceStriker, timeDiff);
     }
   };
 
@@ -182,6 +201,10 @@ module.exports = function (Server) {
       if (!currentData || !currentData.address)
         return { error: "Can't retrieve data for this ip" };
 
+      let serverHash = spaceStrikerSecret(req);
+      if (serverHash != req.query.hash) {
+        throw "Hash is wrong";
+      }
       let reqParams = [
         req.query.highscore,
         currentData.highscore_tries + 1,
@@ -269,5 +292,8 @@ module.exports = function (Server) {
       return { error: err };
     }
   };
+
+  initLeaderboard();
+
   return ret;
 };
