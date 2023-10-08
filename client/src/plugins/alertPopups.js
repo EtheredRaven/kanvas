@@ -34,5 +34,20 @@ export default {
           showCloseButton: false,
         }
       );
+    app.config.globalProperties.$warning = (title, description) =>
+      createToast(
+        {
+          title: title,
+          description: description,
+        },
+        {
+          hideProgressBar: true,
+          showIcon: true,
+          position: "bottom-right",
+          type: "warning",
+          timeout: 7000,
+          showCloseButton: false,
+        }
+      );
   },
 };

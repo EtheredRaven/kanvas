@@ -10,16 +10,14 @@ head:
 
 Let's get to the heart of the game, a very simple action: place a pixel!
 
-## MANA and pixel capacity
+## Pixel capacity
 
-Once you've connected and unlocked your wallet, you'll see two bars appear at the bottom of your screen.
+Once you've connected and unlocked your wallet, you'll see a bar appear at the bottom of your screen.
 
-The blue bar represents your MANA. This MANA is consumed when you place a pixel, and fills up automatically according to the amount of $KOIN you have.
-
-The red bar represents the number of pixels you can place. The maximum number is equal to the amount of $KAN you have. When another player places a pixel on top of one you've already placed, you win a new pixel to place on the canvas.
+It represents the number of pixels you can place. The maximum number is equal to the amount of $KAN you have. When another player places a pixel on top of one you've already placed, you win a new pixel to place on the canvas.
 
 ::: info No more pixels...
-When you have no pixels left to place, all you have to do is wait for another player to place one on top of yours, or you can buy new $KAN.
+When you have no pixels left to place, all you have to do is wait for another player to place one on top of yours, erasing some of your pixels, or you can buy new $KAN.
 :::
 
 ## Chosing the color of the pixel

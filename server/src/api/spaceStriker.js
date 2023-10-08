@@ -24,6 +24,7 @@ module.exports = function (Server) {
   let resetSpaceStriker = async () => {
     Server.currentBestHighscore = null;
     let leaderboard = await ret.getLeaderboard();
+    Server.infoLogging("Space Striker", "Tries to reset the game");
     if (!leaderboard.length) return;
 
     let winner = leaderboard[0];
@@ -93,9 +94,11 @@ module.exports = function (Server) {
     let leaderboard = await ret.getLeaderboard();
     if (leaderboard.length) {
       let leaderTimestamp = leaderboard[0].Date;
-      let timeDiff =
+      let timeDiff = Math.max(
+        0,
         timeWithoutHighscoreBeatenToReset -
-        (Date.now() - Number(leaderTimestamp));
+          (Date.now() - Number(leaderTimestamp))
+      );
 
       Server.infoLogging(
         "Space Striker",
@@ -103,6 +106,16 @@ module.exports = function (Server) {
         new Date(timeDiff).toUTCString()
       );
       Server.resetSpaceStrikerTimeout = setTimeout(resetSpaceStriker, timeDiff);
+
+      let bestHighscoreRow = await ret.getBestHighscore();
+      if (bestHighscoreRow) {
+        Server.currentBestHighscore = bestHighscoreRow;
+        Server.infoLogging(
+          "Space Striker",
+          "Best highscore init at ",
+          ...Object.values(Server.currentBestHighscore)
+        );
+      }
     }
   };
 
@@ -148,8 +161,9 @@ module.exports = function (Server) {
     }
   };
 
+  // DEPRECATED
   ret.getLogin = async (req) => {
-    try {
+    /*try {
       let reqParams = [req.ip];
       let reqRes = await Server.db.all(
         "SELECT * FROM space_striker WHERE ip=?",
@@ -170,19 +184,28 @@ module.exports = function (Server) {
     } catch (err) {
       Server.errorLogging("Space Striker", "Error while getting login", err);
       return { error: err };
-    }
+    }*/
+    return { address: 0 };
   };
 
   ret.getHighscore = async (req) => {
     if (!req.query.address) return;
     try {
-      let reqParams = [req.query.address];
-      let reqRes = await Server.db.all(
-        "SELECT * FROM space_striker WHERE address=?",
-        reqParams
-      );
-      Server.infoLogging("Space Striker", "Get highscore", ...reqParams);
-      if (!reqRes.length) return { error: "No highscore for this address" };
+      let reqRes;
+      let sendReq = async () => {
+        let reqParams = [req.query.address];
+        reqRes = await Server.db.all(
+          "SELECT address, MAX(highscore) AS highscore, highscore_tries, highscore_timestamp FROM space_striker WHERE address=? GROUP BY address",
+          reqParams
+        );
+        Server.infoLogging("Space Striker", "Get highscore", ...reqParams);
+      };
+      await sendReq();
+
+      if (!reqRes.length) {
+        await ret.associateLogin(req);
+        await sendReq();
+      }
       return { highscore: reqRes[0].highscore };
     } catch (err) {
       Server.errorLogging(
@@ -197,23 +220,31 @@ module.exports = function (Server) {
   ret.saveHighscore = async (req) => {
     if (!req.query.highscore) return { error: "No highscore provided" };
     try {
-      let currentData = await ret.getLogin(req);
-      if (!currentData || !currentData.address)
-        return { error: "Can't retrieve data for this ip" };
-
       let serverHash = spaceStrikerSecret(req);
       if (serverHash != req.query.hash) {
         throw "Hash is wrong";
       }
       let reqParams = [
         req.query.highscore,
-        currentData.highscore_tries + 1,
         Date.now(),
-        currentData.address,
-        currentData.ip,
+        req.query.address,
+        req.ip,
       ];
+
+      let currentHighscore = await ret.getHighscore(req);
+      if (currentHighscore.highscore == undefined) {
+        await ret.associateLogin(req);
+        currentHighscore = await ret.getHighscore(req);
+      }
+
+      if (currentHighscore.highscore >= req.query.highscore)
+        return {
+          error:
+            "This highscore is not higher than the current highscore or you dit not register",
+        };
+
       await Server.db.run(
-        "UPDATE space_striker SET highscore=?, highscore_tries=?, highscore_timestamp=? WHERE address=? AND ip=?",
+        "UPDATE space_striker SET highscore=?, highscore_timestamp=? WHERE address=? AND ip=?",
         reqParams
       );
 
@@ -221,11 +252,7 @@ module.exports = function (Server) {
         !Server.currentBestHighscore ||
         Server.currentBestHighscore.highscore <= req.query.highscore
       ) {
-        let bestHighscoreRow = await Server.db.all(
-          "SELECT address, MAX(highscore) AS highscore, highscore_tries FROM space_striker GROUP BY address ORDER BY highscore DESC, highscore_timestamp DESC LIMIT 1"
-        );
-
-        Server.currentBestHighscore = bestHighscoreRow[0];
+        Server.currentBestHighscore = await ret.getBestHighscore();
         Server.resetSpaceStrikerTimeout &&
           clearTimeout(Server.resetSpaceStrikerTimeout);
         Server.resetSpaceStrikerTimeout = setTimeout(
@@ -237,7 +264,7 @@ module.exports = function (Server) {
           "Space Striker",
           "Old record beaten",
           Server.currentBestHighscore?.highscore,
-          ...Object.values(bestHighscoreRow[0])
+          ...Object.values(Server.currentBestHighscore)
         );
       }
 
@@ -291,6 +318,14 @@ module.exports = function (Server) {
       );
       return { error: err };
     }
+  };
+
+  ret.getBestHighscore = async () => {
+    let bestHighscoreRow = await Server.db.all(
+      "SELECT address, MAX(highscore) AS highscore, highscore_tries FROM space_striker GROUP BY address ORDER BY highscore DESC, highscore_timestamp DESC LIMIT 1"
+    );
+    if (!bestHighscoreRow.length) return;
+    return bestHighscoreRow[0];
   };
 
   initLeaderboard();

@@ -1,3 +1,10 @@
+# 1.4.0 (2023-10-08)
+
+- Added manasharing on the Kanvas smart-contract, so that user don't need anymore KOIN to play
+- Added a demo wallet for new users to test Kanvas
+- Corrected a bug on erasing
+- Update of the website
+
 # 1.3.0 (2023-09-23)
 
 - Added an API price for Konio

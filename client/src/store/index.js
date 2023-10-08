@@ -6,6 +6,11 @@ import {
   getKoinContract,
   defaultProvider,
 } from "../utils/contracts";
+import {
+  getMockupContract,
+  getMockupWallet,
+  mockupKANNumber,
+} from "../utils/demo";
 import CryptoJS from "crypto-js";
 import HDKoinos from "../utils/HDKoinos";
 import {
@@ -24,7 +29,9 @@ export const createStore = (app) => {
       selectedColor: "#000000",
       selectedTool: 1,
       preventNextClick: false,
-      walletsList: JSON.parse(window.localStorage.getItem("wallets")) || [],
+      walletsList: JSON.parse(window.localStorage.getItem("wallets")) || [
+        getMockupWallet(),
+      ],
       activeWallet: null,
       activeAccount: null,
       pixelsToPlace: [],
@@ -49,6 +56,7 @@ export const createStore = (app) => {
       getTokenBalance:
         (state) =>
         async (address = state.activeAccount.address, cache = true) => {
+          if (address == window.Client.mockupAddress) return mockupKANNumber;
           if (!cache) {
             const kan = state.kanvasContract;
 
@@ -92,7 +100,8 @@ export const createStore = (app) => {
               return x.name == name;
             }) == -1 &&
             name != "Kondor" &&
-            name != "WalletConnect"
+            name != "WalletConnect" &&
+            name != "Demo"
           );
         };
       },
@@ -103,10 +112,13 @@ export const createStore = (app) => {
         return state.activeWallet ? state.activeWallet.name : null;
       },
       lastWallet: (state) => {
+        let storedLastWallet = window.localStorage.getItem("lastWallet");
         if (state.activeWallet) {
           return state.activeWallet.name;
+        } else if (storedLastWallet) {
+          return storedLastWallet;
         } else {
-          return window.localStorage.getItem("lastWallet");
+          return "Demo";
         }
       },
       getWalletAsStoredFormat: () => {
@@ -166,17 +178,21 @@ export const createStore = (app) => {
         );
 
         let newSigner;
-        if (state.activeWallet.name == "Kondor") {
-          newSigner = kondor.getSigner(newActiveAccount.address);
-        } else if (state.activeWallet.name == "WalletConnect") {
-          newSigner = window.walletConnectKoinos.getSigner(
-            newActiveAccount.address
-          );
+        if (state.activeWallet.name == "Demo") {
+          state.kanvasContract = getMockupContract();
         } else {
-          newSigner = Signer.fromWif(newActiveAccount.privateKey, true);
+          if (state.activeWallet.name == "Kondor") {
+            newSigner = kondor.getSigner(newActiveAccount.address);
+          } else if (state.activeWallet.name == "WalletConnect") {
+            newSigner = window.walletConnectKoinos.getSigner(
+              newActiveAccount.address
+            );
+          } else {
+            newSigner = Signer.fromWif(newActiveAccount.privateKey, true);
+          }
+          state.kanvasContract = getKanvasContract(newSigner);
         }
 
-        state.kanvasContract = getKanvasContract(newSigner);
         state.koinContract = getKoinContract(newSigner);
         app.config.globalProperties.$socket.emit(
           "subscribe_wallet_update",
@@ -204,10 +220,12 @@ export const createStore = (app) => {
       storeWallets({ state, getters }, walletToUpdate) {
         if (walletToUpdate) {
           let newStoredWallet = getters.getWalletAsStoredFormat(walletToUpdate);
-          let walletIndex = state.walletsList.findIndex(
-            (w) => w.name == walletToUpdate.name
-          );
-          state.walletsList[walletIndex] = newStoredWallet;
+          if (newStoredWallet) {
+            let walletIndex = state.walletsList.findIndex(
+              (w) => w.name == walletToUpdate.name
+            );
+            state.walletsList[walletIndex] = newStoredWallet;
+          }
         }
 
         window.localStorage.setItem(
@@ -256,6 +274,8 @@ export const createStore = (app) => {
             // If one already exists, pair it
             await dispatch("pairWalletConnectAccounts", false);
           }
+        } else if (name == "Demo") {
+          wallet = encryptedWallet;
         } else {
           wallet = JSON.parse(
             CryptoJS.AES.decrypt(encryptedWallet, password).toString(
@@ -354,7 +374,6 @@ export const createStore = (app) => {
             enableExplorer: false,
           },
         });
-        console.log(window.walletConnectKoinos);
 
         const walletConnectParams = [
           [ChainIds.Mainnet],

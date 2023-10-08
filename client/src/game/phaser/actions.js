@@ -91,6 +91,7 @@ export default function ({ graphics, vue }) {
           blue: rgbColor.b,
           alpha: 255,
           metadata: "",
+          owner: vue.activeAccountAddress,
         },
       },
       graphics: loadingPixel,
@@ -114,9 +115,15 @@ export default function ({ graphics, vue }) {
         pixels.push(newTx);
       });
 
-      const { transaction } = await kanvas.place_pixels({
-        place_pixel_arguments: pixels,
-      });
+      const { transaction } = await kanvas.place_pixels(
+        {
+          place_pixel_arguments: pixels,
+        },
+        {
+          payer: window.Client.kanvasContractAddress,
+          payee: vue.activeAccountAddress,
+        }
+      );
 
       vue.$info(
         "Saving in progress !",
@@ -126,23 +133,20 @@ export default function ({ graphics, vue }) {
       vue.$store.commit("removePixelsToPlace");
 
       await transaction.wait();
-      vue.$info(
-        "Pixels placed and saved !",
-        "Check transaction on <a target='_blank' href='https://koinosblocks.com/tx/" +
-          transaction.id +
-          "' style='color:white'>Koinos blocks</a>"
+      vue[transaction.demoText ? "$warning" : "$info"](
+        (transaction.demoText ? "Demo - " : "") + "Pixels placed and saved !",
+        transaction.demoText
+          ? transaction.demoText
+          : "Check transaction on <a target='_blank' href='https://koinosblocks.com/tx/" +
+              transaction.id +
+              "' style='color:white'>Koinos blocks</a>"
       );
 
       graphics.pixelsToPlace.forEach((px) => {
         graphics.destroyPixel(px, false);
-        graphics.pixelGraphics.fillStyle(px.hexNumberColor);
-        graphics.pixelGraphics.fillRect(
-          px.pixelTransactionArgs.pixel_to_place.posX,
-          px.pixelTransactionArgs.pixel_to_place.posY,
-          1,
-          1
-        );
+        graphics.drawPixel(px.pixelTransactionArgs.pixel_to_place);
       });
+
       vue.$store.commit("setPixelsAmount", {
         amount: Math.min(
           await vue.$store.getters.getTokenBalance(),
@@ -173,8 +177,9 @@ export default function ({ graphics, vue }) {
       }
 
       vue.$error(error);
-      vue.$store.state.pixelsToPlace.forEach((px) => {
-        graphics.destroyPixel(px);
+
+      graphics.pixelsToPlace.forEach((px) => {
+        graphics.destroyPixel(px, false);
       });
     }
     graphics.pixelsToPlace = [];
@@ -219,12 +224,25 @@ export default function ({ graphics, vue }) {
         );
         await transaction.wait();
 
-        vue.$info(
-          "Pixel erased on position (" + posX + ";" + posY + ")",
-          "Check transaction on <a target='_blank' href='https://koinosblocks.com/tx/" +
-            transaction.id +
-            "' style='color:white'>Koinos blocks</a>"
+        graphics.erasePixelOnPosition(posX, posY);
+
+        vue[transaction.demoText ? "$warning" : "$info"](
+          (transaction.demoText ? "Demo - " : "") +
+            "Pixel erased on position (" +
+            posX +
+            ";" +
+            posY +
+            ")",
+          transaction.demoText
+            ? transaction.demoText
+            : "Check transaction on <a target='_blank' href='https://koinosblocks.com/tx/" +
+                transaction.id +
+                "' style='color:white'>Koinos blocks</a>"
         );
+
+        vue.$store.commit("setPixelsAmount", {
+          amount: Math.max(0, (await vue.$store.getters.getPixelsAmount()) - 1),
+        });
       }
     }
   };

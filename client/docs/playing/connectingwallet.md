@@ -12,15 +12,17 @@ head:
 
 Kanvas game is backed by the $KAN token, which limits the maximum number of pixels a user can place according to the amount owned. In order to play the game, you must own $KAN and be able to prove it. You need to connect your wallet to the application.
 
-To connect the wallet on which you bought your $KAN, the first step is to click on the button `Connect` in the top right-hand corner of the screen.
+### Option 1 : Demo wallet
 
-If you've already added a wallet, you can click on the wallet in question and then on `⊕ Add new Wallet` at the bottom of the card.
+By default, you have a demo wallet that allows you to use Kanvas without a $KAN. You can use the entire interface, including pixel placement and deletion, but your drawings are not saved on the blockchain. So when you leave the page, your drawing disappears. You need $KAN to be able to save your drawings.
 
-### Option 1 : Kondor
+To connect a real wallet, on which you bought or sent your $KAN, the first step is to click in the top right-hand corner of the screen (the white card) and then on `⊕ Add new Wallet` at the bottom of the card.
+
+### Option 2 : Kondor
 
 To connect your Kondor accounts, click on `Use Kondor`. A window will open, asking you to check the accounts you wish to connect and click on `Accept`. From now on, every time you place a pixel, you'll have to accept it via a Kondor pop-up.
 
-### Option 2 : Konio / WalletConnect
+### Option 3 : Konio / WalletConnect
 
 To connect your accounts via WalletConnect, click on `Use WalletConnect`. A QR code will then appear. Open Konio on your phone and click on `WalletConnect` in the left-hand menu, then on `New Connection`. Scan the QR code to pair your account with the Kanvas application. A pop-up will appear and you'll have to accept it to finalize the pairing! From now on, every time you place a pixel, you'll have to accept it on Konio.
 
@@ -28,7 +30,7 @@ To connect your accounts via WalletConnect, click on `Use WalletConnect`. A QR c
 When using Kondor or Konio, the advantage is that each transaction must first be validated on a third-party application. So you don't have to trust us, since you can check the content of the transaction.
 :::
 
-### Option 3 : Creating a new seeded wallet
+### Option 4 : Creating a new seeded wallet
 
 To create an entirely new and unique wallet for Kanvas, click on `Create new wallet`. You can then enter your wallet's personal identifier (which can be any number you wish). Then enter a password, which will be used to encrypt and unlock the wallet.
 
@@ -44,7 +46,7 @@ You now have an account for this wallet. You can copy your address to send $KOIN
 Accounts generated with this seed are generated in the same way as on Kondor or Konio. Seeded accounts are therefore transferable between these applications by copy and pasting your seed.
 :::
 
-### Option 4 : Importing an existing wallet
+### Option 5 : Importing an existing wallet
 
 You can also import a pre-existing wallet (see the [list of wallets available](./howtobuykoin#creating-a-wallet) on Koinos) into Kanvas, via a seed or private key.
 

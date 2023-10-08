@@ -187,6 +187,17 @@ export default defineComponent({
     LinkIcon,
   },
   emits: ["createNew"],
+  created() {
+    if (
+      this.$store.state.walletsList.length == 1 &&
+      this.$store.state.walletsList[0].name == "Demo"
+    ) {
+      setTimeout(
+        () => this.toggleWallet(this.$store.state.walletsList[0].name),
+        100
+      );
+    }
+  },
   data: function () {
     return {
       opened: false,
@@ -215,10 +226,15 @@ export default defineComponent({
       return this.$store.getters.lastWallet;
     },
     topWallet: function () {
-      return this.walletList.filter((x) => x.name == this.lastWallet)[0];
+      let topWallets = this.walletList.filter((x) => x.name == this.lastWallet);
+      if (topWallets.length) {
+        return topWallets[0];
+      } else {
+        return this.walletList[0];
+      }
     },
     restWallets: function () {
-      return this.walletList.filter((x) => x.name != this.lastWallet);
+      return this.walletList.filter((x) => x.name != this.topWallet.name);
     },
   },
   methods: {
@@ -253,7 +269,7 @@ export default defineComponent({
     },
     toggleWallet: async function (name) {
       if (name != this.walletName) {
-        if (name == "Kondor" || name == "WalletConnect") {
+        if (name == "Kondor" || name == "WalletConnect" || name == "Demo") {
           await this.$store.dispatch("unlockWallet", {
             name,
             password: null,

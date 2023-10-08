@@ -31,7 +31,7 @@ Tokenomics are the characteristics of the token. Here are those of $KAN :
 |        Decimals        |                                                     8                                                     |
 | Smart-contract address | [1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS](https://koinosblocks.com/address/1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS) |
 |      Fixed supply      |                                                    Yes                                                    |
-|   Initial allocation   |                                           Airdrop + DAO presale                                           |
+|   Initial allocation   |                                        Liquidity release on KoinDx                                        |
 
 ## Launch
 
@@ -42,8 +42,8 @@ Here's the token allocation table :
 |            Position             |      Percentage      |
 | :-----------------------------: | :------------------: |
 |    Events, marketing and dev    | 1,000,000 $KAN (33%) |
-| Initial liquidity pool (KoinDX) |  500,000 $KAN (17%)  |
-|     Next liquidity releases     | 1,500,000 KAN (50%)  |
+| Initial liquidity pool (KoinDX) |  750,000 $KAN (25%)  |
+|     Next liquidity releases     | 1,250,000 KAN (42%)  |
 
 A third of the total $KAN supply will be kept in the development and marketing wallet to promote the project through bonuses, airdrops and contests!
 

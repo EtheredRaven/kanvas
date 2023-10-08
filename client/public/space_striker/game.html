@@ -34,7 +34,7 @@
 
   <body>
     <div class="gm4html5_div_class" id="gm4html5_div_id" style="display: flex">
-      <div style="margin-right: 50px;margin-left: auto;">
+      <div id="leaderboardGlobalContainer" style="margin-right: 50px;margin-left: auto;">
         <div class="leaderboardTitle">
           <img
             src="./img/trophy.svg"
@@ -67,6 +67,11 @@
           <span id="lastWeekWinnerAddress" class="lastWeekWinnerAddress"></span>
         </div>
       </div>
+      <div id="fullscreen"><img
+        src="./img/fullscreen.svg"
+        alt="icon"
+        class="lastWeekWinnerIcon fullscreenIcon"
+      /></div>
 
       <!-- Create the canvas element the game draws to -->
       <canvas id="canvas" width="576" height="960" style="margin-right: auto;margin-left:50px;height:max(100%, 960px)">
@@ -82,6 +87,38 @@
       let can = document.getElementById("canvas");
       can.height = window.innerHeight - 5;
       can.width = ratio * can.height;
+
+      let getParameter = function(param) {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const address = urlParams.get(param);
+        return address
+      }
+
+      window.getAddress = function() {
+        return getParameter("address");
+      }
+
+      function openFullscreen(elem) {
+        if (elem.requestFullscreen) {
+          elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) { /* Safari */
+          elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE11 */
+          elem.msRequestFullscreen();
+        }
+      }
+
+      if(getParameter("noLeaderboard") == "false"){
+        document.getElementById("leaderboardGlobalContainer").style.display = "none";
+        document.getElementById("canvas").style.marginLeft = "auto";
+        document.getElementsByClassName("fullscreenIcon")[0].src = "./img/reduce.svg"
+      }
+
+      document.getElementById("fullscreen").addEventListener("click", function() {
+        let noLeaderboard = !(getParameter("noLeaderboard") == 'false');
+        window.location = './game.html?address='+window.getAddress()+'&noLeaderboard='+!noLeaderboard
+      })
 
       // Function to add colors for 1, 2 and 3
       let addRankColors = function () {
@@ -107,7 +144,7 @@
         if (remainingTime <= 0) {
 
           !refreshLeaderboardTimeoutOnReset && (refreshLeaderboardTimeoutOnReset = setTimeout(() => {
-            window.location = "index.html"
+            window.location.reload();
           }, 2000));
           formattedRemainingTime = "00:00:00";
         } else {
@@ -130,9 +167,7 @@
       let refreshYourHighscore = function (data) {
         let highscore;
         let highscoreRank;
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-        const address = urlParams.get("address");
+        const address = window.getAddress();
 
         for (let i = 0; i < data.length; i++) {
           let row = data[i];

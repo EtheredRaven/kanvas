@@ -7,10 +7,11 @@ export const defaultProvider = new Provider([
   "https://api.koinosblocks.com",
 ]);
 
+window.Client.kanvasContractAddress = "1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS";
 export function getKanvasContract(signer) {
   signer && (signer.provider = defaultProvider);
   return new Contract({
-    id: "1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS",
+    id: window.Client.kanvasContractAddress,
     abi: kanvasContractAbi,
     provider: defaultProvider,
     signer: signer,

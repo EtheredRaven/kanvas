@@ -37,7 +37,7 @@ export default {
       return `
         width: ${this.manaBarWidth}px;
         position: absolute;
-        bottom: 2rem;
+        bottom: calc(2rem + 24px);
         left: ${(this.gameWidth - this.manaBarWidth) / 2}px;
         background-color: rgb(200,200,200);
         border-radius: 6px;
@@ -48,7 +48,7 @@ export default {
     },
     pixelsBarStyle() {
       return `
-        bottom: calc(2rem + 24px);
+        bottom: 2rem;
       `;
     },
     progressManaBarStyle() {
@@ -71,8 +71,9 @@ export default {
     },
   },
   watch: {
-    currentAccountAddress: function () {
+    currentAccountAddress: function (newVal) {
       this.computeMana();
+      console.log(newVal);
       this.computePixels(false);
     },
   },
@@ -143,12 +144,12 @@ export default {
         {{ formatValue(maxPixels) }} PIXELS
       </div>
     </div>
-    <div :style="manaBarStyle">
+    <!--<div :style="manaBarStyle">
       <div :style="progressManaBarStyle"></div>
       <div class="manaAmount">
         {{ formatValue(updatedManaAmount) }} / {{ formatValue(maxMana) }} MANA
       </div>
-    </div>
+    </div>-->
   </div>
 </template>
 

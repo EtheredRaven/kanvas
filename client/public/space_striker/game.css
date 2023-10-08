@@ -226,3 +226,11 @@ a:active {
 .leaderboard tbody tr td:nth-child(4) {
   display: none;
 }
+
+.fullscreenIcon {
+  display: inline-block;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  cursor: pointer;
+}

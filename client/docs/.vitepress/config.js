@@ -31,7 +31,7 @@ export default defineConfig({
         link: "https://app.koindx.com/swap?input=15DJN4a8SgrbGhhGksSBASiSYjGnMU8dGL&output=1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS",
       },
       {
-        text: "1.3.0",
+        text: "1.4.0",
         items: [
           {
             text: "Changelog",
@@ -73,15 +73,11 @@ export default defineConfig({
             text: "Placing pixels",
             link: "/playing/placingpixels",
           },
+          {
+            text: "Erasing pixels",
+            link: "/playing/erasingpixels",
+          },
           { text: "Troubleshooting", link: "/playing/troubleshooting" },
-        ],
-      },
-      {
-        text: "Reference",
-        items: [
-          { text: "Koinos smart-contract", link: "/reference/smartcontract" },
-          { text: "Website client", link: "/reference/client" },
-          { text: "Website server", link: "/reference/server" },
         ],
       },
     ],
