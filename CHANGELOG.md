@@ -1,3 +1,8 @@
+# 1.4.1 (2023-10-13)
+
+- Added nicknames support
+- Corrected a bug on which KAP names were not showing well on the leaderboard
+
 # 1.4.0 (2023-10-08)
 
 - Added manasharing on the Kanvas smart-contract, so that user don't need anymore KOIN to play

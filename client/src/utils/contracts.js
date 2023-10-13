@@ -1,20 +1,25 @@
 import { Contract, utils, Provider } from "koilib";
-import { kanvasContractAbi, kapNameServiceAbi, kapProfileAbi } from "./abi";
+import {
+  kanvasContractAbi,
+  kapNameServiceAbi,
+  kapProfileAbi,
+  nicknamesContractAbi,
+} from "./abi";
 import { WalletConnectKoinos } from "@armana/walletconnect-koinos-sdk-js";
 
-export const defaultProvider = new Provider([
+export const provider = new Provider([
   "https://api.koinos.io",
   "https://api.koinosblocks.com",
 ]);
 
 window.Client.kanvasContractAddress = "1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS";
 export function getKanvasContract(signer) {
-  signer && (signer.provider = defaultProvider);
+  signer && (signer.provider = provider);
   return new Contract({
     id: window.Client.kanvasContractAddress,
     abi: kanvasContractAbi,
-    provider: defaultProvider,
-    signer: signer,
+    provider,
+    signer,
     options: {
       rcLimit: "150000000",
     },
@@ -22,12 +27,12 @@ export function getKanvasContract(signer) {
 }
 
 export function getKoinContract(signer) {
-  signer && (signer.provider = defaultProvider);
+  signer && (signer.provider = provider);
   return new Contract({
     id: "15DJN4a8SgrbGhhGksSBASiSYjGnMU8dGL", //1FaSvLjQJsCJKq5ybmGsMMQs8RQYyVv8ju
     abi: utils.tokenAbi,
-    provider: defaultProvider,
-    signer: signer,
+    provider,
+    signer,
   }).functions;
 }
 
@@ -35,7 +40,7 @@ export function getKapNameServiceContract() {
   return new Contract({
     id: "13tmzDmfqCsbYT26C4CmKxq86d33senqH3",
     abi: kapNameServiceAbi,
-    provider: defaultProvider,
+    provider,
   }).functions;
 }
 
@@ -43,8 +48,16 @@ export function getKapProfileContract() {
   return new Contract({
     id: "1EttfMuvTXGh8oE6vLiRF5JfqBvRiofFkB",
     abi: kapProfileAbi,
-    provider: defaultProvider,
+    provider,
   }).functions;
+}
+
+export function getNicknamesContract() {
+  return new Contract({
+    id: "1KD9Es7LBBjA1FY3ViCgQJ7e6WH1ipKbhz",
+    abi: nicknamesContractAbi,
+    provider,
+  });
 }
 
 export function getWalletConnectKoinos() {

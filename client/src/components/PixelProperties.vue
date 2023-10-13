@@ -17,8 +17,6 @@
 <script>
 import { defineComponent } from "vue";
 import { rgbToHex } from "../utils/colors";
-import { getKapProfileContract } from "../utils/contracts";
-import Cookies from "js-cookie";
 
 export default defineComponent({
   name: "PixelProperties",
@@ -34,7 +32,6 @@ export default defineComponent({
   },
   data() {
     return {
-      kapProfile: getKapProfileContract(),
       hoveredAccountName: null,
     };
   },
@@ -46,30 +43,13 @@ export default defineComponent({
       return addr.substr(0, 10) + "..." + addr.slice(-5);
     },
     async resolveKapAccountName() {
-      if (!this.hoveredPixel || !this.hoveredPixel.owner) {
-        this.hoveredAccountName = null;
-        return;
-      }
-
-      //  Locally stored kap names
-      let ownerName = this.hoveredPixel.owner;
-      if (ownerName == this.$store.state.activeAccount?.address) {
-        this.hoveredAccountName = "This account";
-        return;
-      }
-
-      let cacheName = Cookies.get(ownerName);
-      if (cacheName) {
-        this.hoveredAccountName = cacheName == "null" ? null : cacheName;
-      } else {
-        const { result } = await this.kapProfile.get_profile({
-          address: ownerName,
-        });
-        this.hoveredAccountName = result?.name || null;
-        Cookies.set(ownerName, this.hoveredAccountName, {
-          expires: 30,
-        });
-      }
+      let hoveredPixelOwner = this.hoveredPixel?.owner;
+      if (hoveredPixelOwner == this.$store.state.activeAccount?.address)
+        return "This account";
+      else
+        this.hoveredAccountName = await this.$store.getters.getKapName(
+          hoveredPixelOwner
+        );
     },
   },
   computed: {

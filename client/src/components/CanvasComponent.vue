@@ -74,7 +74,7 @@ export default {
       this.pointerX = x;
       this.pointerY = y;
       this.hoveredPixel = pixel;
-      pixel && console.log(pixel.owner);
+      //pixel && console.log(pixel.owner);
     },
   },
 };

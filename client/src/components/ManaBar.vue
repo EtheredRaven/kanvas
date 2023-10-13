@@ -71,9 +71,8 @@ export default {
     },
   },
   watch: {
-    currentAccountAddress: function (newVal) {
+    currentAccountAddress: function () {
       this.computeMana();
-      console.log(newVal);
       this.computePixels(false);
     },
   },

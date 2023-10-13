@@ -1,10 +1,11 @@
 import { createStore as createVuexStore } from "vuex";
 import * as kondor from "kondor-js";
-import { Signer } from "koilib";
+import { Signer, utils } from "koilib";
 import {
   getKanvasContract,
   getKoinContract,
-  defaultProvider,
+  provider,
+  getNicknamesContract,
 } from "../utils/contracts";
 import {
   getMockupContract,
@@ -18,6 +19,11 @@ import {
   Methods,
   WalletConnectKoinos,
 } from "@armana/walletconnect-koinos-sdk-js";
+import Cookies from "js-cookie";
+import { getKapProfileContract } from "../utils/contracts";
+
+const kapProfile = getKapProfileContract();
+const nicknamesContract = getNicknamesContract();
 
 export const createStore = (app) => {
   return createVuexStore({
@@ -72,7 +78,7 @@ export const createStore = (app) => {
       getMana:
         (state) =>
         async (address = state.activeAccount.address) => {
-          let rc = await defaultProvider.getAccountRc(address);
+          let rc = await provider.getAccountRc(address);
           let initialMana = Number(rc) / 1e8;
           let mana = Number(initialMana.toFixed(8));
 
@@ -93,6 +99,38 @@ export const createStore = (app) => {
 
           return state.pixelsAmount[address];
         },
+      getKapName: () => async (hoveredPixelOwner) => {
+        if (!hoveredPixelOwner) return null;
+        let cacheName = Cookies.get(hoveredPixelOwner);
+        if (cacheName) return cacheName == "null" ? null : cacheName;
+        else {
+          const { result } = await kapProfile.get_profile({
+            address: hoveredPixelOwner,
+          });
+
+          let hoveredAccountName = result?.name || null;
+
+          if (!hoveredAccountName) {
+            const { result } =
+              await nicknamesContract.functions.get_tokens_by_owner({
+                owner: hoveredPixelOwner,
+                start: "",
+                limit: 20,
+              });
+
+            const tokenIds = result?.token_ids || [];
+            const names = tokenIds.map((tId) => {
+              return new TextDecoder().decode(utils.toUint8Array(tId.slice(2)));
+            });
+
+            if (names && names.length) hoveredAccountName = "@" + names[0];
+          }
+          Cookies.set(hoveredPixelOwner, hoveredAccountName, {
+            expires: 30,
+          });
+          return hoveredAccountName;
+        }
+      },
       nameAvailable: (state) => {
         return function (name) {
           return (
@@ -173,7 +211,7 @@ export const createStore = (app) => {
       },
       async setActiveAccount(state, newActiveAccount) {
         state.activeAccount = newActiveAccount;
-        state.activeAccount.nonce = await defaultProvider.getNonce(
+        state.activeAccount.nonce = await provider.getNonce(
           newActiveAccount.address
         );
 

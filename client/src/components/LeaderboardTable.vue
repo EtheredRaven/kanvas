@@ -18,8 +18,6 @@
 </template>
 
 <script>
-import Cookies from "js-cookie";
-
 export default {
   created() {
     this.$socket.emit("get_leaderboard_data");
@@ -52,25 +50,26 @@ export default {
     };
   },
   methods: {
-    parseRawData(leaderboardData) {
-      this.items = leaderboardData.map((row) => {
-        let pixels_balance = Math.floor(
-          Math.min(row.pixels_balance, row.token_balance / 100000000)
-        );
-        let token_balance = Math.floor(row.token_balance / 100000000);
-        let used_pixels_percentage = token_balance
-          ? Math.round((pixels_balance / token_balance) * 100 * 100) / 100
-          : 0;
-        let id = Cookies.get(row.id);
-        if (!id || id == "null") id = row.id;
+    async parseRawData(leaderboardData) {
+      this.items = await Promise.all(
+        leaderboardData.map(async (row) => {
+          let pixels_balance = Math.floor(
+            Math.min(row.pixels_balance, row.token_balance / 100000000)
+          );
+          let token_balance = Math.floor(row.token_balance / 100000000);
+          let used_pixels_percentage = token_balance
+            ? Math.round((pixels_balance / token_balance) * 100 * 100) / 100
+            : 0;
+          let kapName = await this.$store.getters.getKapName(row.id);
 
-        return {
-          id: id,
-          pixels_balance: pixels_balance,
-          token_balance: token_balance,
-          used_pixels_percentage: used_pixels_percentage,
-        };
-      });
+          return {
+            id: kapName ?? row.id,
+            pixels_balance: pixels_balance,
+            token_balance: token_balance,
+            used_pixels_percentage: used_pixels_percentage,
+          };
+        })
+      );
     },
     bodyRowClassNameFunction(item, rowNumber) {
       switch (rowNumber) {
