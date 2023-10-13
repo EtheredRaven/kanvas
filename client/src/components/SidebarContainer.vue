@@ -44,6 +44,12 @@
         text="Docs"
         icon="book"
       />
+      <LinkIcon
+        href="../paper_wallet/index.html"
+        target="_blank"
+        text="1KAN generator"
+        icon="spinner"
+      />
     </template>
   </SidebarInside>
 </template>

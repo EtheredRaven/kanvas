@@ -1,0 +1,16 @@
+:root {
+    --background-canvas: white;
+    --background-header: rgba(77, 193, 222, 0.1);
+
+    --color-primary: #E31979;
+    --color-secondary: #4DC1DE;
+
+    --text-primary: #000000;
+    --text-reversed: white;
+
+    --font-header: 'Roboto Serif', serif;
+    --font-normal: 'Roboto', sans-serif;
+    --font-mono: 'Roboto Mono', monospace;
+
+    --transition-duration: 0.3s;
+}

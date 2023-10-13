@@ -2,6 +2,7 @@
 
 - Added nicknames support
 - Corrected a bug on which KAP names were not showing well on the leaderboard
+- Added paperwallet beginning with 1KAN
 
 # 1.4.0 (2023-10-08)
 

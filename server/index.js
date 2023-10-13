@@ -70,6 +70,16 @@
     res.sendFile(__dirname + "/../client/docs/.vitepress/dist/index.html");
   });
 
+  Server.app.use(
+    "/paper_wallet/",
+    express.static(__dirname + "/../client/public/paper_wallet")
+  );
+  Server.app.get("/paper_wallet/*", function (req, res) {
+    res.sendFile(
+      path.resolve(__dirname + "/../client/public/paper_wallet/index.html")
+    );
+  });
+
   // SPACE STRIKER GAME
   Server.app.use(
     "/space_striker/",

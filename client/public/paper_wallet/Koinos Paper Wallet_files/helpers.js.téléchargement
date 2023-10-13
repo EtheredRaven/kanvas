@@ -1,0 +1,43 @@
+/**
+ * @param {string} canvasId
+ * @param {string} text
+ */
+function drawQrCode(canvasId, text) {
+    const canvas = document.getElementById(canvasId);
+
+    if (!canvasId) {
+        throw new Error(`Element with ID ${canvasId} not found`);
+    }
+
+    qrcode.toCanvas(canvas, text)
+}
+
+/**
+ * @param {string} elementId
+ * @param {string} text
+ */
+function setText(elementId, text) {
+    const element = document.getElementById(elementId);
+
+    if (!element) {
+        throw new Error(`Element with ID ${elementId} not found`);
+    }
+
+    element.innerText = text;
+}
+
+/**
+ * @param {string} data
+ * @return Promise<string>
+ */
+async function createQrCode(data) {
+    const imageDataUrl = await qrcode.toDataURL(data)
+    return imageDataUrl.replace(/^data:image\/?[A-z]*;base64,/, '')
+}
+
+/**
+ * @param {string} base64Data
+ */
+function downloadArchive(base64Data) {
+    window.location = `data:application/zip;base64,${base64Data}`;
+}

@@ -1,0 +1,46 @@
+.button {
+    background: var(--color-primary);
+    color: var(--text-reversed);
+    border: none;
+    border-radius: 5px;
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.1875rem;
+    padding: 6px 17px;
+    transition: opacity var(--transition-duration);
+    cursor: pointer;
+}
+
+.button__icon {
+    margin-left: 8px;
+}
+
+.button--link {
+    background: none;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 1rem;
+    line-height: 1.1875rem;
+    padding-left: 0;
+}
+
+@media (min-width: 1200px) {
+    .button {
+        padding: 12px 36px;
+        font-size: 1.25rem;
+        line-height: 1.4375rem;
+    }
+
+    .button:hover {
+        opacity: 0.8;
+    }
+
+    .button__icon {
+        margin-left: 11px;
+    }
+
+    .button--link {
+        padding-left: 36px;
+        font-size: 1.125rem;
+    }
+}

@@ -1,0 +1,38 @@
+.wallet {
+    display: grid;
+    grid-template-areas: "key" "key" "action";
+    grid-template-rows: 1fr 1fr auto;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 68px;
+}
+
+.wallet__key {
+    display: flex;
+    justify-content: stretch;
+}
+
+.wallet__key > .key {
+    flex: 1;
+}
+
+.wallet__action {
+    grid-area: action;
+    padding-top: 5px;
+}
+
+@media (min-width: 768px) {
+    .wallet {
+        grid-template-areas: "key key" "action action";
+        grid-template-rows: auto auto;
+        grid-template-columns: 1fr 1fr;
+        gap: 54px 36px;
+        margin-bottom: 120px;
+    }
+
+    .wallet__action {
+        padding-top: 0;
+        display: flex;
+        justify-content: center;
+    }
+}
