@@ -20,6 +20,10 @@ module.exports = function (Server) {
   Server.spaceStrikerKanvasContract = Server.initKanvasContractWithSigner(
     Server.spaceStrikerSigner
   ).functions;
+  Server.kctContract = Server.initKanvasContractWithSigner(
+    Server.spaceStrikerSigner,
+    Server.koincrewtokenContractAddress
+  ).functions;
 
   let resetSpaceStriker = async () => {
     Server.currentBestHighscore = null;
@@ -67,7 +71,11 @@ module.exports = function (Server) {
         "Space Striker",
         "Sent 1 KOIN to " + addressToSendKoinTo
       );
+    } catch (err) {
+      Server.errorLogging("Space Striker", "Error while sending the KOIN", err);
+    }
 
+    try {
       // Send KAN
       let kanTx = await Server.spaceStrikerKanvasContract.transfer(
         {
@@ -85,7 +93,28 @@ module.exports = function (Server) {
         "Sent 10 KAN to " + addressToSendKoinTo
       );
     } catch (err) {
-      Server.errorLogging("Space Striker", "Error while sending the KOIN", err);
+      Server.errorLogging("Space Striker", "Error while sending the KAN", err);
+    }
+
+    try {
+      // Send KCT
+      let kctTx = await Server.kctContract.transfer(
+        {
+          from: Server.spaceStrikerSigner.getAddress(),
+          to: addressToSendKoinTo,
+          value: 5000000000,
+        },
+        {
+          rcLimit: "100000000",
+        }
+      );
+      await kctTx.transaction.wait();
+      Server.infoLogging(
+        "Space Striker",
+        "Sent 50 KCT to " + addressToSendKoinTo
+      );
+    } catch (err) {
+      Server.errorLogging("Space Striker", "Error while sending the KCT", err);
     }
   };
 

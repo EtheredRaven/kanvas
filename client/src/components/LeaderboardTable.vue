@@ -13,6 +13,7 @@
     :rows-per-page="20"
     :must-sort="true"
     :no-hover="true"
+    :current-page="currentPage"
     ref="dataTable"
   />
 </template>
@@ -25,12 +26,21 @@ export default {
     this.$socket.on("got_leaderboard_data", (leaderboardData) => {
       this.parseRawData(leaderboardData);
       this.hasLoaded = true;
+      setTimeout(() => {
+        const pagesButtons = document.getElementsByClassName("item button");
+        for (let pageButton of pagesButtons) {
+          pageButton.addEventListener("click", () => {
+            this.currentPage = Number(pageButton.innerHTML);
+          });
+        }
+      }, 300);
     });
   },
   data() {
     return {
       hasLoaded: false,
       items: [],
+      currentPage: 1,
       sortBy: "pixels_balance",
       sortType: "desc",
       headers: [
@@ -72,14 +82,17 @@ export default {
       );
     },
     bodyRowClassNameFunction(item, rowNumber) {
-      switch (rowNumber) {
-        case 1:
-          return "first-row";
-        case 2:
-          return "second-row";
-        case 3:
-          return "third-row";
+      if (this.currentPage == 1) {
+        switch (rowNumber) {
+          case 1:
+            return "first-row";
+          case 2:
+            return "second-row";
+          case 3:
+            return "third-row";
+        }
       }
+
       return "";
     },
     /*bodyItemClassNameFunction(column) {

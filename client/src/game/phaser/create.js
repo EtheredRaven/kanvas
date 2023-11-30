@@ -18,4 +18,5 @@ export default function ({ graphics }) {
   graphics.tSign = 1;
   graphics.periodicity = 20;
   graphics.pixelsToPlace = [];
+  graphics.pixelsToErase = [];
 }

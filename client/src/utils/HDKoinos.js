@@ -37,8 +37,6 @@ import { ethers } from "ethers";
 const KOINOS_PATH = "m/44'/659'/";
 
 export class HDKoinos {
-  hdNode;
-
   constructor(mnemonic) {
     this.hdNode = ethers.utils.HDNode.fromMnemonic(mnemonic);
   }

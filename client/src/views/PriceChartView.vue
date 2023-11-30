@@ -10,7 +10,8 @@ export default {
   data() {
     return {
       tokenDecimals: 100000000,
-      tokenSupply: 3000000, // TODO : retrieve from contract
+      tokenSupply: 3000000,
+      depth25: 0,
       priceSeries: {
         data: [],
         type: "area",
@@ -109,6 +110,8 @@ export default {
 
       this.priceSeries.data = priceSeriesData;
       this.volumeSeries.data = volumeSeriesData;
+      this.depth25 =
+        priceHistory[priceHistory.length - 1].depth_dollars_twenty_five_percent;
     });
 
     this.$socket.on("new_price", (newRow) => {
@@ -118,6 +121,7 @@ export default {
         ...this.volumeSeries.data,
         formattedNewRow.volume,
       ];
+      this.depth25 = newRow.depth_dollars_twenty_five_percent;
     });
   },
   computed: {
@@ -229,6 +233,12 @@ export default {
         <span class="tokenValue" v-if="tokenPrice">
           {{ "$" + Math.round(volume24h).toLocaleString() }}</span
         >
+        <span class="tokenLabel" style="margin-left: 1.5rem"
+          >Liquidity (-25% depth)</span
+        >
+        <span class="tokenValue" v-if="tokenPrice">
+          {{ "$" + Math.round(depth25).toLocaleString() }}</span
+        >
       </div>
       <div class="marketCap" v-if="tokenPrice"></div>
     </div>
@@ -255,6 +265,7 @@ export default {
   font-weight: bold;
   font-size: 2.5rem !important;
   align-items: center;
+  margin-bottom: 0.8rem;
 }
 
 .tokenPriceEvolution {
@@ -275,6 +286,7 @@ export default {
   gap: 1rem;
   font-size: 1.4rem;
   margin-top: 0.5rem;
+  width: max-content;
 }
 
 .tokenLabel {

@@ -47,9 +47,13 @@ module.exports = async function (Server) {
 
   // Kanvas contract
   Server.kanvasContractAddress = "1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS";
-  Server.initKanvasContractWithSigner = (signer) => {
+  Server.koincrewtokenContractAddress = "1BTQCpospHJRA7VAtZ4wvitdcqYCvkwBCD";
+  Server.initKanvasContractWithSigner = (
+    signer,
+    contractAddress = Server.kanvasContractAddress
+  ) => {
     let contractArgs = {
-      id: Server.kanvasContractAddress,
+      id: contractAddress,
       abi: kanvasContractAbi,
       provider: Server.provider,
     };

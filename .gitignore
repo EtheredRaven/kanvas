@@ -41,3 +41,5 @@ server/pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+COMMANDS.txt

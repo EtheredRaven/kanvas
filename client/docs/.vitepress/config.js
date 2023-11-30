@@ -70,6 +70,10 @@ export default defineConfig({
             link: "/playing/connectingwallet",
           },
           {
+            text: "Kanvas Gods NFT Collection",
+            link: "/playing/kanvasgods",
+          },
+          {
             text: "Placing pixels",
             link: "/playing/placingpixels",
           },

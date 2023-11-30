@@ -1,20 +1,12 @@
-import { hexToHexNumber } from "../../utils/colors";
+import { hexToHexNumber, rgbToHexNumber } from "../../utils/colors";
 
 export default function ({ graphics, vue }) {
   graphics.drawPixel = function (pixel) {
     // Add a reference for getting the pixel on specific coordinates (displaying properties for example)
     vue.pixelsMap[pixel.posX + ";" + pixel.posY] = pixel;
 
-    // Parse the color
-    let red = parseInt(pixel.red).toString(16);
-    red = red.length == 1 ? "0" + red : red;
-    let green = parseInt(pixel.green).toString(16);
-    green = green.length == 1 ? "0" + green : green;
-    let blue = parseInt(pixel.blue).toString(16);
-    blue = blue.length == 1 ? "0" + blue : blue;
-
     // Draw the pixel
-    graphics.pixelGraphics.fillStyle(parseInt(`0x${red}${green}${blue}`));
+    graphics.pixelGraphics.fillStyle(parseInt(rgbToHexNumber(pixel)));
     graphics.pixelGraphics.fillRect(
       parseInt(pixel.posX),
       parseInt(pixel.posY),
@@ -62,18 +54,31 @@ export default function ({ graphics, vue }) {
     px.alpha = alphaFactor;
   };
 
-  graphics.destroyPixel = function (loadingPixel, removeInStore = true) {
+  graphics.destroyLoadingPixel = function (loadingPixel, removeInStore = true) {
     removeInStore && vue.$store.commit("removePixelToPlace", loadingPixel);
     loadingPixel.graphics.destroy();
+  };
+
+  graphics.erasePixelGraphics = function (posX, posY) {
+    graphics.pixelGraphics.fillStyle(0xffffff);
+    graphics.pixelGraphics.fillRect(parseInt(posX), parseInt(posY), 1, 1);
+  };
+
+  graphics.eraseSpecifiedPixel = function (pixel) {
+    if (pixel) {
+      vue.pixelsMap[
+        pixel.pixelTransactionArgs.posX + ";" + pixel.pixelTransactionArgs.posY
+      ] = undefined;
+      graphics.erasePixelGraphics(
+        parseInt(pixel.pixelTransactionArgs.posX),
+        parseInt(pixel.pixelTransactionArgs.posY)
+      );
+    }
   };
 
   graphics.erasePixelOnPosition = function (posX, posY) {
     let pixelCoordinates = posX + ";" + posY;
     let pixel = vue.pixelsMap[pixelCoordinates];
-    if (pixel) {
-      vue.pixelsMap[pixelCoordinates] = undefined;
-      graphics.pixelGraphics.fillStyle(0xffffff);
-      graphics.pixelGraphics.fillRect(parseInt(posX), parseInt(posY), 1, 1);
-    }
+    graphics.eraseSpecifiedPixel(pixel);
   };
 }

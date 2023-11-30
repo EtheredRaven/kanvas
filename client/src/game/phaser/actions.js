@@ -1,4 +1,5 @@
-import { hexToHexNumber, hexToRgb } from "../../utils/colors";
+import { hexToHexNumber, hexToRgb, rgbToHexNumber } from "../../utils/colors";
+import { formatChainError } from "@/utils/helpers";
 //import { koinos } from "koinos-proto-js";
 //import { utils } from "koilib";
 
@@ -60,11 +61,13 @@ export default function ({ graphics, vue }) {
       return;
     }
 
-    const MAX_PIXELS_PER_TX = 10;
+    let MAX_PIXELS_PER_TX = await vue.$store.getters.getPixelsPerTx();
 
     if (vue.$store.state.pixelsToPlace.length >= MAX_PIXELS_PER_TX) {
       vue.$error(
-        "You must click on the save button before placing more pixels !"
+        "You cannot place more than " +
+          MAX_PIXELS_PER_TX +
+          " pixels in one transaction. Click on save before placing new pixels!"
       );
       return;
     }
@@ -99,6 +102,128 @@ export default function ({ graphics, vue }) {
     }); // Store the loading pixels to animate them in sync in the update loop
   };
 
+  graphics.erasePixel = async function () {
+    if (!vue.activeAccountAddress) {
+      return;
+    }
+
+    let MAX_PIXELS_PER_TX = await vue.$store.getters.getPixelsPerTx();
+    if (vue.$store.state.pixelsToPlace.length >= MAX_PIXELS_PER_TX)
+      return vue.$error(
+        "You cannot place more than " +
+          MAX_PIXELS_PER_TX +
+          " pixels in one transaction. Click on save before placing new pixels!"
+      );
+
+    let pixelPosX = Math.floor(graphics.input.activePointer.worldX);
+    let pixelPosY = Math.floor(graphics.input.activePointer.worldY);
+
+    if (vue.$store.state.pixelsToPlace.length) {
+      // If it's only client-side
+      let pixelToErase;
+      for (let i = 0; i < vue.$store.state.pixelsToPlace.length; i++) {
+        let px = vue.$store.state.pixelsToPlace[i];
+        let pxVars = px.pixelTransactionArgs.pixel_to_place;
+        if (pxVars.posX == pixelPosX && pxVars.posY == pixelPosY) {
+          pixelToErase = px;
+          break;
+        }
+      }
+
+      pixelToErase && graphics.destroyLoadingPixel(pixelToErase);
+    } else {
+      let pixelToErase = vue.pixelsMap[pixelPosX + ";" + pixelPosY];
+
+      if (pixelToErase) {
+        if (pixelToErase.owner != vue.activeAccountAddress)
+          return vue.$error("You cannot erase a pixel you did not place !");
+
+        let hexNumberColor = rgbToHexNumber(pixelToErase);
+        graphics.erasePixelGraphics(pixelPosX, pixelPosY);
+        let loadingPixel = graphics.add
+          .image(pixelPosX + 0.5, pixelPosY + 0.5, "pixel")
+          .setTint(hexNumberColor)
+          .setOrigin(0.5, 0.5);
+
+        vue.$store.commit("addPixelToErase", {
+          pixelTransactionArgs: {
+            from: vue.activeAccountAddress,
+            pixelPosX,
+            pixelPosY,
+          },
+          graphics: loadingPixel,
+          hexNumberColor: hexNumberColor,
+        });
+      }
+    }
+  };
+
+  graphics.sendTransactionToErasePixels = async function () {
+    const kanvas = vue.$store.state.kanvasContract;
+
+    try {
+      let pixels = [];
+      vue.$store.state.pixelsToErase.forEach((tx) => {
+        let newTx = {};
+        Object.assign(newTx, tx.pixelTransactionArgs);
+        let newPixelToErase = {};
+        Object.assign(newPixelToErase, newTx.pixel_to_erase);
+        newTx.pixel_to_erase = newPixelToErase;
+        pixels.push(newTx);
+      });
+
+      const { transaction } = await kanvas.erase_pixels(
+        {
+          erase_pixel_arguments: pixels,
+        },
+        {
+          payer: window.Client.kanvasContractAddress,
+          payee: vue.activeAccountAddress,
+          rcLimit: Math.round(
+            (1.115 + 0.15 * vue.$store.state.pixelsToPlace.length) * 100000000
+          ).toString(),
+        }
+      );
+
+      vue.$info(
+        "Saving in progress!",
+        "Transaction has been sent to the blockchain and is being processed."
+      );
+      graphics.pixelsToErase = [...vue.$store.state.pixelsToErase];
+      vue.$store.commit("removePixelsToErase");
+      await transaction.wait();
+
+      vue[transaction.demoText ? "$warning" : "$info"](
+        (transaction.demoText ? "Demo - " : "") + "Pixels erased and saved!",
+        transaction.demoText
+          ? transaction.demoText
+          : "Check transaction on <a target='_blank' href='https://koinosblocks.com/tx/" +
+              transaction.id +
+              "' style='color:white'>Koinos blocks</a>"
+      );
+
+      graphics.pixelsToErase.forEach((px) => {
+        graphics.eraseSpecifiedPixel(px);
+      });
+
+      vue.$store.commit("setPixelsAmount", {
+        amount: Math.max(
+          0,
+          (await vue.$store.getters.getPixelsAmount()) -
+            graphics.pixelsToErase.length
+        ),
+      });
+    } catch (err) {
+      let error = formatChainError(err);
+      vue.$error(error);
+    }
+
+    graphics.pixelsToErase.forEach((px) => {
+      graphics.destroyLoadingPixel(px, false);
+    });
+    graphics.pixelsToErase = [];
+  };
+
   graphics.sendTransactionToPlacePixels = async function () {
     // Send a transaction of batches of pixels
     const kanvas = vue.$store.state.kanvasContract;
@@ -122,6 +247,9 @@ export default function ({ graphics, vue }) {
         {
           payer: window.Client.kanvasContractAddress,
           payee: vue.activeAccountAddress,
+          rcLimit: Math.round(
+            (1.115 + 0.15 * vue.$store.state.pixelsToPlace.length) * 100000000
+          ).toString(),
         }
       );
 
@@ -143,7 +271,7 @@ export default function ({ graphics, vue }) {
       );
 
       graphics.pixelsToPlace.forEach((px) => {
-        graphics.destroyPixel(px, false);
+        graphics.destroyLoadingPixel(px, false);
         graphics.drawPixel(px.pixelTransactionArgs.pixel_to_place);
       });
 
@@ -154,97 +282,24 @@ export default function ({ graphics, vue }) {
             graphics.pixelsToPlace.length
         ),
       });
+      graphics.pixelsToPlace = [];
     } catch (err) {
-      let error = err;
-      if (err.message) {
-        error = err.toString().replace("Error: ", "");
+      let error = formatChainError(err);
 
-        error = err.message;
-        if (error == "User rejected") {
-          error = "WalletConnect user rejected";
-        }
-
-        try {
-          error = JSON.parse(error);
-          error = error.error;
-        } catch (err2) {
-          err2;
-        }
-
-        if (error == "Connection lost") {
-          error = "Kondor connection lost";
-        }
-      }
+      // Destroy all the loading pixels
+      graphics.pixelsToPlace.forEach((px) => {
+        graphics.destroyLoadingPixel(px, false);
+      });
+      graphics.pixelsToPlace = [];
 
       vue.$error(error);
-
-      graphics.pixelsToPlace.forEach((px) => {
-        graphics.destroyPixel(px, false);
-      });
     }
-    graphics.pixelsToPlace = [];
   };
 
-  graphics.erasePixel = async function () {
-    let posX = Math.floor(graphics.input.activePointer.worldX);
-    let posY = Math.floor(graphics.input.activePointer.worldY);
-    if (vue.$store.state.pixelsToPlace.length) {
-      // If it's only client-side
-      let pixelToErase;
-      for (let i = 0; i < vue.$store.state.pixelsToPlace.length; i++) {
-        let px = vue.$store.state.pixelsToPlace[i];
-        let pxVars = px.pixelTransactionArgs.pixel_to_place;
-        if (pxVars.posX == posX && pxVars.posY == posY) {
-          pixelToErase = px;
-          break;
-        }
-      }
-
-      pixelToErase && graphics.destroyPixel(pixelToErase);
-    } else {
-      let pixelToErase = vue.pixelsMap[posX + ";" + posY];
-
-      if (pixelToErase) {
-        if (pixelToErase.owner != vue.activeAccountAddress) {
-          vue.$error("You cannot erase a pixel you did not place !");
-          return;
-        }
-
-        const kanvas = vue.$store.state.kanvasContract;
-
-        const { transaction } = await kanvas.erase_pixel({
-          from: vue.activeAccountAddress,
-          posX,
-          posY,
-        });
-
-        vue.$info(
-          "Saving in progress !",
-          "Transaction has been sent to the blockchain and is being processed."
-        );
-        await transaction.wait();
-
-        graphics.erasePixelOnPosition(posX, posY);
-
-        vue[transaction.demoText ? "$warning" : "$info"](
-          (transaction.demoText ? "Demo - " : "") +
-            "Pixel erased on position (" +
-            posX +
-            ";" +
-            posY +
-            ")",
-          transaction.demoText
-            ? transaction.demoText
-            : "Check transaction on <a target='_blank' href='https://koinosblocks.com/tx/" +
-                transaction.id +
-                "' style='color:white'>Koinos blocks</a>"
-        );
-
-        vue.$store.commit("setPixelsAmount", {
-          amount: Math.max(0, (await vue.$store.getters.getPixelsAmount()) - 1),
-        });
-      }
-    }
+  graphics.sendTransactionToSavePixels = function () {
+    vue.$store.state.pixelsToPlace.length
+      ? graphics.sendTransactionToPlacePixels()
+      : graphics.sendTransactionToErasePixels();
   };
 
   graphics.moveCanvasOnMouseMove = function () {

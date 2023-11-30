@@ -30,3 +30,27 @@ export function base64ToInt(base64) {
 export function intToBase64(intN) {
   return utils.encodeBase64url(utils.toUint8Array(parseInt(intN).toString(16)));
 }
+
+export function formatChainError(err) {
+  let error = err;
+  if (err.message) {
+    error = err.toString().replace("Error: ", "");
+
+    error = err.message;
+    if (error == "User rejected") {
+      error = "WalletConnect user rejected";
+    }
+
+    try {
+      error = JSON.parse(error);
+      error = error.error;
+    } catch (err2) {
+      err2;
+    }
+
+    if (error == "Connection lost") {
+      error = "Kondor connection lost";
+    }
+  }
+  return err;
+}

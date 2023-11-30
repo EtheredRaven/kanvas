@@ -1,7 +1,7 @@
 <template>
   <div>
     <ActionButton
-      @click="placePixels"
+      @click="savePixels"
       :tooltip="tooltip"
       icon="save.svg"
     ></ActionButton>
@@ -15,8 +15,8 @@ export default {
     ActionButton,
   },
   methods: {
-    placePixels() {
-      window.Client.game.graphics.sendTransactionToPlacePixels();
+    savePixels() {
+      window.Client.game.graphics.sendTransactionToSavePixels();
     },
   },
   props: {

@@ -3,15 +3,12 @@ import * as kondor from "kondor-js";
 import { Signer, utils } from "koilib";
 import {
   getKanvasContract,
+  getKanvasGodsContract,
   getKoinContract,
   provider,
   getNicknamesContract,
 } from "../utils/contracts";
-import {
-  getMockupContract,
-  getMockupWallet,
-  mockupKANNumber,
-} from "../utils/demo";
+import { getMockupContract, getMockupWallet } from "../utils/demo";
 import CryptoJS from "crypto-js";
 import HDKoinos from "../utils/HDKoinos";
 import {
@@ -41,9 +38,11 @@ export const createStore = (app) => {
       activeWallet: null,
       activeAccount: null,
       pixelsToPlace: [],
-      tokenBalance: {},
+      pixelsToErase: [],
+      addressesData: {},
       pixelsAmount: {},
       kanvasContract: getKanvasContract(),
+      kanvasGodsContract: getKanvasGodsContract(),
       koinContract: getKoinContract(),
     },
     getters: {
@@ -62,27 +61,44 @@ export const createStore = (app) => {
       getTokenBalance:
         (state) =>
         async (address = state.activeAccount.address, cache = true) => {
-          if (address == window.Client.mockupAddress) return mockupKANNumber;
           if (!cache) {
-            const kan = state.kanvasContract;
-
-            const ret = await kan.balance_of({
+            const ret = await state.kanvasContract.balance_of({
               owner: address,
             });
             let realKan = Number(ret?.result?.value || 0) / 1e8;
-            state.tokenBalance[address] = realKan;
+            state.addressesData[address].tokenBalance = realKan;
           }
 
-          return state.tokenBalance[address];
+          return state.addressesData[address].tokenBalance;
         },
-      getMana:
+      getKanvasGodsList:
         (state) =>
-        async (address = state.activeAccount.address) => {
-          let rc = await provider.getAccountRc(address);
-          let initialMana = Number(rc) / 1e8;
-          let mana = Number(initialMana.toFixed(8));
+        async (address = state.activeAccount.address, cache = true) => {
+          if (!cache) {
+            const kanvasGodsResult = await state.kanvasGodsContract.tokens_of({
+              owner: address,
+            });
+            state.addressesData[address].kanvasGodsList =
+              kanvasGodsResult?.result?.token_id?.map((id) => Number(id)) || [];
+            console.log(state.addressesData[address].kanvasGodsList);
+          }
 
-          return mana;
+          return state.addressesData[address].kanvasGodsList;
+        },
+      getPixelsPerTx:
+        (state) =>
+        async (address = state.activeAccount.address, cache = true) => {
+          if (!cache) {
+            const pixelsPerTxResult =
+              await state.kanvasContract.pixels_per_tx_of({
+                owner: address,
+              });
+            state.addressesData[address].pixelsPerTx = Number(
+              pixelsPerTxResult?.result?.value
+            );
+          }
+
+          return state.addressesData[address].pixelsPerTx;
         },
       getPixelsAmount:
         (state) =>
@@ -94,10 +110,19 @@ export const createStore = (app) => {
               owner: address,
             });
             let pixelsAmount = Number(ret?.result?.value || 0);
-            state.pixelsAmount[address] = pixelsAmount;
+            state.addressesData[address].pixelsAmount = pixelsAmount;
           }
 
-          return state.pixelsAmount[address];
+          return state.addressesData[address].pixelsAmount;
+        },
+      getMana:
+        (state) =>
+        async (address = state.activeAccount.address) => {
+          let rc = await provider.getAccountRc(address);
+          let initialMana = Number(rc) / 1e8;
+          let mana = Number(initialMana.toFixed(8));
+
+          return mana;
         },
       getKapName: () => async (hoveredPixelOwner) => {
         if (!hoveredPixelOwner) return null;
@@ -191,6 +216,12 @@ export const createStore = (app) => {
       addPixelToPlace(state, pixelToPlace) {
         state.pixelsToPlace = [...state.pixelsToPlace, pixelToPlace];
       },
+      addPixelsToPlace(state, pixelsToPlace) {
+        state.pixelsToPlace = [...state.pixelsToPlace, ...pixelsToPlace];
+      },
+      addPixelToErase(state, pixelToErase) {
+        state.pixelsToErase = [...state.pixelsToErase, pixelToErase];
+      },
       removePixelToPlace(state, pixelToPlace) {
         let i = state.pixelsToPlace.indexOf(pixelToPlace);
         if (i > -1) {
@@ -205,47 +236,22 @@ export const createStore = (app) => {
       removePixelsToPlace(state) {
         state.pixelsToPlace = [];
       },
+      removePixelsToErase(state) {
+        state.pixelsToErase = [];
+      },
       setActiveWallet(state, newActiveWallet) {
         state.activeWallet = newActiveWallet;
         window.localStorage.setItem("lastWallet", newActiveWallet.name);
-      },
-      async setActiveAccount(state, newActiveAccount) {
-        state.activeAccount = newActiveAccount;
-        state.activeAccount.nonce = await provider.getNonce(
-          newActiveAccount.address
-        );
-
-        let newSigner;
-        if (state.activeWallet.name == "Demo") {
-          state.kanvasContract = getMockupContract();
-        } else {
-          if (state.activeWallet.name == "Kondor") {
-            newSigner = kondor.getSigner(newActiveAccount.address);
-          } else if (state.activeWallet.name == "WalletConnect") {
-            newSigner = window.walletConnectKoinos.getSigner(
-              newActiveAccount.address
-            );
-          } else {
-            newSigner = Signer.fromWif(newActiveAccount.privateKey, true);
-          }
-          state.kanvasContract = getKanvasContract(newSigner);
-        }
-
-        state.koinContract = getKoinContract(newSigner);
-        app.config.globalProperties.$socket.emit(
-          "subscribe_wallet_update",
-          newActiveAccount.address
-        );
       },
       setActiveAccountNonce(state, newNonce) {
         state.activeAccount.nonce = newNonce;
       },
       setTokenBalance(state, data) {
-        state.tokenBalance[data.address] = data.balance;
+        state.addressesData[data.address].tokenBalance = data.balance;
       },
       setPixelsAmount(state, data) {
         if (!data.address) data.address = state.activeAccount?.address || "0";
-        state.pixelsAmount[data.address] = data.amount;
+        state.addressesData[data.address].pixelsAmount = data.amount;
       },
       preventNextClick(state, val = true) {
         state.preventNextClick = val;
@@ -323,19 +329,53 @@ export const createStore = (app) => {
         }
 
         commit("setActiveWallet", wallet);
-        await commit("setActiveAccount", wallet.accounts[0]);
+        await dispatch("setActiveAccount", wallet.accounts[0]);
       },
       signOut({ state }) {
         state.activeWallet = null;
         state.activeAccount = null;
       },
-      async switchAccount({ state, commit }, address) {
+      async setActiveAccount({ state, getters }, newActiveAccount) {
+        state.activeAccount = newActiveAccount;
+        /*state.activeAccount.nonce = await provider.getNonce(
+          newActiveAccount.address
+        );*/
+
+        if (!state.addressesData[newActiveAccount.address])
+          state.addressesData[newActiveAccount.address] = {};
+
+        let newSigner;
+        if (state.activeWallet.name == "Demo") {
+          state.kanvasContract = getMockupContract();
+        } else {
+          if (state.activeWallet.name == "Kondor") {
+            newSigner = kondor.getSigner(newActiveAccount.address);
+          } else if (state.activeWallet.name == "WalletConnect") {
+            newSigner = window.walletConnectKoinos.getSigner(
+              newActiveAccount.address
+            );
+          } else {
+            newSigner = Signer.fromWif(newActiveAccount.privateKey, true);
+          }
+          state.kanvasContract = getKanvasContract(newSigner);
+        }
+
+        getters.getKanvasGodsList(state.activeAccount.address, false);
+        getters.getPixelsPerTx(state.activeAccount.address, false);
+
+        state.koinContract = getKoinContract(newSigner);
+        app.config.globalProperties.$socket.emit(
+          "subscribe_wallet_update",
+          newActiveAccount.address
+        );
+      },
+      async switchAccount({ state, dispatch }, address) {
         let accountIndex = state.activeWallet.accounts.findIndex(function (
           acc
         ) {
           return acc.address == address;
         });
-        await commit(
+        await dispatch(
           "setActiveAccount",
           state.activeWallet.accounts[accountIndex]
         );
@@ -372,7 +412,7 @@ export const createStore = (app) => {
           await window.walletConnectKoinos.disconnect();
         }
       },
-      async changeKondorAccounts({ state, commit, dispatch }) {
+      async changeKondorAccounts({ state, dispatch }) {
         let accounts;
         try {
           accounts = await kondor.getAccounts();
@@ -385,7 +425,7 @@ export const createStore = (app) => {
             name: "Kondor",
             accounts: accounts,
           });
-          await commit("setActiveAccount", state.activeWallet.accounts[0]);
+          await dispatch("setActiveAccount", state.activeWallet.accounts[0]);
         } else {
           app.config.globalProperties.$error(
             "No Kondor account was selected !"
@@ -393,7 +433,7 @@ export const createStore = (app) => {
         }
       },
       async pairWalletConnectAccounts(
-        { state, commit, dispatch },
+        { state, dispatch },
         newConnection = true
       ) {
         const projectId = "52f899f5d7d7e95a07c00ea404e71902";
@@ -434,7 +474,10 @@ export const createStore = (app) => {
                 name: "WalletConnect",
                 accounts: newAccounts,
               });
-              await commit("setActiveAccount", state.activeWallet.accounts[0]);
+              await dispatch(
+                "setActiveAccount",
+                state.activeWallet.accounts[0]
+              );
             } else {
               app.config.globalProperties.$error(
                 "No WalletConnect account was selected !"

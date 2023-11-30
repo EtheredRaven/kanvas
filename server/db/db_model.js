@@ -17,7 +17,10 @@ class DbModel {
       `CREATE TABLE IF NOT EXISTS pixels (posX INTEGER, posY INTEGER, owner TEXT, red INTEGER, green INTEGER, blue INTEGER, alpha INTEGER, metadata TEXT, event_id TEXT, unvisible INTEGER, CONSTRAINT positionPK PRIMARY KEY (posX,posY), CONSTRAINT ownerFK FOREIGN KEY (owner) REFERENCES accounts(id), CONSTRAINT eventIdFK FOREIGN KEY (event_id) REFERENCES processed_events(id));`
     );
     await this.db.run(
-      `CREATE TABLE IF NOT EXISTS price_history (id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp INTEGER, kan_price_in_koin REAL, koin_price_in_dollars REAL, volume_in_kan INTEGER DEFAULT 0);`
+      `CREATE INDEX IF NOT EXISTS pixels_position_index ON pixels(posX,posY);`
+    );
+    await this.db.run(
+      `CREATE TABLE IF NOT EXISTS price_history (id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp INTEGER UNIQUE, kan_price_in_koin REAL, koin_price_in_dollars REAL, volume_in_kan INTEGER DEFAULT 0, depth_dollars_twenty_five_percent INTEGER);`
     );
     await this.db.run(
       `CREATE INDEX IF NOT EXISTS price_history_timestamp_index ON price_history(timestamp);`

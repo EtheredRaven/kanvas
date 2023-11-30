@@ -45,6 +45,18 @@ export function getMockupContract() {
     async erase_pixel() {
       return await getMockupTimeout(500, 3000)();
     },
+    pixel_count_of() {
+      return { value: 0 };
+    },
+    balance_of() {
+      return { result: { value: 3000000000 } };
+    },
+    tokens_of() {
+      return { result: { token_id: [] } };
+    },
+    pixels_per_tx_of() {
+      return { result: { value: 5 } };
+    },
   };
 }
 
@@ -64,4 +76,4 @@ export function getMockupWallet() {
   };
 }
 
-export const mockupKANNumber = 30;
+export const mockupPixelsPerTx = 5;

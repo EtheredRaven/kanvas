@@ -1,3 +1,27 @@
+<template>
+  <div>
+    <Wallet
+      ref="wallet"
+      v-on:dropdown-opened="$refs.menu.closeDropdown()"
+      @click="preventNextClick"
+    />
+    <div v-if="currentAccount && currentAccount.address">
+      <ColorPicker />
+      <div class="actionButtonsContainer topActionButtonsContainer">
+        <SavingButton
+          v-bind:tooltip="pixelsToPlace.length || pixelsToErase.length || ''"
+        />
+      </div>
+      <div class="actionButtonsContainer bottomActionButtonsContainer">
+        <EraseButton />
+        <DrawButton />
+      </div>
+    </div>
+    <CanvasComponent />
+    <ManaBar />
+  </div>
+</template>
+
 <script>
 import Wallet from "@/components/Wallet";
 import CanvasComponent from "@/components/CanvasComponent";
@@ -24,6 +48,9 @@ export default {
     pixelsToPlace() {
       return this.$store.state.pixelsToPlace;
     },
+    pixelsToErase() {
+      return this.$store.state.pixelsToErase;
+    },
   },
   methods: {
     preventNextClick() {
@@ -32,30 +59,6 @@ export default {
   },
 };
 </script>
-
-<template>
-  <div>
-    <Wallet
-      ref="wallet"
-      v-on:dropdown-opened="$refs.menu.closeDropdown()"
-      @click="preventNextClick"
-    />
-    <div v-if="currentAccount && currentAccount.address">
-      <ColorPicker />
-      <div class="actionButtonsContainer topActionButtonsContainer">
-        <SavingButton
-          v-bind:tooltip="pixelsToPlace.length ? pixelsToPlace.length : ''"
-        />
-      </div>
-      <div class="actionButtonsContainer bottomActionButtonsContainer">
-        <EraseButton />
-        <DrawButton />
-      </div>
-    </div>
-    <CanvasComponent />
-    <ManaBar />
-  </div>
-</template>
 
 <style>
 .actionButtonsContainer {
