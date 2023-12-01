@@ -10,7 +10,7 @@
     theme-color="#5956E9"
     :loading="!hasLoaded"
     :body-row-class-name="bodyRowClassNameFunction"
-    :rows-per-page="20"
+    :rows-per-page="10"
     :must-sort="true"
     :no-hover="true"
     :current-page="currentPage"

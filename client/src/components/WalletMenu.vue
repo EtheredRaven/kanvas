@@ -24,15 +24,15 @@
           }"
           v-on:click="opened = !opened"
         >
+          <!-- If there is a profile picture path (nft owned), then display instead of the avatar with the same size -->
+          <div v-if="profilePicturePath" class="sp-wallet-menu-item__avatar">
+            <img :src="profilePicturePath" />
+          </div>
           <div
-            v-if="!profilePicturePath"
+            v-else
             class="sp-wallet-menu-item__avatar"
             v-html="getAvatar(topWallet.name)"
           ></div>
-          <!-- If there is a profile picture path (nft owned), then display instead of the avatar with the same size -->
-          <div v-else class="sp-wallet-menu-item__avatar">
-            <img :src="profilePicturePath" />
-          </div>
           <div
             class="sp-wallet-menu-item__avatar-shadow"
             v-html="getAvatar(topWallet.name)"
@@ -220,7 +220,7 @@ export default defineComponent({
       let nftList =
         this.$store.state.addressesData[this.activeAccountAddress]
           .kanvasGodsList;
-      if (!nftList) return null;
+      if (!nftList || !nftList.length) return null;
       // Take the minimum of the nft string list to int because it is the most powerful
       let nft = Math.min(...nftList.map((x) => parseInt(x)));
       return "./img/gods/profile/" + nft + ".png";

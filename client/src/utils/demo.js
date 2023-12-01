@@ -45,6 +45,9 @@ export function getMockupContract() {
     async erase_pixel() {
       return await getMockupTimeout(500, 3000)();
     },
+    async erase_pixels() {
+      return await getMockupTimeout(500, 3000)();
+    },
     pixel_count_of() {
       return { value: 0 };
     },

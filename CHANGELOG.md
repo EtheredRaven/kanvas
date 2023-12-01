@@ -1,3 +1,14 @@
+# 1.5.0 (2023-12-10)
+
+- New Kanvas Gods smart-contract
+- Pixel capacity is now linked in Kanvas contract to the Kanvas Gods you own
+- By default, you can now place 5 pixels and erase 5 pixels per transaction instead of place 10 pixels and erase 1 pixel per transaction
+- Added erasing multiple pixels in one transaction
+- Improved performance for drawing complete 1000x1000 canvas
+- Added liquidity in the price chart
+- Pixels to erase now blink
+- Mutiple minor bugs correction, including showing the wrong colors in the leaderboard
+
 # 1.4.1 (2023-10-13)
 
 - Added nicknames support
