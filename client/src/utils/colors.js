@@ -20,7 +20,7 @@ export function rgbToHexNumber({ red, green, blue }) {
   let g = parseInt(green).toString(16);
   g = g.length == 1 ? "0" + g : g;
   let b = parseInt(blue).toString(16);
-  b = b.length == 1 ? "0" + blue : blue;
+  b = b.length == 1 ? "0" + b : b;
   return parseInt(`0x${r}${g}${b}`);
 }
 

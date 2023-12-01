@@ -66,13 +66,8 @@ export default function ({ graphics, vue }) {
 
   graphics.eraseSpecifiedPixel = function (pixel) {
     if (pixel) {
-      vue.pixelsMap[
-        pixel.pixelTransactionArgs.posX + ";" + pixel.pixelTransactionArgs.posY
-      ] = undefined;
-      graphics.erasePixelGraphics(
-        parseInt(pixel.pixelTransactionArgs.posX),
-        parseInt(pixel.pixelTransactionArgs.posY)
-      );
+      vue.pixelsMap[pixel.posX + ";" + pixel.posY] = undefined;
+      graphics.erasePixelGraphics(parseInt(pixel.posX), parseInt(pixel.posY));
     }
   };
 

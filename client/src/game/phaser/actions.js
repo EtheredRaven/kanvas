@@ -108,9 +108,9 @@ export default function ({ graphics, vue }) {
     }
 
     let MAX_PIXELS_PER_TX = await vue.$store.getters.getPixelsPerTx();
-    if (vue.$store.state.pixelsToPlace.length >= MAX_PIXELS_PER_TX)
+    if (vue.$store.state.pixelsToErase.length >= MAX_PIXELS_PER_TX)
       return vue.$error(
-        "You cannot place more than " +
+        "You cannot erase more than " +
           MAX_PIXELS_PER_TX +
           " pixels in one transaction. Click on save before placing new pixels!"
       );
@@ -119,7 +119,7 @@ export default function ({ graphics, vue }) {
     let pixelPosY = Math.floor(graphics.input.activePointer.worldY);
 
     if (vue.$store.state.pixelsToPlace.length) {
-      // If it's only client-side
+      // If it's in a place transaction, remove the pixel from the transaction
       let pixelToErase;
       for (let i = 0; i < vue.$store.state.pixelsToPlace.length; i++) {
         let px = vue.$store.state.pixelsToPlace[i];
@@ -148,8 +148,8 @@ export default function ({ graphics, vue }) {
         vue.$store.commit("addPixelToErase", {
           pixelTransactionArgs: {
             from: vue.activeAccountAddress,
-            pixelPosX,
-            pixelPosY,
+            posX: pixelPosX,
+            posY: pixelPosY,
           },
           graphics: loadingPixel,
           hexNumberColor: hexNumberColor,
@@ -162,25 +162,17 @@ export default function ({ graphics, vue }) {
     const kanvas = vue.$store.state.kanvasContract;
 
     try {
-      let pixels = [];
-      vue.$store.state.pixelsToErase.forEach((tx) => {
-        let newTx = {};
-        Object.assign(newTx, tx.pixelTransactionArgs);
-        let newPixelToErase = {};
-        Object.assign(newPixelToErase, newTx.pixel_to_erase);
-        newTx.pixel_to_erase = newPixelToErase;
-        pixels.push(newTx);
-      });
-
       const { transaction } = await kanvas.erase_pixels(
         {
-          erase_pixel_arguments: pixels,
+          erase_pixel_arguments: vue.$store.state.pixelsToErase.map(
+            (px) => px.pixelTransactionArgs
+          ),
         },
         {
           payer: window.Client.kanvasContractAddress,
           payee: vue.activeAccountAddress,
           rcLimit: Math.round(
-            (1.115 + 0.15 * vue.$store.state.pixelsToPlace.length) * 100000000
+            (1.115 + 0.15 * vue.$store.state.pixelsToErase.length) * 100000000
           ).toString(),
         }
       );
@@ -203,16 +195,17 @@ export default function ({ graphics, vue }) {
       );
 
       graphics.pixelsToErase.forEach((px) => {
-        graphics.eraseSpecifiedPixel(px);
+        graphics.eraseSpecifiedPixel(px.pixelTransactionArgs);
       });
 
-      vue.$store.commit("setPixelsAmount", {
-        amount: Math.max(
-          0,
-          (await vue.$store.getters.getPixelsAmount()) -
-            graphics.pixelsToErase.length
-        ),
-      });
+      transaction.demoText &&
+        vue.$store.commit("setPixelsAmount", {
+          amount: Math.max(
+            0,
+            (await vue.$store.getters.getPixelsAmount()) -
+              graphics.pixelsToErase.length
+          ),
+        });
     } catch (err) {
       let error = formatChainError(err);
       vue.$error(error);
@@ -220,6 +213,7 @@ export default function ({ graphics, vue }) {
 
     graphics.pixelsToErase.forEach((px) => {
       graphics.destroyLoadingPixel(px, false);
+      // Do not destroy the pixels in store since it is new batch being placed, temporary pixels are placed in graphics.pixelsToErase
     });
     graphics.pixelsToErase = [];
   };
@@ -271,29 +265,25 @@ export default function ({ graphics, vue }) {
       );
 
       graphics.pixelsToPlace.forEach((px) => {
-        graphics.destroyLoadingPixel(px, false);
         graphics.drawPixel(px.pixelTransactionArgs.pixel_to_place);
       });
 
-      vue.$store.commit("setPixelsAmount", {
-        amount: Math.min(
-          await vue.$store.getters.getTokenBalance(),
-          (await vue.$store.getters.getPixelsAmount()) +
-            graphics.pixelsToPlace.length
-        ),
-      });
-      graphics.pixelsToPlace = [];
+      transaction.demoText &&
+        vue.$store.commit("setPixelsAmount", {
+          amount: Math.min(
+            await vue.$store.getters.getTokenBalance(),
+            (await vue.$store.getters.getPixelsAmount()) +
+              graphics.pixelsToPlace.length
+          ),
+        });
     } catch (err) {
       let error = formatChainError(err);
-
-      // Destroy all the loading pixels
-      graphics.pixelsToPlace.forEach((px) => {
-        graphics.destroyLoadingPixel(px, false);
-      });
-      graphics.pixelsToPlace = [];
-
       vue.$error(error);
     }
+    graphics.pixelsToPlace.forEach((px) => {
+      graphics.destroyLoadingPixel(px, false);
+    });
+    graphics.pixelsToPlace = [];
   };
 
   graphics.sendTransactionToSavePixels = function () {

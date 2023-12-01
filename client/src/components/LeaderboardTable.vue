@@ -15,7 +15,8 @@
     :no-hover="true"
     :current-page="currentPage"
     ref="dataTable"
-  />
+  >
+  </EasyDataTable>
 </template>
 
 <script>

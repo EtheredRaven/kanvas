@@ -64,6 +64,8 @@ export default function ({ graphics, vue }) {
     graphics.textures.once("addtexture-pixelmap", () => {
       let img = graphics.add.image(0, 0, "pixelmap");
       img.setOrigin(0, 0);
+      graphics.pixelGraphics = graphics.add.graphics();
+      graphics.selectorGraphics = graphics.add.graphics();
     });
 
     graphics.textures.once("onerror", () => {

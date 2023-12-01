@@ -14,17 +14,12 @@ export default function ({ graphics, vue }) {
     (graphics.tSign = -graphics.tSign);
 
   // The graphics object is the local graphics object while the transaction is being validated and the player can still place pixels because the state pixels list is void
-  (graphics.pixelsToPlace.length
-    ? graphics.pixelsToPlace
-    : vue.$store.state.pixelsToPlace
-  ).forEach((px) => {
-    graphics.animateLoadingPixel(px.graphics, graphics.t);
-  });
-
-  (graphics.pixelsToErase.length
-    ? graphics.pixelsToErase
-    : vue.$store.state.pixelsToErase
-  ).forEach((px) => {
+  [
+    ...graphics.pixelsToPlace,
+    ...vue.$store.state.pixelsToPlace,
+    ...graphics.pixelsToErase,
+    ...vue.$store.state.pixelsToErase,
+  ].forEach((px) => {
     graphics.animateLoadingPixel(px.graphics, graphics.t);
   });
 

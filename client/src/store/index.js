@@ -80,7 +80,13 @@ export const createStore = (app) => {
             });
             state.addressesData[address].kanvasGodsList =
               kanvasGodsResult?.result?.token_id?.map((id) => Number(id)) || [];
-            console.log(state.addressesData[address].kanvasGodsList);
+
+            // Store it in a cookie for this address to make it default value next time it loads
+            state.addressesData[address].kanvasGodsList.length &&
+              Cookies.set(
+                "kanvasGodsList" + address,
+                state.addressesData[address].kanvasGodsList
+              );
           }
 
           return state.addressesData[address].kanvasGodsList;
@@ -206,6 +212,15 @@ export const createStore = (app) => {
           }
 
           return storedWallet;
+        };
+      },
+      getCachedData(state) {
+        // Get cached nft list from cookies to store it in the state for a given address
+        return function (address = state.activeAccount.address) {
+          let cachedData = Cookies.get("kanvasGodsList" + address);
+          if (cachedData) {
+            state.addressesData[address].nftList = JSON.parse(cachedData);
+          }
         };
       },
     },

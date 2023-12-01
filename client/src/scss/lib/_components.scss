@@ -217,13 +217,19 @@
     }
 
     .sp-wallet-menu-item__avatar {
-      width: 3.2rem;
-      height: 3.2rem;
+      min-width: 3.2rem;
+      min-height: 3.2rem;
+      max-width: 3.2rem;
+      max-height: 3.2rem;
       border-radius: 0.6rem;
       overflow: hidden;
       z-index: 1;
       position: relative;
       svg {
+        width: 100%;
+        height: 100%;
+      }
+      img {
         width: 100%;
         height: 100%;
       }
