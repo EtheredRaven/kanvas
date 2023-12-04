@@ -13,6 +13,7 @@
         />
       </div>
       <div class="actionButtonsContainer bottomActionButtonsContainer">
+        <ImportButton v-if="bestKanvasGodId" />
         <EraseButton />
         <DrawButton />
       </div>
@@ -30,6 +31,7 @@ import ManaBar from "@/components/ManaBar.vue";
 import SavingButton from "@/components/SavingButton.vue";
 import EraseButton from "@/components/EraseButton.vue";
 import DrawButton from "@/components/DrawButton.vue";
+import ImportButton from "@/components/ImportButton.vue";
 
 export default {
   components: {
@@ -40,6 +42,7 @@ export default {
     EraseButton,
     DrawButton,
     Wallet,
+    ImportButton,
   },
   computed: {
     currentAccount: function () {
@@ -50,6 +53,9 @@ export default {
     },
     pixelsToErase() {
       return this.$store.state.pixelsToErase;
+    },
+    bestKanvasGodId() {
+      return this.$store.getters.getBestKanvasGodId();
     },
   },
   methods: {

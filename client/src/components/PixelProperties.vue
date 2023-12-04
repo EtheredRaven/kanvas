@@ -7,8 +7,7 @@
         {{ shortenAddress(hoveredPixel.owner) }}
       </span>
       <br />
-      <span class="pixelColor" :style="'background:' + colorHex + ';'" />{{
-        colorHex
+      <span class="pixelColor" :style="'background:' + color + ';'" />{{ color
       }}<br />
     </span>
     {{ pointerX }} ; {{ pointerY }}
@@ -16,7 +15,7 @@
 </template>
 <script>
 import { defineComponent } from "vue";
-import { rgbToHex } from "../utils/colors";
+import { rgbaToString } from "../utils/colors";
 
 export default defineComponent({
   name: "PixelProperties",
@@ -56,15 +55,8 @@ export default defineComponent({
     activeAccountAddress: function () {
       return this.$store.state.activeAccount?.address || "";
     },
-    colorHex() {
-      return (
-        this.hoveredPixel &&
-        rgbToHex(
-          this.hoveredPixel.red,
-          this.hoveredPixel.green,
-          this.hoveredPixel.blue
-        )
-      );
+    color() {
+      return rgbaToString(this.hoveredPixel);
     },
   },
 });

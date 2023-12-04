@@ -1,4 +1,4 @@
-import { hexToHexNumber, hexToRgb, rgbToHexNumber } from "../../utils/colors";
+import { rgbaToHexNumber, stringToRgba } from "../../utils/colors";
 import { formatChainError } from "@/utils/helpers";
 //import { koinos } from "koinos-proto-js";
 //import { utils } from "koilib";
@@ -8,16 +8,12 @@ export default function ({ graphics, vue }) {
     // Zoom on the canvas, triggered with the middle mouse button
     let oldZoom = graphics.cameras.main.zoom;
     let newZoom = Math.min(
-      20,
-      Math.max(0.7, oldZoom * (1 - Math.sign(dz) / 8))
+      graphics.maxZoom,
+      Math.max(
+        graphics.minZoom,
+        oldZoom * (1 - Math.sign(dz) * graphics.zoomSpeed)
+      )
     );
-
-    // Special zoom treshold for smooth lines
-    if (newZoom > 8) {
-      oldZoom < 8 && (newZoom = 8);
-      newZoom =
-        dz > 0 ? Math.floor(newZoom / 4) * 4 : Math.ceil(newZoom / 4) * 4;
-    }
 
     // Zoom it !
     graphics.cameras.main.setZoom(newZoom);
@@ -36,17 +32,23 @@ export default function ({ graphics, vue }) {
   graphics.actionIfClicked = function () {
     // Do the click action (like place) if clicked if it is not prevented (clicking on another component) and not moving
 
-    // If there was a click and the mouse didn't moved
+    // If the user is moving the canvas, do not do the click action
     if (graphics.lastMouseClick && !graphics.hasMovedDuringClick) {
-      // Place a pixel if it's not prevented (it's prevented if the user click on the color or wallet selector)
+      // If the click was on a button, do not do the click action
       if (!vue.$store.state.preventNextClick) {
-        switch (vue.$store.state.selectedTool) {
-          case vue.$store.state.tools.DRAW:
-            graphics.placePixel();
-            break;
-          case vue.$store.state.tools.ERASE:
-            graphics.erasePixel();
-            break;
+        // If there is a placeholder image, place it on the canvas
+        if (graphics.placeholderImage) {
+          graphics.drawImagePlaceholder();
+        } else {
+          // If there is no placeholder image, place or erase a pixel
+          switch (vue.$store.state.selectedTool) {
+            case vue.$store.state.tools.DRAW:
+              graphics.placePixel();
+              break;
+            case vue.$store.state.tools.ERASE:
+              graphics.erasePixel();
+              break;
+          }
         }
       }
       vue.$store.commit("preventNextClick", false);
@@ -73,8 +75,8 @@ export default function ({ graphics, vue }) {
     }
 
     // Retrieve the data for this new pixel
-    let rgbColor = hexToRgb(vue.$store.state.selectedColor);
-    let hexNumberColor = hexToHexNumber(vue.$store.state.selectedColor);
+    let rgbColor = stringToRgba(vue.$store.state.selectedColor);
+    let hexNumberColor = rgbaToHexNumber(rgbColor);
     let pixelPosX = Math.floor(graphics.input.activePointer.worldX);
     let pixelPosY = Math.floor(graphics.input.activePointer.worldY);
 
@@ -83,16 +85,18 @@ export default function ({ graphics, vue }) {
       .image(pixelPosX + 0.5, pixelPosY + 0.5, "pixel")
       .setTint(hexNumberColor)
       .setOrigin(0.5, 0.5);
+    loadingPixel.originalAlpha = rgbColor.alpha / 255 || 1;
+
     vue.$store.commit("addPixelToPlace", {
       pixelTransactionArgs: {
         from: vue.activeAccountAddress,
         pixel_to_place: {
           posX: pixelPosX,
           posY: pixelPosY,
-          red: rgbColor.r,
-          green: rgbColor.g,
-          blue: rgbColor.b,
-          alpha: 255,
+          red: rgbColor.red,
+          green: rgbColor.green,
+          blue: rgbColor.blue,
+          alpha: rgbColor.alpha || 255,
           metadata: "",
           owner: vue.activeAccountAddress,
         },
@@ -138,12 +142,13 @@ export default function ({ graphics, vue }) {
         if (pixelToErase.owner != vue.activeAccountAddress)
           return vue.$error("You cannot erase a pixel you did not place !");
 
-        let hexNumberColor = rgbToHexNumber(pixelToErase);
+        let hexNumberColor = rgbaToHexNumber(pixelToErase);
         graphics.erasePixelGraphics(pixelPosX, pixelPosY);
         let loadingPixel = graphics.add
           .image(pixelPosX + 0.5, pixelPosY + 0.5, "pixel")
           .setTint(hexNumberColor)
           .setOrigin(0.5, 0.5);
+        loadingPixel.originalAlpha = pixelToErase.alpha / 255 || 1;
 
         vue.$store.commit("addPixelToErase", {
           pixelTransactionArgs: {
@@ -305,19 +310,63 @@ export default function ({ graphics, vue }) {
         // Store if the canvas has really been dragged
         (scrollX != 0 || scrollY != 0) && (graphics.hasMovedDuringClick = true);
 
-        // Move the canvas
-        graphics.cameras.main.setScroll(
-          graphics.cameras.main.scrollX + scrollX,
-          graphics.cameras.main.scrollY + scrollY
-        );
+        // Add an acceleration
+        graphics.scrollSpeedX += scrollX * graphics.scrollAcceleration;
+        graphics.scrollSpeedY += scrollY * graphics.scrollAcceleration;
       }
 
       // Save the last mouse position to know how much we need to move the canvas on the next tick
       graphics.lastMouseClick = [pointer.x, pointer.y];
-
-      // Don't do the click action since the canvas is being moved
-      return false;
     }
-    return true;
+
+    // Scrolling friction
+    graphics.scrollSpeedX *= graphics.scrollFriction;
+    graphics.scrollSpeedY *= graphics.scrollFriction;
+
+    // Move the canvas
+    graphics.cameras.main.setScroll(
+      graphics.cameras.main.scrollX + graphics.scrollSpeedX,
+      graphics.cameras.main.scrollY + graphics.scrollSpeedY
+    );
+    return !pointer.primaryDown;
+  };
+
+  graphics.importSelectedImageAsPixelsPlaceholder = function (imageElement) {
+    // This function is called when the user import an image to put it on the canvas as a placeholder
+    // First step, the image should follow the mouse and be placed on the canvas when clicked
+
+    // Draw a texture with this imageElement
+    let placeholderId = "placeHolder" + Math.random().toString(36).substring(7);
+    graphics.textures.addImage(placeholderId, imageElement);
+    graphics.placeholderImage = graphics.add
+      .image(
+        graphics.input.activePointer.worldX,
+        graphics.input.activePointer.worldY,
+        placeholderId
+      )
+      .setOrigin(0.5, 0.5);
+    graphics.placeholderImage.element = imageElement;
+  };
+
+  graphics.drawImagePlaceholder = function () {
+    // Add the image to the placeholders canvas on the mouse position but taking into account the image origin
+    let mousePosX = Math.floor(
+      graphics.input.activePointer.worldX -
+        0.5 * graphics.placeholderImage.width
+    );
+    let mousePosY = Math.floor(
+      graphics.input.activePointer.worldY -
+        0.5 * graphics.placeholderImage.height
+    );
+    graphics.placeholdersCanvas
+      .getContext("2d")
+      .drawImage(graphics.placeholderImage.element, mousePosX, mousePosY);
+
+    graphics.placeholderImage.setAlpha(0.7);
+    graphics.placeholderImage = null;
+
+    // Put the new pixels in front of the placeholder image
+    graphics.pixelGraphics = graphics.add.graphics();
+    graphics.selectorGraphics = graphics.add.graphics();
   };
 }

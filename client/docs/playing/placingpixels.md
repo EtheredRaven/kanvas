@@ -26,7 +26,7 @@ To choose the color of the pixel you want to place, click on the black square be
 
 ## Placing a pixel
 
-Once you've chosen a color, it's easy to place the pixel: just click where you want to place it. A blinking placeholder indicates the position where it will be placed. You can place up to ten pixels without saving your design. Once you've placed ten pixels or less, you can click on save to the left of the color choice button at the top right of the screen. This will send the transaction and save your design on the blockchain and on Kanvas.
+Once you've chosen a color, it's easy to place the pixel: just click where you want to place it. A blinking placeholder indicates the position where it will be placed. You can place up to **five pixels** without saving your design. It is the default value if you don't own a [Kanvas God](./kanvasgods) and can go up to 100 pixels per transaction with the best tier (Almighty). Once you've placed your pixels, you can click on save to the left of the color choice button at the top right of the screen. This will send the transaction and save your design on the blockchain and on Kanvas.
 
 ::: warning Be careful to save your drawing !
 Be careful not to leave the page if you haven't saved, otherwise your entire design will be lost, as it will not have been sent or saved on the blockchain.

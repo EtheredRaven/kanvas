@@ -29,7 +29,7 @@ export const createStore = (app) => {
         DRAW: 1,
         ERASE: 2,
       },
-      selectedColor: "#000000",
+      selectedColor: "rgba(0, 0, 0, 1)",
       selectedTool: 1,
       preventNextClick: false,
       walletsList: JSON.parse(window.localStorage.getItem("wallets")) || [
@@ -91,6 +91,14 @@ export const createStore = (app) => {
 
           return state.addressesData[address].kanvasGodsList;
         },
+      getBestKanvasGodId: (state) => {
+        return function (address = state.activeAccount.address) {
+          let kanvasGodsList = state.addressesData[address].kanvasGodsList;
+          if (!kanvasGodsList || !kanvasGodsList.length) return 0;
+          let minId = Math.min(...kanvasGodsList.map((x) => parseInt(x)));
+          return minId;
+        };
+      },
       getPixelsPerTx:
         (state) =>
         async (address = state.activeAccount.address, cache = true) => {

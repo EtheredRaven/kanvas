@@ -51,7 +51,7 @@ export default function ({ graphics, vue }) {
     for (let i = 0; i < vue.pixelsArray.length; i++) {
       let pixelToDraw = vue.pixelsArray[i];
       data[pixelToDraw.posY * canvasWidth + pixelToDraw.posX] =
-        (255 << 24) | // alpha
+        (pixelToDraw.alpha << 24) | // alpha
         (pixelToDraw.blue << 16) | // blue
         (pixelToDraw.green << 8) | // green
         pixelToDraw.red; // red

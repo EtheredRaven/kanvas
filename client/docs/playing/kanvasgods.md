@@ -8,11 +8,7 @@ head:
 
 # Kanvas Gods - NFT Collection
 
-## Introducing Kanvas Gods, Greek deities are coming to shape Kanvas !
-
-Published on 23/11/23 by **Red Raven**
-
-### A NFT collection fully integrated in Kanvas
+## A NFT collection fully integrated in Kanvas
 
 **Kanvas Gods** is a unique and exclusive NFT collection, fully integrated into the Kanvas gameplay and inspired by Greek mythology, where gods shape the digital world of Kanvas. The collection begins with the **'Almighty'** tier, featuring only three tokens representing the divine rulers—Zeus, Poseidon, and Hades. Below, you'll find a preview of their portraits, but the complete NFTs will showcase the full images set against detailed backgrounds.
 
@@ -20,9 +16,9 @@ Published on 23/11/23 by **Red Raven**
 
 This is followed by the **'Olympian'** tier, comprising eleven tokens. Each NFT in these tiers endows its holder with enhanced capabilities on the canvas, including extensive pixel placement, improved erasing, and the ability to import images, reflecting the might and creativity of ancient Greek deities shaping the pixelated world of Kanvas.
 
-### The NFT sale
+## The NFT sale
 
-The initial sale will only feature these **14 pre-minted prestigious NFTs**, with subsequent releases introducing the Divine, Mythical, and Classical tiers. It will take place on the **1st of December** 2023, at **7PM UTC** on [Kollection](https://kollection.app/). As a future holder of these esteemed NFTs, you will not merely participating in a game; you are actively shaping a digital world, pixel by pixel, in a manner reminiscent of the democratic ethos that flourished in the Greek polis. Join us in this innovative venture and imprint your legacy on the ever-evolving tapestry of Kanvas !
+The initial sale will featured these **14 pre-minted prestigious NFTs**, with subsequent releases introducing the Divine, Mythical, and Classical tiers. It took place on the **1st of December** 2023, at **7PM UTC** on [Kollection](https://kollection.app/). As a holder of these esteemed NFTs, you not merely participate in a game; you are actively shaping a digital world, pixel by pixel, in a manner reminiscent of the democratic ethos that flourished in the Greek polis.
 
 ## NFT Tiers
 
@@ -72,14 +68,14 @@ All these information are synthetised in the table down below
 |   Category   | NFTs number | Launch date  | Max pixels per transaction | Max imported image size |
 | :----------: | :---------: | :----------: | :------------------------: | :---------------------: |
 | **Almighty** |      3      | 1st December |            100             |      65536 pixels       |
-| **Olympian** |     11      | 1st December |             50             |      16364 pixels       |
+| **Olympian** |     11      | 1st December |             50             |      16384 pixels       |
 |    Divine    |     25      |     TBA      |             25             |       4096 pixels       |
 |   Mythical   |     50      |     TBA      |             15             |       256 pixels        |
 |  Classical   |     100     |     TBA      |             10             |        64 pixels        |
 
 ## Conclusion
 
-Kanvas Gods NFT collection is more than just an artistic feat; it's **a supporting step** towards expanding Kanvas's reach. Proceeds will facilitate a centralized exchange listing and enhance liquidity in the **KoinDX pool**, setting the stage for a **Coinmarketcap** listing. This strategic funding is pivotal for Kanvas's growth and accessibility. Our roadmap teems with potential featuring the upcoming NFT batches.
+Kanvas Gods NFT collection is more than just an artistic feat; it's **a supporting step** towards expanding Kanvas's reach. Proceeds facilitates a centralized exchange listing and enhance liquidity in the **KoinDX pool**, setting the stage for a **Coinmarketcap** listing.
 
 ::: tip A NFT crafted with care
 Each god, from their attributes to their positioning, has been crafted with care. The process begins with a first draft created using DALL-E 3, followed by intensive refining and photoshopping. A full three days are dedicated to perfecting each image, ensuring that every NFT is a masterpiece in its own right.

@@ -1,6 +1,7 @@
 <script>
 import { ColorPicker } from "vue-color-kit";
 import "vue-color-kit/dist/vue-color-kit.css";
+import { rgbaToString } from "../utils/colors";
 
 export default {
   components: {
@@ -9,15 +10,17 @@ export default {
   data() {
     return {
       showColorPicker: false,
-      color: this.$store.state.selectedColor,
     };
   },
   computed: {
+    color() {
+      return this.$store.state.selectedColor;
+    },
     selectedColorStyle() {
       return `
         width:4rem;
         height:4rem;
-        background-color:${this.$store.state.selectedColor};
+        background-color:${this.color};
         cursor: pointer;
         position: fixed;
         top: 9rem;
@@ -42,8 +45,15 @@ export default {
   },
   methods: {
     changeColor(color) {
-      this.$store.commit("changeColor", color.hex);
-      this.color = color.hex;
+      this.$store.commit(
+        "changeColor",
+        rgbaToString({
+          r: color.rgba.r,
+          g: color.rgba.g,
+          b: color.rgba.b,
+          a: Math.round(color.rgba.a * 255),
+        })
+      );
     },
     preventNextClick() {
       // When you chose a color, it should not add a pixel on the map

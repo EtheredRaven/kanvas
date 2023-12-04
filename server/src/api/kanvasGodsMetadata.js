@@ -1,3 +1,31 @@
+const nftTiers = {
+  Almighty: {
+    "Max pixels per transaction": 100,
+    "Max imported image size": 65536,
+    Size: 3,
+  },
+  Olympian: {
+    "Max pixels per transaction": 50,
+    "Max imported image size": 16364,
+    Size: 11,
+  },
+  Divine: {
+    "Max pixels per transaction": 25,
+    "Max imported image size": 4096,
+    Size: 25,
+  },
+  Mythical: {
+    "Max pixels per transaction": 15,
+    "Max imported image size": 256,
+    Size: 50,
+  },
+  Classical: {
+    "Max pixels per transaction": 10,
+    "Max imported image size": 64,
+    Size: 100,
+  },
+};
+
 module.exports = function (Server) {
   const nftMetadata = [
     {
@@ -128,29 +156,6 @@ module.exports = function (Server) {
     },
   ];
 
-  const nftTiers = {
-    Almighty: {
-      "Max pixels per transaction": 100,
-      "Max imported image size": 65536,
-    },
-    Olympian: {
-      "Max pixels per transaction": 50,
-      "Max imported image size": 16364,
-    },
-    Divine: {
-      "Max pixels per transaction": 25,
-      "Max imported image size": 4096,
-    },
-    Mythical: {
-      "Max pixels per transaction": 15,
-      "Max imported image size": 256,
-    },
-    Classical: {
-      "Max pixels per transaction": 10,
-      "Max imported image size": 64,
-    },
-  };
-
   function hexStringToAsciiInt(hexString) {
     // Remove the '0x' prefix if present
     if (hexString.startsWith("0x")) {
@@ -174,7 +179,6 @@ module.exports = function (Server) {
       tokenId = tokenId.substring(2);
     }
     tokenId = hexStringToAsciiInt(tokenId, 16) - 1;
-    console.log(tokenId);
 
     if (isNaN(tokenId) || tokenId < 0 || tokenId >= nftMetadata.length)
       return {};

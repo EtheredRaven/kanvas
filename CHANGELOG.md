@@ -1,4 +1,11 @@
-# 1.5.0 (2023-12-10)
+# 1.5.1 (2023-12-04)
+
+- Improved canvas dragging
+- Color transparency support
+- Addition of import image tool
+- Revised documentation
+
+# 1.5.0 (2023-12-01)
 
 - New Kanvas Gods smart-contract
 - Pixel capacity is now linked in Kanvas contract to the Kanvas Gods you own

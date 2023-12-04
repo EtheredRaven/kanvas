@@ -31,7 +31,7 @@ export default defineConfig({
         link: "https://app.koindx.com/swap?input=15DJN4a8SgrbGhhGksSBASiSYjGnMU8dGL&output=1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS",
       },
       {
-        text: "1.5.0",
+        text: "1.5.1",
         items: [
           {
             text: "Changelog",
@@ -80,6 +80,10 @@ export default defineConfig({
           {
             text: "Erasing pixels",
             link: "/playing/erasingpixels",
+          },
+          {
+            text: "Importing a placeholder image",
+            link: "/playing/importimage",
           },
           { text: "Troubleshooting", link: "/playing/troubleshooting" },
         ],

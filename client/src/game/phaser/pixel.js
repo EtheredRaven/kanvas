@@ -1,4 +1,8 @@
-import { hexToHexNumber, rgbToHexNumber } from "../../utils/colors";
+import {
+  stringToHexNumber,
+  rgbaToHexNumber,
+  stringToRgba,
+} from "../../utils/colors";
 
 export default function ({ graphics, vue }) {
   graphics.drawPixel = function (pixel) {
@@ -6,7 +10,10 @@ export default function ({ graphics, vue }) {
     vue.pixelsMap[pixel.posX + ";" + pixel.posY] = pixel;
 
     // Draw the pixel
-    graphics.pixelGraphics.fillStyle(parseInt(rgbToHexNumber(pixel)));
+    graphics.pixelGraphics.fillStyle(
+      parseInt(rgbaToHexNumber(pixel)),
+      pixel.alpha / 255
+    );
     graphics.pixelGraphics.fillRect(
       parseInt(pixel.posX),
       parseInt(pixel.posY),
@@ -16,20 +23,22 @@ export default function ({ graphics, vue }) {
   };
 
   graphics.drawPixelPlaceholder = function () {
-    // Draw the pixel placeholder
-
     // Clear the previous one
     graphics.selectorGraphics.clear();
 
     // Draw the new one with the selected color
+    // Set the opacity for the placeholder
+
+    const placeholderColorOpacity =
+      stringToRgba(vue.$store.state.selectedColor).a / 255;
     graphics.selectorGraphics.lineStyle(
       2 / graphics.cameras.main.zoom,
-      hexToHexNumber(vue.$store.state.selectedColor),
-      1
+      stringToHexNumber(vue.$store.state.selectedColor),
+      placeholderColorOpacity
     );
     graphics.selectorGraphics.fillStyle(
-      hexToHexNumber(vue.$store.state.selectedColor),
-      0.5
+      stringToHexNumber(vue.$store.state.selectedColor),
+      0.5 * placeholderColorOpacity
     );
     graphics.cameras.main.zoom > 8 &&
       graphics.selectorGraphics.strokeRect(
@@ -51,7 +60,7 @@ export default function ({ graphics, vue }) {
     // Animate the loading pixel
     t = t / graphics.periodicity;
     let alphaFactor = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-    px.alpha = alphaFactor;
+    px.alpha = alphaFactor * px.originalAlpha;
   };
 
   graphics.destroyLoadingPixel = function (loadingPixel, removeInStore = true) {
