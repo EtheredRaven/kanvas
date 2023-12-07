@@ -35,7 +35,7 @@ module.exports = async function (Server) {
   const LEADERBOARD_UPDATE_FREQUENCY_IN_SECONDS = 60;
   let updateLeaderboardFunction = async () => {
     Server.leaderboardData = await Server.db.all(
-      "SELECT * FROM accounts ORDER BY pixels_balance DESC"
+      "SELECT * FROM accounts WHERE token_balance >= 10000000 ORDER BY pixels_balance DESC"
     );
     Server.infoLogging("Updated leaderboard data");
   };

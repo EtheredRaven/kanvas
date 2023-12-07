@@ -1,3 +1,12 @@
+# 1.5.2 (2023-12-07)
+
+- Improved canvas zooming
+- Animations
+- Adding of the zoom level indicator
+- Addition of graphics elements
+- Not possible anymore to place two pixels on the same position in one transaction
+- Pinch touch zooming for tactile devices
+
 # 1.5.1 (2023-12-04)
 
 - Improved canvas dragging

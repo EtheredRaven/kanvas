@@ -12,7 +12,12 @@
       <slot></slot>
     </div>
   </router-link>
-  <button class="sp-card" :class="'sp-card-' + type" v-else>
+  <button
+    class="sp-card"
+    :class="'sp-card-' + type"
+    v-else
+    :style="additionalStyle"
+  >
     <div class="sp-card__icon">
       <span class="sp-icon" :class="'icon-' + icon" />
     </div>
@@ -35,6 +40,9 @@ export default defineComponent({
       reequired: true,
     },
     link: {
+      type: String,
+    },
+    additionalStyle: {
       type: String,
     },
   },

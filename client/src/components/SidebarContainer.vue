@@ -2,7 +2,12 @@
   <SidebarInside
     v-on:sidebar-open="sidebarOpen = true"
     v-on:sidebar-close="sidebarOpen = false"
-    v-on:click="preventNextClick"
+    @onmousedown="Client.preventCanvasClick"
+    @onmouseup="Client.preventCanvasClick"
+    @touchstart="Client.preventCanvasClick"
+    @touchend="Client.preventCanvasClick"
+    @touchcancel="Client.preventCanvasClick"
+    @click="Client.preventCanvasClick"
   >
     <template v-slot:header
       ><img
@@ -68,11 +73,6 @@ export default {
     return {
       sidebarOpen: true,
     };
-  },
-  methods: {
-    preventNextClick() {
-      this.$store.commit("preventNextClick", true);
-    },
   },
 };
 </script>

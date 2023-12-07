@@ -47,7 +47,6 @@ html {
     transition: 0.5s left ease;
   }
   .sp-sidebar__header {
-    width: 0rem;
     overflow: hidden;
     white-space: nowrap;
     font-size: 3rem;
@@ -56,14 +55,12 @@ html {
     margin-left: 4px;
   }
   .sp-sidebar__content {
-    width: 0rem;
     overflow: hidden;
     white-space: nowrap;
     padding-top: 6px;
   }
 
   .sp-sidebar__footer {
-    width: 0rem;
     overflow: hidden;
     white-space: nowrap;
 

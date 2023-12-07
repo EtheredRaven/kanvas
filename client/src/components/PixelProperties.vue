@@ -1,5 +1,13 @@
 <template>
-  <div class="pixelsInfo" @click="preventNextClick">
+  <div
+    class="pixelsInfo"
+    @onmousedown="Client.preventCanvasClick"
+    @onmouseup="Client.preventCanvasClick"
+    @touchstart="Client.preventCanvasClick"
+    @touchend="Client.preventCanvasClick"
+    @touchcancel="Client.preventCanvasClick"
+    @click="Client.preventCanvasClick"
+  >
     <span v-if="hoveredPixel">
       <span v-if="hoveredAccountName" class="bold">
         {{ hoveredAccountName }} </span
@@ -10,7 +18,12 @@
       <span class="pixelColor" :style="'background:' + color + ';'" />{{ color
       }}<br />
     </span>
-    {{ pointerX }} ; {{ pointerY }}
+    <img
+      src="../../public/img/coordinates.svg"
+      alt="coordinates"
+      class="coordinates"
+    />
+    ({{ pointerX }} ; {{ pointerY }})
   </div>
 </template>
 <script>
@@ -35,9 +48,6 @@ export default defineComponent({
     };
   },
   methods: {
-    preventNextClick() {
-      this.$store.commit("preventNextClick", true);
-    },
     shortenAddress(addr) {
       return addr.substr(0, 10) + "..." + addr.slice(-5);
     },
@@ -67,12 +77,12 @@ export default defineComponent({
   position: absolute;
   right: 2rem;
   bottom: 2rem;
-  text-align: right;
+  text-align: center;
   line-height: 1.5rem;
   padding: 0.7rem 1rem;
   background: white;
   border-radius: 1rem;
-  border: 1px solid black;
+  box-shadow: 0 0.8rem 1.6rem -0.3rem rgba(140, 148, 159, 0.15);
 }
 
 .bold {
@@ -86,5 +96,10 @@ export default defineComponent({
   margin-right: 4px;
   border-radius: 2px;
   box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 2px;
+}
+
+.coordinates {
+  width: 15px;
+  margin-bottom: -4px;
 }
 </style>

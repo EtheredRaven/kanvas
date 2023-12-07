@@ -53,6 +53,7 @@ export default defineComponent({
   methods: {
     copyMnemonic: function () {
       copyToClipboard(this.mnemonic);
+      this.$info("Copy successful!", "Mnemonic copied to clipboard");
     },
   },
 });

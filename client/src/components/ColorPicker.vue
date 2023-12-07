@@ -55,16 +55,20 @@ export default {
         })
       );
     },
-    preventNextClick() {
-      // When you chose a color, it should not add a pixel on the map
-      this.$store.commit("preventNextClick", true);
-    },
   },
 };
 </script>
 
 <template>
-  <div @click="preventNextClick">
+  <div
+    @onmousedown="Client.preventCanvasClick"
+    @onmouseup="Client.preventCanvasClick"
+    @touchstart="Client.preventCanvasClick"
+    @touchend="Client.preventCanvasClick"
+    @touchcancel="Client.preventCanvasClick"
+    @click="Client.preventCanvasClick"
+    class="animate__animated animate__bounceInRight"
+  >
     <div
       :style="selectedColorStyle"
       @click="showColorPicker = !showColorPicker"

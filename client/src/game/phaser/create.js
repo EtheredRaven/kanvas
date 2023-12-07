@@ -2,7 +2,8 @@ export default function ({ graphics }) {
   // Init game canvas
   graphics.renderer.clearBeforeRender = false;
   graphics.cameras.main.setRoundPixels(false);
-  graphics.cameras.main.zoom = 4;
+  graphics.cameras.main.zoom = 1;
+  graphics.targetZoom = graphics.cameras.main.zoom;
 
   // Zooming behavior
   graphics.input.on("wheel", (pointer, dx, dy, dz) => {
@@ -23,11 +24,12 @@ export default function ({ graphics }) {
   // Canvas scrolling
   graphics.scrollSpeedX = 0;
   graphics.scrollSpeedY = 0;
-  graphics.scrollAcceleration = 0.2;
+  graphics.scrollAcceleration = 0.16;
   graphics.scrollMaxSpeed = 5;
   graphics.scrollFriction = 0.9;
 
   // Canvas zooming
+  graphics.easeZoomSpeed = 0.1;
   graphics.zoomSpeed = 0.08;
   graphics.maxZoom = 30;
   graphics.minZoom = 0.5;
@@ -35,10 +37,10 @@ export default function ({ graphics }) {
   // Add escape keyboard listener
   graphics.escapeKey = graphics.input.keyboard.addKey("ESC");
 
-  // Add a placeholder hideen canvas and set to the same size as the game canvas
+  // Add a placeholder hidden canvas and set to the same size as the game canvas
   // It will be only used for knowing the color of the pixels of the placeholder images
   graphics.placeholdersCanvas = document.createElement("canvas");
-  graphics.placeholdersCanvas.width = graphics.game.canvas.width;
-  graphics.placeholdersCanvas.height = graphics.game.canvas.height;
+  graphics.placeholdersCanvas.width = graphics.game.canvas.width * 2;
+  graphics.placeholdersCanvas.height = graphics.game.canvas.height * 2;
   graphics.placeholdersCanvas.style.display = "none";
 }

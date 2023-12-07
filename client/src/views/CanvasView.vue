@@ -3,19 +3,27 @@
     <Wallet
       ref="wallet"
       v-on:dropdown-opened="$refs.menu.closeDropdown()"
-      @click="preventNextClick"
+      @onmousedown="Client.preventCanvasClick"
+      @onmouseup="Client.preventCanvasClick"
+      @touchstart="Client.preventCanvasClick"
+      @touchend="Client.preventCanvasClick"
+      @touchcancel="Client.preventCanvasClick"
+      @click="Client.preventCanvasClick"
     />
-    <div v-if="currentAccount && currentAccount.address">
-      <ColorPicker />
-      <div class="actionButtonsContainer topActionButtonsContainer">
-        <SavingButton
-          v-bind:tooltip="pixelsToPlace.length || pixelsToErase.length || ''"
-        />
-      </div>
-      <div class="actionButtonsContainer bottomActionButtonsContainer">
-        <ImportButton v-if="bestKanvasGodId" />
-        <EraseButton />
-        <DrawButton />
+    <!-- Fade opacity animation -->
+    <div class="buttonsContainer">
+      <div v-if="currentAccount && currentAccount.address">
+        <ColorPicker />
+        <div class="actionButtonsContainer topActionButtonsContainer">
+          <SavingButton
+            v-bind:tooltip="pixelsToPlace.length || pixelsToErase.length || ''"
+          />
+        </div>
+        <div class="actionButtonsContainer bottomActionButtonsContainer">
+          <ImportButton v-if="bestKanvasGodId" />
+          <EraseButton />
+          <DrawButton />
+        </div>
       </div>
     </div>
     <CanvasComponent />
@@ -58,11 +66,6 @@ export default {
       return this.$store.getters.getBestKanvasGodId();
     },
   },
-  methods: {
-    preventNextClick() {
-      this.$store.commit("preventNextClick", true);
-    },
-  },
 };
 </script>
 
@@ -82,5 +85,9 @@ export default {
   top: 14rem;
   right: 2rem;
   flex-direction: column-reverse;
+}
+
+.buttonsContainer {
+  transition: 0.3s ease;
 }
 </style>

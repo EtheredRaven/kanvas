@@ -5,6 +5,7 @@ import preload from "./preload.js";
 import init from "./init.js";
 import pixel from "./pixel.js";
 import actions from "./actions";
+//import admin from "./admin";
 
 function launch(containerId, vue) {
   return new Phaser.Game({
@@ -14,6 +15,9 @@ function launch(containerId, vue) {
     type: Phaser.AUTO,
     pixelArt: true,
     parent: containerId,
+    input: {
+      activePointers: 3,
+    },
     scene: {
       init() {
         init({ vue: vue, graphics: this });
@@ -25,6 +29,7 @@ function launch(containerId, vue) {
         create({ vue: vue, graphics: this });
         pixel({ vue: vue, graphics: this });
         actions({ vue: vue, graphics: this });
+        //admin({ vue: vue, graphics: this });
       },
       update() {
         update({ vue: vue, graphics: this });

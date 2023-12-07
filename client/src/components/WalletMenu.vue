@@ -1,6 +1,7 @@
 <template>
   <div
-    class="sp-wallet-menu sp-rounded sp-shadow"
+    class="sp-wallet-menu sp-rounded sp-shadow animate__animated animate__bounceInDown"
+    id="walletsListContainer"
     :class="{ 'sp-opened': opened }"
     v-if="!unlocking"
     v-click-outside="
@@ -9,11 +10,14 @@
       }
     "
   >
-    <div class="sp-wallet-menu__toggle" v-on:click="opened = !opened">
-      <span
-        class="sp-icon"
-        :class="{ 'icon-DownCaret': !opened, 'icon-UpCaret': opened }"
-      />
+    <div class="sp-wallet-menu__toggle animate__animated animate__bounceIn">
+      <span class="sp-icon" v-on:click="opened = !opened"
+        ><img
+          src="../../public/img/down.svg"
+          class="downIcon"
+          alt="down"
+          :style="opened ? 'transform: rotate(180deg)' : ''"
+      /></span>
     </div>
     <div class="sp-wallet-menu-items">
       <template v-if="topWallet">
@@ -22,7 +26,6 @@
           :class="{
             'sp-wallet-menu-item__locked': topWallet.name != walletName,
           }"
-          v-on:click="opened = !opened"
         >
           <!-- If there is a profile picture path (nft owned), then display instead of the avatar with the same size -->
           <div v-if="profilePicturePath" class="sp-wallet-menu-item__avatar">
@@ -51,29 +54,28 @@
             <span class="sp-text" v-else>Locked</span>
           </div>
           <div class="sp-wallet-menu-item__status">
-            <span
-              class="sp-icon"
-              :class="{
-                'icon-Unlock': topWallet.name == walletName,
-                'icon-Lock': topWallet.name != walletName,
-              }"
-              v-if="opened"
-              v-on:click="toggleWallet(topWallet.name)"
+            <LockIcon
+              :isLocked="topWallet.name != walletName"
+              :clickFunction="() => toggleWallet(topWallet.name)"
             />
           </div>
         </div>
       </template>
-      <template v-if="topWallet.name == walletName">
-        <div class="sp-wallet-menu__accounts">
-          <AccountList v-on:accountSelected="() => (opened = false)" />
-        </div>
-      </template>
+      <div id="accountsList">
+        <template v-if="topWallet.name == walletName">
+          <div class="sp-wallet-menu__accounts">
+            <AccountList
+              v-on:accountSelected="() => (opened = false)"
+              @kondorAccountsChanged="kondorAccountsChanged"
+            />
+          </div>
+        </template>
+      </div>
       <div
         class="sp-wallet-menu-item"
         :class="{ 'sp-wallet-menu-item__locked': wallet.name != walletName }"
         v-for="(wallet, index) in restWallets"
         v-bind:key="wallet.name"
-        v-on:click="toggleWallet(wallet.name)"
       >
         <div
           class="sp-wallet-menu-item__avatar"
@@ -99,14 +101,9 @@
           <span class="sp-text" v-else> Locked </span>
         </div>
         <div class="sp-wallet-menu-item__status">
-          <span
-            class="sp-icon"
-            :class="{
-              'icon-Unlock': wallet.name == walletName,
-              'icon-Lock': wallet.name != walletName,
-            }"
-            v-if="topWallet || index > 0 || opened"
-            v-on:click="toggleWallet(wallet.name)"
+          <LockIcon
+            :isLocked="wallet.name != walletName"
+            :clickFunction="() => toggleWallet(wallet.name)"
           />
         </div>
       </div>
@@ -120,11 +117,12 @@
       </div>
     </div>
   </div>
-  <div class="sp-wallet-menu sp-rounded sp-opened" v-else-if="unlocking">
-    <div
-      class="sp-wallet-menu__toggle"
-      v-on:click="(unlocking = false), (toUnlock = null)"
-    >
+  <div
+    class="sp-wallet-menu sp-rounded sp-opened sp-shadow animate__animated animate__slideInRight"
+    id="unlockWalletContainer"
+    v-else-if="unlocking"
+  >
+    <div class="sp-wallet-menu__toggle" v-on:click="close">
       <span
         class="sp-icon"
         :class="{
@@ -180,6 +178,7 @@
 import { defineComponent } from "vue";
 import AccountList from "./AccountList";
 import KanvasButton from "./KanvasButton";
+import LockIcon from "./LockIcon";
 import LinkIcon from "./LinkIcon";
 import { createAvatar } from "@dicebear/core";
 import { identicon } from "@dicebear/collection";
@@ -190,6 +189,7 @@ export default defineComponent({
     AccountList,
     KanvasButton,
     LinkIcon,
+    LockIcon,
   },
   emits: ["createNew"],
   created() {
@@ -253,6 +253,23 @@ export default defineComponent({
     },
   },
   methods: {
+    kondorAccountsChanged() {
+      this.$animateTransition(
+        document.getElementById("walletsListContainer")
+      ).then(() => {
+        this.$animateTransition(
+          document.getElementById("walletsListContainer")
+        );
+      });
+    },
+    close() {
+      this.$animateTransition(
+        document.getElementById("unlockWalletContainer")
+      ).then(() => {
+        this.unlocking = false;
+        this.toUnlock = null;
+      });
+    },
     shortenAddress: function (addr) {
       return addr.substr(0, 10) + "..." + addr.slice(-5);
     },
@@ -267,28 +284,44 @@ export default defineComponent({
       return svg;
     },
     unlockStoreWallet: async function () {
-      try {
-        await this.$store.dispatch("unlockWallet", {
-          name: this.walletToUnlock?.name,
-          password: this.password,
-        });
-        this.unlocking = false;
-      } catch (err) {
-        this.$error("Your password is wrong !");
-        this.unlocking = false;
-        this.toUnlock = "";
-      }
+      this.$animateTransition(
+        document.getElementById("unlockWalletContainer")
+      ).then(async () => {
+        try {
+          await this.$store.dispatch("unlockWallet", {
+            name: this.walletToUnlock?.name,
+            password: this.password,
+          });
+          this.unlocking = false;
+        } catch (err) {
+          this.$error("Your password is wrong !");
+          this.unlocking = false;
+          this.toUnlock = "";
+        }
+      });
     },
     createNewWallet: function () {
-      this.$emit("createNew");
+      this.$animateTransition(
+        document.getElementById("walletsListContainer")
+      ).then(() => {
+        this.$emit("createNew");
+      });
     },
     toggleWallet: async function (name) {
-      if (name != this.walletName) {
+      await this.$animateTransition(
+        document.getElementById("walletsListContainer")
+      );
+      let isWalletLocked = name != this.walletName;
+      if (isWalletLocked) {
         if (name == "Kondor" || name == "WalletConnect" || name == "Demo") {
           await this.$store.dispatch("unlockWallet", {
             name,
             password: null,
           });
+
+          this.$animateTransition(
+            document.getElementById("walletsListContainer")
+          );
         } else {
           this.toUnlock = name;
           this.unlocking = true;
@@ -297,8 +330,19 @@ export default defineComponent({
         await this.$store.dispatch("signOut");
         this.toUnlock = "";
         this.unlocking = false;
+        this.$animateTransition(
+          document.getElementById("walletsListContainer")
+        );
       }
     },
   },
 });
 </script>
+
+<style>
+.downIcon {
+  margin-top: -2px;
+  transition: 0.3s ease;
+  color: #a0a0a0;
+}
+</style>

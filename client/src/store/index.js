@@ -31,7 +31,7 @@ export const createStore = (app) => {
       },
       selectedColor: "rgba(0, 0, 0, 1)",
       selectedTool: 1,
-      preventNextClick: false,
+      zoomLevel: 1,
       walletsList: JSON.parse(window.localStorage.getItem("wallets")) || [
         getMockupWallet(),
       ],
@@ -236,6 +236,9 @@ export const createStore = (app) => {
       setSelectedTool(state, newSelectedTool) {
         state.selectedTool = newSelectedTool;
       },
+      setZoomLevel(state, newZoomLevel) {
+        state.zoomLevel = newZoomLevel;
+      },
       addPixelToPlace(state, pixelToPlace) {
         state.pixelsToPlace = [...state.pixelsToPlace, pixelToPlace];
       },
@@ -275,9 +278,6 @@ export const createStore = (app) => {
       setPixelsAmount(state, data) {
         if (!data.address) data.address = state.activeAccount?.address || "0";
         state.addressesData[data.address].pixelsAmount = data.amount;
-      },
-      preventNextClick(state, val = true) {
-        state.preventNextClick = val;
       },
       changeColor(state, newColor) {
         state.selectedColor = newColor;
@@ -441,18 +441,23 @@ export const createStore = (app) => {
           accounts = await kondor.getAccounts();
         } catch (error) {
           app.config.globalProperties.$error(error);
+          return false;
         }
         if (accounts.length) {
-          dispatch("deleteWallet", "Kondor");
-          dispatch("addWallet", {
-            name: "Kondor",
-            accounts: accounts,
-          });
-          await dispatch("setActiveAccount", state.activeWallet.accounts[0]);
+          setTimeout(async () => {
+            dispatch("deleteWallet", "Kondor");
+            dispatch("addWallet", {
+              name: "Kondor",
+              accounts: accounts,
+            });
+            await dispatch("setActiveAccount", state.activeWallet.accounts[0]);
+          }, 300);
+          return true;
         } else {
           app.config.globalProperties.$error(
             "No Kondor account was selected !"
           );
+          return false;
         }
       },
       async pairWalletConnectAccounts(
@@ -484,29 +489,26 @@ export const createStore = (app) => {
         if (newConnection) {
           // Timeout to take time to propagate the disconnection
           await dispatch("deleteWalletConnect");
-          setTimeout(async () => {
-            const accounts = await window.walletConnectKoinos.connect(
-              ...walletConnectParams
-            );
+          // Wait for 1 second with a Promise
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          const accounts = await window.walletConnectKoinos.connect(
+            ...walletConnectParams
+          );
 
-            if (accounts.length) {
-              let newAccounts = accounts.map((accAddress, index) => {
-                return { address: accAddress, name: "Account " + index };
-              });
-              dispatch("addWallet", {
-                name: "WalletConnect",
-                accounts: newAccounts,
-              });
-              await dispatch(
-                "setActiveAccount",
-                state.activeWallet.accounts[0]
-              );
-            } else {
-              app.config.globalProperties.$error(
-                "No WalletConnect account was selected !"
-              );
-            }
-          }, 1000);
+          if (accounts.length) {
+            let newAccounts = accounts.map((accAddress, index) => {
+              return { address: accAddress, name: "Account " + index };
+            });
+            dispatch("addWallet", {
+              name: "WalletConnect",
+              accounts: newAccounts,
+            });
+            await dispatch("setActiveAccount", state.activeWallet.accounts[0]);
+          } else {
+            app.config.globalProperties.$error(
+              "No WalletConnect account was selected !"
+            );
+          }
         } else {
           await window.walletConnectKoinos.connect(...walletConnectParams);
         }

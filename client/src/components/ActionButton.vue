@@ -1,5 +1,13 @@
 <template>
-  <div class="actionButton" @click="preventNextClick">
+  <div
+    class="actionButton animate__animated animate__bounceInRight"
+    @onmousedown="Client.preventCanvasClick"
+    @onmouseup="Client.preventCanvasClick"
+    @touchstart="Client.preventCanvasClick"
+    @touchend="Client.preventCanvasClick"
+    @touchcancel="Client.preventCanvasClick"
+    @click="Client.preventCanvasClick"
+  >
     <div @click="$emit('click')">
       <span
         class="actionButtonTooltip"
@@ -14,12 +22,6 @@
 
 <script>
 export default {
-  methods: {
-    preventNextClick() {
-      // When you chose a color, it should not add a pixel on the map
-      this.$store.commit("preventNextClick", true);
-    },
-  },
   emits: ["click"],
   props: {
     icon: String,

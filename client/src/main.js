@@ -6,6 +6,7 @@ import { createStore } from "./store";
 // CSS
 import "./scss/lib/app.scss";
 import "./scss/app.scss";
+import "animate.css";
 
 // Init app
 const app = createApp(App);
@@ -22,6 +23,10 @@ app.use(alertPopups);
 // Init socket connection
 import socket from "./plugins/socket";
 app.use(socket);
+
+// Transitions
+import animateTransitions from "./plugins/animateTransitions";
+app.use(animateTransitions);
 
 // Table
 import Vue3EasyDataTable from "vue3-easy-data-table";

@@ -1,4 +1,5 @@
 import { rgbaToString } from "../../utils/colors.js";
+import multitouch from "./multitouch";
 
 export default function ({ graphics, vue }) {
   if (
@@ -30,10 +31,10 @@ export default function ({ graphics, vue }) {
     !graphics.placeholderImage &&
     graphics.drawPixelPlaceholder();
 
-  // Try to place a pixel only if the user is not moving the canvas
-  graphics.moveCanvasOnMouseMove() &&
-    graphics.actionIfClicked() &&
-    graphics.resetMovingVariables();
+  // User actions
+  multitouch({ graphics });
+  graphics.moveCanvasOnMouseMove();
+  graphics.actionIfClicked();
 
   // Update pixel properties
   let posX = Math.floor(graphics.input.activePointer.worldX);
@@ -56,9 +57,39 @@ export default function ({ graphics, vue }) {
 
   // If there is a placeholder image, follow the mouse
   if (graphics.placeholderImage) {
-    graphics.placeholderImage.x = posX;
-    graphics.placeholderImage.y = posY;
+    // Take into account the fact that the placeholder image can have unodd size
+    let posXDelta = (graphics.placeholderImage.width % 2) * 0.5;
+    let posYDelta = (graphics.placeholderImage.height % 2) * 0.5;
+    graphics.placeholderImage.x = posX - posXDelta;
+    graphics.placeholderImage.y = posY - posYDelta;
   }
+
+  // Scrolling friction
+  graphics.scrollSpeedX *= graphics.scrollFriction;
+  graphics.scrollSpeedY *= graphics.scrollFriction;
+
+  // Move the canvas
+  graphics.cameras.main.setScroll(
+    graphics.cameras.main.scrollX + graphics.scrollSpeedX,
+    graphics.cameras.main.scrollY + graphics.scrollSpeedY
+  );
+
+  // Ease-in and ease-out the camera zooming to attain graphics.targetZoom
+  let currentZoom = graphics.cameras.main.zoom;
+  let pointer = graphics.targetZoomPoint || graphics.input.activePointer;
+  graphics.cameras.main.zoom +=
+    (graphics.targetZoom - graphics.cameras.main.zoom) * graphics.easeZoomSpeed;
+
+  // Recenter on the mouse so that it seems we zoom on the zone the mouse is pointing at
+  let deltaScrollX =
+    (pointer.worldX - graphics.cameras.main.midPoint.x) *
+    (graphics.cameras.main.zoom / currentZoom - 1);
+  let deltaScrollY =
+    (pointer.worldY - graphics.cameras.main.midPoint.y) *
+    (graphics.cameras.main.zoom / currentZoom - 1);
+
+  graphics.cameras.main.scrollX += deltaScrollX;
+  graphics.cameras.main.scrollY += deltaScrollY;
 
   // If the user press the escape key, remove the placeholder image
   graphics.escapeKey.on("down", () => {

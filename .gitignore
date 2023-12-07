@@ -1,6 +1,7 @@
 client/.DS_Store
 client/node_modules
 client/docs/.vitepress/cache
+client/src/game/phaser/admin.js
 
 
 # local env files

@@ -67,7 +67,7 @@ export default {
           let pixels_balance = Math.floor(
             Math.min(row.pixels_balance, row.token_balance / 100000000)
           );
-          let token_balance = Math.floor(row.token_balance / 100000000);
+          let token_balance = Math.floor(row.token_balance / 10000000) / 10;
           let used_pixels_percentage = token_balance
             ? Math.round((pixels_balance / token_balance) * 100 * 100) / 100
             : 0;

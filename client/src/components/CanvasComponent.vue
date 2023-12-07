@@ -9,17 +9,20 @@
       v-bind:pointerY="pointerY"
       v-bind:hoveredPixel="hoveredPixel"
     />
+    <ZoomLevel />
   </div>
 </template>
 
 <script>
 import PixelProperties from "./PixelProperties";
+import ZoomLevel from "./ZoomLevel";
 import { InitSocketFunctions } from "../game/socket/index";
 let Client = window.Client;
 
 export default {
   components: {
     PixelProperties,
+    ZoomLevel,
   },
   created() {
     this.$socket.emit("get_pixel_map_data");
@@ -74,7 +77,6 @@ export default {
       this.pointerX = x;
       this.pointerY = y;
       this.hoveredPixel = pixel;
-      //pixel && console.log(pixel.owner);
     },
   },
 };

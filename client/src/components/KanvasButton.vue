@@ -65,10 +65,15 @@ export default defineComponent({
     bgColor: {
       type: String,
     },
+    additionalStyle: {
+      type: String,
+    },
   },
   computed: {
     style() {
-      return this.bgColor ? "background:" + this.bgColor : "";
+      return this.bgColor
+        ? "background:" + this.bgColor
+        : ";" + this.additionalStyle;
     },
   },
 });

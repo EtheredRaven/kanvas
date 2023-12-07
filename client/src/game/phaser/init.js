@@ -1,10 +1,4 @@
 export default function ({ graphics, vue }) {
-  graphics.resetMovingVariables = function () {
-    // Reset the "moving" variables : a click ends any canvas movement (dragging)
-    graphics.lastMouseClick = undefined;
-    graphics.hasMovedDuringClick = false;
-  };
-
   graphics.initBackground = function () {
     // Draw background
     graphics.pixelGraphics.fillStyle(0xffffff);

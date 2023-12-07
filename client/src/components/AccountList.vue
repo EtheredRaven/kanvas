@@ -6,7 +6,9 @@
         v-bind:key="account.address"
         class="sp-accounts-list-item"
       >
-        <div class="sp-accounts-list-item__use">
+        <div
+          class="sp-accounts-list-item__use animate__animated animate__bounceIn"
+        >
           <div class="sp-accounts-list-item__path">
             {{ account.pathIncrement || shortenName(account.name) }}
           </div>
@@ -27,11 +29,13 @@
       </li>
     </ul>
     <div class="sp-accounts-new" v-if="activeWallet.name == 'Kondor'">
-      <LinkIcon
-        icon="Reload"
-        text="Change linked accounts"
-        v-on:click="changeKondorAccounts"
-      />
+      <div style="margin-right: 2px">
+        <LinkIcon
+          icon="Reload"
+          text="Change linked accounts"
+          v-on:click="changeKondorAccounts"
+        />
+      </div>
     </div>
     <div class="sp-accounts-new" v-else-if="activeWallet.mnemonic">
       <LinkIcon
@@ -62,7 +66,7 @@ export default defineComponent({
   components: {
     LinkIcon,
   },
-  emits: ["account-selected"],
+  emits: ["account-selected", "kondorAccountsChanged"],
   computed: {
     activeWallet: function () {
       return this.$store.state.activeWallet;
@@ -77,6 +81,7 @@ export default defineComponent({
   methods: {
     copyAddress: async function (address) {
       copyToClipboard(address);
+      this.$info("Copy successful!", "Address copied to clipboard");
     },
     shortenName: function (addr) {
       return addr.length > 9
@@ -94,7 +99,8 @@ export default defineComponent({
       await this.$store.dispatch("addAccount");
     },
     async changeKondorAccounts() {
-      await this.$store.dispatch("changeKondorAccounts");
+      let hasChanged = await this.$store.dispatch("changeKondorAccounts");
+      hasChanged && this.$emit("kondorAccountsChanged");
     },
     async deleteWalletConnect() {
       await this.$store.dispatch("deleteWalletConnect");

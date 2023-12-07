@@ -4,38 +4,44 @@ import { formatChainError } from "@/utils/helpers";
 //import { utils } from "koilib";
 
 export default function ({ graphics, vue }) {
-  graphics.zoomOnCanvas = function (pointer, dz) {
+  graphics.zoomOnCanvas = function (pointer, dz, factor = 1) {
     // Zoom on the canvas, triggered with the middle mouse button
-    let oldZoom = graphics.cameras.main.zoom;
-    let newZoom = Math.min(
+    let currentZoom = graphics.targetZoom;
+    let zoomCoef =
+      Math.sign(dz) > 0
+        ? 1 - Math.sign(dz) * graphics.zoomSpeed * factor
+        : 1 / (1 + Math.sign(dz) * graphics.zoomSpeed * factor);
+    graphics.targetZoom = Math.min(
       graphics.maxZoom,
-      Math.max(
-        graphics.minZoom,
-        oldZoom * (1 - Math.sign(dz) * graphics.zoomSpeed)
-      )
+      Math.max(graphics.minZoom, currentZoom * zoomCoef)
     );
+    graphics.targetZoom = Math.round(graphics.targetZoom * 100) / 100;
+    if (
+      graphics.targetZoom > 1 - 0.04 * factor &&
+      graphics.targetZoom < 1 + 0.04 * factor
+    )
+      graphics.targetZoom = 1;
 
-    // Zoom it !
-    graphics.cameras.main.setZoom(newZoom);
+    graphics.targetZoomPoint = {
+      worldX: pointer.worldX,
+      worldY: pointer.worldY,
+    };
 
-    // Recenter on the mouse so that it seems we zoom on the zone the mouse is pointing at
-    graphics.cameras.main.setScroll(
-      graphics.cameras.main.scrollX +
-        (pointer.worldX - graphics.cameras.main.midPoint.x) *
-          (newZoom / oldZoom - 1),
-      graphics.cameras.main.scrollY +
-        (pointer.worldY - graphics.cameras.main.midPoint.y) *
-          (newZoom / oldZoom - 1)
-    );
+    vue.$store.commit("setZoomLevel", graphics.targetZoom);
   };
 
   graphics.actionIfClicked = function () {
     // Do the click action (like place) if clicked if it is not prevented (clicking on another component) and not moving
 
-    // If the user is moving the canvas, do not do the click action
-    if (graphics.lastMouseClick && !graphics.hasMovedDuringClick) {
+    // If the pointer was down last tick and is up this tick, it means that the user clicked, but we need to check if it was a drag or a click
+    if (
+      graphics.lastPointerClick &&
+      !graphics.currentPointerClick &&
+      !graphics.isDragging &&
+      !graphics.isMultitouchZooming
+    ) {
       // If the click was on a button, do not do the click action
-      if (!vue.$store.state.preventNextClick) {
+      if (!window.Client.preventCanvasClickTimeout) {
         // If there is a placeholder image, place it on the canvas
         if (graphics.placeholderImage) {
           graphics.drawImagePlaceholder();
@@ -51,9 +57,7 @@ export default function ({ graphics, vue }) {
           }
         }
       }
-      vue.$store.commit("preventNextClick", false);
     }
-    return true;
   };
 
   graphics.placePixel = async function () {
@@ -74,11 +78,20 @@ export default function ({ graphics, vue }) {
       return;
     }
 
+    // Don't add this pixel if there is already one in the same place to place in this transaction
+    let pixelPosX = Math.floor(graphics.input.activePointer.worldX);
+    let pixelPosY = Math.floor(graphics.input.activePointer.worldY);
+    for (let i = 0; i < vue.$store.state.pixelsToPlace.length; i++) {
+      let px = vue.$store.state.pixelsToPlace[i];
+      let pxVars = px.pixelTransactionArgs.pixel_to_place;
+      if (pxVars.posX == pixelPosX && pxVars.posY == pixelPosY) {
+        return;
+      }
+    }
+
     // Retrieve the data for this new pixel
     let rgbColor = stringToRgba(vue.$store.state.selectedColor);
     let hexNumberColor = rgbaToHexNumber(rgbColor);
-    let pixelPosX = Math.floor(graphics.input.activePointer.worldX);
-    let pixelPosY = Math.floor(graphics.input.activePointer.worldY);
 
     // Loading pixel animation until it is confirmed
     let loadingPixel = graphics.add
@@ -188,7 +201,7 @@ export default function ({ graphics, vue }) {
       );
       graphics.pixelsToErase = [...vue.$store.state.pixelsToErase];
       vue.$store.commit("removePixelsToErase");
-      await transaction.wait();
+      await transaction.wait("byBlock", 60000);
 
       vue[transaction.demoText ? "$warning" : "$info"](
         (transaction.demoText ? "Demo - " : "") + "Pixels erased and saved!",
@@ -259,7 +272,7 @@ export default function ({ graphics, vue }) {
       graphics.pixelsToPlace = [...vue.$store.state.pixelsToPlace];
       vue.$store.commit("removePixelsToPlace");
 
-      await transaction.wait();
+      await transaction.wait("byBlock", 60000);
       vue[transaction.demoText ? "$warning" : "$info"](
         (transaction.demoText ? "Demo - " : "") + "Pixels placed and saved !",
         transaction.demoText
@@ -300,35 +313,34 @@ export default function ({ graphics, vue }) {
   graphics.moveCanvasOnMouseMove = function () {
     // Dragging effect with the mouse to move on the canvas
     let pointer = graphics.input.activePointer;
+    graphics.lastPointerClick = graphics.currentPointerClick;
+    graphics.currentPointerClick = undefined;
+
     if (pointer.primaryDown) {
-      if (graphics.lastMouseClick) {
+      graphics.currentPointerClick = [pointer.x, pointer.y];
+      if (graphics.lastPointerClick && !graphics.isMultitouchZooming) {
         let scrollX =
-          (graphics.lastMouseClick[0] - pointer.x) / graphics.cameras.main.zoom;
+          (graphics.lastPointerClick[0] - pointer.x) /
+          graphics.cameras.main.zoom;
         let scrollY =
-          (graphics.lastMouseClick[1] - pointer.y) / graphics.cameras.main.zoom;
+          (graphics.lastPointerClick[1] - pointer.y) /
+          graphics.cameras.main.zoom;
 
+        graphics.isDragging && clearTimeout(graphics.isDragging);
         // Store if the canvas has really been dragged
-        (scrollX != 0 || scrollY != 0) && (graphics.hasMovedDuringClick = true);
+        if (scrollX != 0 || scrollY != 0) {
+          // Add an acceleration
+          graphics.scrollSpeedX += scrollX * graphics.scrollAcceleration;
+          graphics.scrollSpeedY += scrollY * graphics.scrollAcceleration;
+        }
 
-        // Add an acceleration
-        graphics.scrollSpeedX += scrollX * graphics.scrollAcceleration;
-        graphics.scrollSpeedY += scrollY * graphics.scrollAcceleration;
+        if (scrollX != 0 || scrollY != 0 || graphics.isDragging) {
+          graphics.isDragging = setTimeout(() => {
+            graphics.isDragging = false;
+          }, 100);
+        }
       }
-
-      // Save the last mouse position to know how much we need to move the canvas on the next tick
-      graphics.lastMouseClick = [pointer.x, pointer.y];
     }
-
-    // Scrolling friction
-    graphics.scrollSpeedX *= graphics.scrollFriction;
-    graphics.scrollSpeedY *= graphics.scrollFriction;
-
-    // Move the canvas
-    graphics.cameras.main.setScroll(
-      graphics.cameras.main.scrollX + graphics.scrollSpeedX,
-      graphics.cameras.main.scrollY + graphics.scrollSpeedY
-    );
-    return !pointer.primaryDown;
   };
 
   graphics.importSelectedImageAsPixelsPlaceholder = function (imageElement) {
@@ -350,19 +362,22 @@ export default function ({ graphics, vue }) {
 
   graphics.drawImagePlaceholder = function () {
     // Add the image to the placeholders canvas on the mouse position but taking into account the image origin
-    let mousePosX = Math.floor(
-      graphics.input.activePointer.worldX -
-        0.5 * graphics.placeholderImage.width
-    );
-    let mousePosY = Math.floor(
-      graphics.input.activePointer.worldY -
-        0.5 * graphics.placeholderImage.height
-    );
+    // Take into account the fact that the placeholder image can have unodd size and the image origin
+    let posXDelta =
+      (graphics.placeholderImage.width +
+        (graphics.placeholderImage.width % 2)) *
+      0.5;
+    let posYDelta =
+      (graphics.placeholderImage.height +
+        (graphics.placeholderImage.height % 2)) *
+      0.5;
+    let mousePosX = Math.floor(graphics.input.activePointer.worldX - posXDelta);
+    let mousePosY = Math.floor(graphics.input.activePointer.worldY - posYDelta);
     graphics.placeholdersCanvas
       .getContext("2d")
       .drawImage(graphics.placeholderImage.element, mousePosX, mousePosY);
 
-    graphics.placeholderImage.setAlpha(0.7);
+    graphics.placeholderImage.setAlpha(0.5);
     graphics.placeholderImage = null;
 
     // Put the new pixels in front of the placeholder image
