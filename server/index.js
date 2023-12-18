@@ -10,7 +10,11 @@
 
   // HTTP
   var httpServer = require("http").Server(Server.app);
-  Server.io = require("socket.io")(httpServer);
+
+  Server.io = require("socket.io")(httpServer, {
+    pingTimeout: 30000,
+    pingInterval: 30000,
+  });
   Server.httpListeningPort = process.env.HTTP_PORT || 80;
   httpServer.listen(Server.httpListeningPort);
   console.log("Http server runnning on port " + Server.httpListeningPort);
@@ -108,7 +112,7 @@
     return res.send(await spaceStrikerApi.getLastWeekWinner(req));
   });
 
-  // Price aPI
+  // Price API
   const getLatestPrice = require("./src/api/getLatestPrice")(Server);
   Server.app.get("/api/get_latest_price/", async function (req, res) {
     return res.send(await getLatestPrice());
@@ -118,6 +122,20 @@
   const getKanvasGodsMetadata = require("./src/api/kanvasGodsMetadata")(Server);
   Server.app.get("/api/kanvas_gods/get_metadata/:tokenId", function (req, res) {
     return res.send(getKanvasGodsMetadata(req.params.tokenId));
+  });
+
+  // Pixel map image API
+  require("./src/api/createPixelMapImage")(Server);
+  Server.app.get("/api/pixel_map_image.png", async function (req, res) {
+    try {
+      const pngImage = await Server.bufferToPngImage(Server.pixelMapBuffer);
+      return res.type("png").send(pngImage);
+    } catch (err) {
+      Server.errorLogging("Error while serving pixel map image", err);
+      return res
+        .status(500)
+        .send("Error while serving pixel map image: " + err);
+    }
   });
 
   require("./src/serverDataFetching")(Server);

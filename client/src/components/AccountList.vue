@@ -10,7 +10,7 @@
           class="sp-accounts-list-item__use animate__animated animate__bounceIn"
         >
           <div class="sp-accounts-list-item__path">
-            {{ account.pathIncrement || shortenName(account.name) }}
+            {{ account.pathIncrement || account.name }}
           </div>
           <div
             class="sp-accounts-list-item__address"

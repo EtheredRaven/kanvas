@@ -1,15 +1,4 @@
 export default function ({ graphics, vue }) {
-  graphics.initBackground = function () {
-    // Draw background
-    graphics.pixelGraphics.fillStyle(0xffffff);
-    graphics.pixelGraphics.fillRect(
-      0,
-      0,
-      Number(vue.canvasDimensions.canvas_width),
-      Number(vue.canvasDimensions.canvas_height)
-    );
-  };
-
   graphics.initCamera = function () {
     // Init the camera once we get the local params from the blockchain
     graphics.cameras.main.setBounds(
@@ -25,47 +14,31 @@ export default function ({ graphics, vue }) {
     graphics.cameraInitialized = true;
   };
 
-  graphics.initPixelMap = function () {
-    // Draw a texture for the pixel map
+  graphics.initPixelMapImage = function () {
+    graphics.pixelGraphics = graphics.add.graphics();
+    graphics.pixelGraphics.fillStyle(0xffffff);
+    graphics.pixelGraphics.fillRect(
+      0,
+      0,
+      Number(vue.canvasDimensions?.canvas_width) || 1000,
+      Number(vue.canvasDimensions?.canvas_height) || 1000
+    );
 
-    let canvasWidth = Number(vue.canvasDimensions.canvas_width);
-    let canvasHeight = Number(vue.canvasDimensions.canvas_height);
-    let temporaryCanvas = document.createElement("canvas");
-    temporaryCanvas.width = canvasWidth;
-    temporaryCanvas.height = canvasHeight;
+    // Draw the preloaded image on the canvas
+    let img = graphics.add.image(0, 0, "pixelmap");
+    img.setOrigin(0, 0);
+    graphics.pixelGraphics = graphics.add.graphics();
+    graphics.selectorGraphics = graphics.add.graphics();
+  };
 
-    let canvasImageData = temporaryCanvas
-      .getContext("2d")
-      .getImageData(0, 0, canvasWidth, canvasHeight);
-
-    let buffer = new ArrayBuffer(canvasImageData.data.length);
-    let buf8 = new Uint8ClampedArray(buffer);
-    let data = new Uint32Array(buffer);
-
+  graphics.initPixelMapData = async function () {
     for (let i = 0; i < vue.pixelsArray.length; i++) {
-      let pixelToDraw = vue.pixelsArray[i];
-      data[pixelToDraw.posY * canvasWidth + pixelToDraw.posX] =
-        (pixelToDraw.alpha << 24) | // alpha
-        (pixelToDraw.blue << 16) | // blue
-        (pixelToDraw.green << 8) | // green
-        pixelToDraw.red; // red
-      vue.pixelsMap[pixelToDraw.posX + ";" + pixelToDraw.posY] = pixelToDraw;
+      const pixel = vue.pixelsArray[i];
+      vue.pixelsMap[pixel.posX + ";" + pixel.posY] = pixel;
+      if (i % 10000 == 0) {
+        await new Promise((resolve) => setTimeout(resolve, 0));
+      }
     }
-
-    canvasImageData.data.set(buf8);
-    temporaryCanvas.getContext("2d").putImageData(canvasImageData, 0, 0);
-
-    graphics.textures.once("addtexture-pixelmap", () => {
-      let img = graphics.add.image(0, 0, "pixelmap");
-      img.setOrigin(0, 0);
-      graphics.pixelGraphics = graphics.add.graphics();
-      graphics.selectorGraphics = graphics.add.graphics();
-    });
-
-    graphics.textures.once("onerror", () => {
-      console.log("error decoding base64");
-    });
-    graphics.textures.addBase64("pixelmap", temporaryCanvas.toDataURL());
 
     graphics.pixelMapInitialized = true;
   };

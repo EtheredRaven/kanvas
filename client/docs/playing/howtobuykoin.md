@@ -31,9 +31,15 @@ Don't forget to write and save your seed/mnemonic. If you lose it, you won't be 
 MEXC is not available to US residents! If you're American, you'll first need to install a VPN ([TorVPN](https://www.torproject.org/fr/download/), [Cyberghost](https://www.cyberghostvpn.com/) etc...) to change your IP location and access the exchange. You can also use the second option below,KoinSwap.
 :::
 
-MEXC is, for now, the only centralized exchange on which you can buy $KOIN. Create an account and go on the [$KOIN trading page](https://www.mexc.com/fr-FR/exchange/KOIN_USDT). You can follow [this official tutorial](https://www.mexc.com/how-to-buy) to get the detailed process about how to buy a crypto on MEXC.
+**MEXC** is a centralized exchange on which you can buy $KOIN. Create an account and go on the [$KOIN trading page](https://www.mexc.com/fr-FR/exchange/KOIN_USDT). You can follow [this official tutorial](https://www.mexc.com/how-to-buy) to get the detailed process about how to buy a crypto on MEXC.
 
-Once you have bought some $KOIN, you will need to withdraw it from the exchange to your personal Koinos wallet you have created on the part above. Copy and paste you Koinos address as the withdrawal address. You can follow [this official tutorial](https://www.mexc.com/support/articles/360030808111) to get the detailed process about how to withdraw a crypto from MEXC.
+## Buying on Coinstore
+
+**Coinstore** is another centralizes exchange on which you can buy $KOIN. Create an account and go on the [$KOIN trading page](https://www.coinstore.com/#/spot/KOINUSDT) on which you can buy some $KOIN in exchange of $USDT.
+
+## Sending it out
+
+Once you have bought some $KOIN on a centralized exchange, you will need to withdraw it from the exchange to your personal Koinos wallet you have created on the part above. Copy and paste you Koinos address as the withdrawal address. You can follow [this official tutorial](https://www.mexc.com/support/articles/360030808111) to get the detailed process about how to withdraw a crypto from MEXC. It is pretty similar for Coinstore.
 
 ::: danger Double-checking
 Please always double-check the address you have copied as the withdrawal recipient. Once the withdrawal has been accepted / processed, you cannot cancel it. Thus, if the address is wrong or contains a typo, you won't be able to recover your money in any way !

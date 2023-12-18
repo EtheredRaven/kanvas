@@ -9,10 +9,18 @@ module.exports = function (Server) {
     socket.accounts = [];
 
     socket.on("get_pixel_map_data", () => {
-      socket.emit("got_pixel_map_data", {
-        pixels: Server.pixels,
-        canvas_dimensions: Server.canvasDimensions,
-      });
+      // Send the data in chunks one by one
+      for (let i = 0; i < Server.pixels.length; i++) {
+        // Make the loop non-blocking
+        setTimeout(() => {
+          socket.emit("got_pixel_map_data", {
+            chunkIndex: i,
+            maxChunkIndex: Server.pixels.length - 1,
+            pixels: Server.pixels[i],
+            canvas_dimensions: Server.canvasDimensions,
+          });
+        }, 0);
+      }
     });
 
     socket.on("get_price_history", () => {

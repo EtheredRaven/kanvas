@@ -67,7 +67,7 @@ export default {
     @touchend="Client.preventCanvasClick"
     @touchcancel="Client.preventCanvasClick"
     @click="Client.preventCanvasClick"
-    class="animate__animated animate__bounceInRight"
+    class="animate__animated animate__bounceInRight colorPicker"
   >
     <div
       :style="selectedColorStyle"
@@ -82,3 +82,10 @@ export default {
     />
   </div>
 </template>
+
+<style>
+.colorPicker {
+  position: relative;
+  z-index: 2;
+}
+</style>

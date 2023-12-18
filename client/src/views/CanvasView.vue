@@ -16,7 +16,7 @@
         <ColorPicker />
         <div class="actionButtonsContainer topActionButtonsContainer">
           <SavingButton
-            v-bind:tooltip="pixelsToPlace.length || pixelsToErase.length || ''"
+            v-bind:tooltip="pixelsToPlace.length || pixelsToErase.length"
           />
         </div>
         <div class="actionButtonsContainer bottomActionButtonsContainer">

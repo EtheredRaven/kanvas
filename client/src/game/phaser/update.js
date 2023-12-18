@@ -2,12 +2,7 @@ import { rgbaToString } from "../../utils/colors.js";
 import multitouch from "./multitouch";
 
 export default function ({ graphics, vue }) {
-  if (
-    !vue ||
-    !graphics ||
-    !graphics.pixelMapInitialized ||
-    !graphics.cameraInitialized
-  ) {
+  if (!vue || !graphics || !graphics.cameraInitialized) {
     return;
   }
 

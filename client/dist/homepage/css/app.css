@@ -201,10 +201,22 @@ button {
 }
 
 .menu_kanvas_header {
-  margin-left: 14px;
+  margin-left: 10px;
   margin-right: 20px;
   font-size: 29px;
   font-weight: bold;
+  margin-bottom: 6px;
+  display: inline-block;
+}
+
+.kanvasLogoContainer {
+  white-space: nowrap;
+}
+
+.kanvasLogoImage {
+  width: 36px;
+  margin-left: 114px;
+  margin-bottom: -8px;
 }
 
 .telegramsocial {
@@ -2558,7 +2570,7 @@ body.no-scroll {
 }
 
 .header__item:not(:last-child) {
-  margin-right: 57px;
+  margin-right: 40px;
 }
 
 .header__item[href],
@@ -2570,6 +2582,7 @@ body.no-scroll {
   -webkit-transition: color 0.25s;
   -o-transition: color 0.25s;
   transition: color 0.25s;
+  font-weight: 500;
 }
 
 .header__item[href]:before,
@@ -4314,31 +4327,31 @@ body:not(.touch-device) .header__item:hover .header__body {
   border-radius: 32px;
 }
 
-.plan__item:first-child {
+.plan__item:nth-child(2) {
   background: #5956e9;
   color: #fff;
 }
 
-.plan__item:first-child .plan__price {
+.plan__item:nth-child(2) .plan__price {
   color: rgba(255, 255, 255, 0.5);
 }
 
-.plan__item:first-child .plan__money {
+.plan__item:nth-child(2) .plan__money {
   color: #fff;
 }
 
-.plan__item:first-child .plan__list li {
+.plan__item:nth-child(2) .plan__list li {
   color: #fff;
 }
 
-.plan__item:nth-child(2),
+.plan__item:first-child,
 .plan__item:nth-child(3) {
   background: #fff;
   -webkit-box-shadow: 0 20px 40px rgba(41, 41, 48, 0.05);
   box-shadow: 0 20px 40px rgba(41, 41, 48, 0.05);
 }
 
-.plan__item:nth-child(2) .roadmap__item,
+.plan__item:first-child .roadmap__item,
 .plan__item:nth-child(3) .roadmap__item {
   color: #999fae;
 }
@@ -6616,6 +6629,11 @@ body:not(.touch-device) .header__item:hover .header__body {
   overflow: hidden;
   background: #27272e;
   color: #fff;
+  margin-bottom: 150px;
+}
+
+.partner__link {
+  display: contents;
 }
 
 .partners__center {
@@ -6752,7 +6770,7 @@ body:not(.touch-device) .header__item:hover .header__body {
 
 .quality {
   position: relative;
-  margin-bottom: 150px;
+  margin-bottom: 32px;
   z-index: 1;
 }
 
@@ -9096,6 +9114,15 @@ body:not(.touch-device) .header__item:hover .header__body {
     margin-right: auto !important;
     margin-left: auto !important;
   }
+
+  .kanvasLogoContainer {
+    margin-bottom: 16px;
+  }
+
+  .kanvasLogoImage {
+    margin-left: 0px;
+  }
+
   .newcatrousel {
     width: 90%;
     position: relative;
@@ -10587,10 +10614,6 @@ body:not(.touch-device) .header__item:hover .header__body {
     width: 240px;
     position: absolute;
     z-index: -1;
-  }
-
-  .main__link {
-    display: none;
   }
 
   .speed {

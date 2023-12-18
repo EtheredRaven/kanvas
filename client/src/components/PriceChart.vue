@@ -90,8 +90,6 @@ export default {
       chart.timeScale().applyOptions(this.timeScaleOptions);
     }
 
-    chart.timeScale().fitContent();
-
     if (this.autosize) {
       window.addEventListener("resize", () =>
         resizeHandler(this.$refs.chartContainer)

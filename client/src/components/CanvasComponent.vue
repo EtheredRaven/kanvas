@@ -35,16 +35,21 @@ export default {
         graphics: gameGraphicsScript.launch("gameContainer", this),
         vue: this,
       };
+      let graphicsLoadingStep = 1;
       let graphicsLoadingInterval = setInterval(() => {
-        let scenes = Client.game.graphics.scene.scenes;
-        if (scenes.length && this.pixelsArray && scenes[0].pixelGraphics) {
+        if (
+          graphicsLoadingStep == 1 &&
+          Client.game.graphics.scene.scenes.length &&
+          Client.game.graphics.scene.scenes[0].pixelGraphics
+        ) {
           this.gameGraphics = Client.game.graphics;
           Client.game.graphics = Client.game.graphics.scene.scenes[0];
           this.sceneInstance = Client.game.graphics;
-
-          this.sceneInstance.initBackground();
           this.sceneInstance.initCamera();
-          this.sceneInstance.initPixelMap();
+          graphicsLoadingStep = 2;
+        }
+        if (graphicsLoadingStep == 2 && this.pixelsDataReceived) {
+          this.sceneInstance.initPixelMapData();
           clearInterval(graphicsLoadingInterval);
         }
       }, 100);
@@ -59,12 +64,16 @@ export default {
     return {
       gameGraphics: null,
       sceneInstance: null,
-      pixelsArray: null,
+      pixelsArray: [],
       pixelsMap: {},
-      canvasDimensions: null,
+      canvasDimensions: {
+        canvas_width: 1000,
+        canvas_height: 1000,
+      },
       pointerX: 0,
       pointerY: 0,
       hoveredPixel: null,
+      pixelsDataReceived: false,
     };
   },
   computed: {

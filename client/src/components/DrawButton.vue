@@ -3,7 +3,8 @@
     <ActionButton
       @click="selectDrawTool"
       icon="draw.svg"
-      :tooltip="isDrawToolSelected && '✓'"
+      :showTooltip="isDrawToolSelected"
+      tooltip="✓"
       tooltipColor="#019A09"
     ></ActionButton>
   </div>

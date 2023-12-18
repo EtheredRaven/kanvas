@@ -10,15 +10,6 @@
       }
     "
   >
-    <div class="sp-wallet-menu__toggle animate__animated animate__bounceIn">
-      <span class="sp-icon" v-on:click="opened = !opened"
-        ><img
-          src="../../public/img/down.svg"
-          class="downIcon"
-          alt="down"
-          :style="opened ? 'transform: rotate(180deg)' : ''"
-      /></span>
-    </div>
     <div class="sp-wallet-menu-items">
       <template v-if="topWallet">
         <div
@@ -58,6 +49,30 @@
               :isLocked="topWallet.name != walletName"
               :clickFunction="() => toggleWallet(topWallet.name)"
             />
+          </div>
+          <div
+            class="sp-wallet-menu__toggle downIcon"
+            v-on:click="opened = !opened"
+          >
+            <svg
+              width="32px"
+              height="32px"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              :style="
+                (opened ? 'transform: rotate(180deg)' : '') +
+                ';transition: 0.3s ease;'
+              "
+            >
+              <path
+                d="M7 10L12 15L17 10"
+                stroke="currentcolor"
+                stroke-width="1"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
           </div>
         </div>
       </template>
@@ -266,6 +281,7 @@ export default defineComponent({
       this.$animateTransition(
         document.getElementById("unlockWalletContainer")
       ).then(() => {
+        this.password = "";
         this.unlocking = false;
         this.toUnlock = null;
       });
@@ -293,10 +309,12 @@ export default defineComponent({
             password: this.password,
           });
           this.unlocking = false;
+          this.password = "";
         } catch (err) {
           this.$error("Your password is wrong !");
           this.unlocking = false;
           this.toUnlock = "";
+          this.password = "";
         }
       });
     },
@@ -339,10 +357,4 @@ export default defineComponent({
 });
 </script>
 
-<style>
-.downIcon {
-  margin-top: -2px;
-  transition: 0.3s ease;
-  color: #a0a0a0;
-}
-</style>
+<style></style>

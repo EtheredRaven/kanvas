@@ -8,10 +8,20 @@ head:
 
 # How to buy $KAN ?
 
-## Buying on Konio
+## Buying on Chainge
 
-::: info Swap is coming to Konio
-Native swap calling the KoinDX contracts will soon be available on our partner app : Konio !
+::: info Chainge
+**Chainge Finance** - is a decentralized finance application running on the Fusion blockchain that grants users complete control over their assets, as well as complete freedom to interact with innovative financial instruments with no intermediaries needed. Chainge is **chain-agnostic** which means the swapping process is cross-chained automatically.
+:::
+
+You can easily exchange $KOIN for $KAN on Chainge following this simple process:
+
+1. Download the Chainge app on the [Playstore](https://play.google.com/store/apps/details?id=com.fusion.chainge.android&hl=fr&gl=US&pli=1) or on the [Apple store](https://apps.apple.com/us/app/chainge-finance/id1578987516)
+2. Follow the account creation process. Remember to write down your seed. You can also import your existing wallet on which you sent your $KOIN by clicking on your username and **Manage**
+3. Once you received or imported your $KOIN, click on **Swap** on the main page and select $KOIN and $KAN. Enter the amount you want to buy and process the swap.
+
+::: warning Gas fees
+Since Chainge is working on the Fusion blockchain, you will need some Fusion to pay for the gas fees if you have never used the app. You can buy Fusion on MEXC for example and send it to your Fusion Chainge wallet.
 :::
 
 ## Buying on KoinDX

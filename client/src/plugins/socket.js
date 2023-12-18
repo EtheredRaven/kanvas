@@ -1,6 +1,8 @@
 export default {
   install(app) {
     // This plugin avoid having a duplicate of socketio events, deleting the previous one
+    // Avoid disconnections when leaving the page with the parameters of the socket
+
     app.config.globalProperties.$socket = window.io.connect();
     let socket = app.config.globalProperties.$socket;
     var baseSocketOn = socket.on;
@@ -13,13 +15,6 @@ export default {
       }
       return baseSocketOn.apply(this, arguments);
     };
-
-    socket.on("disconnect", () => {
-      app.config.globalProperties.$error(
-        "You have been disconnected from the server !"
-      );
-      location.reload();
-    });
 
     window.addEventListener("beforeunload", function () {
       app.config.globalProperties.$socket.emit("disconnect");

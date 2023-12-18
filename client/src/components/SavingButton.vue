@@ -2,6 +2,7 @@
   <div>
     <ActionButton
       @click="savePixels"
+      :showTooltip="tooltip"
       :tooltip="tooltip"
       icon="save.svg"
     ></ActionButton>

@@ -15,6 +15,12 @@
     <div class="sp-sidebar__footer">
       <slot name="footer"></slot>
     </div>
+    <div
+      class="sidebar-touchzone"
+      id="touchZone"
+      @touchstart="touchStarted"
+      @touchmove="touchMove"
+    />
   </div>
 </template>
 <script>
@@ -26,6 +32,7 @@ export default defineComponent({
     return {
       opened: true,
       mobOpened: false,
+      touchStartPos: false,
     };
   },
   emits: ["sidebar-open", "sidebar-close"],
@@ -37,6 +44,49 @@ export default defineComponent({
     toggleMobOpen: function () {
       this.mobOpened = !this.mobOpened;
     },
+    touchStarted: function (e) {
+      // Get position of the touch start and store it
+      this.touchStartPos = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY,
+      };
+    },
+    touchMove: function (e) {
+      if (!this.touchStartPos) return;
+
+      // Get the touch move position so that we can calculate the difference with the start position
+      const touchEndPos = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY,
+      };
+
+      let diff = this.touchStartPos.x - touchEndPos.x;
+      // If swipe left, close the menu
+      if (diff > 80) {
+        this.opened = false;
+        this.mobOpened = false;
+        this.$emit("sidebar-close");
+        this.touchStartPos = false;
+      }
+
+      // If swipe right, open the menu
+      if (diff < -80) {
+        this.opened = true;
+        this.mobOpened = true;
+        this.$emit("sidebar-open");
+        this.touchStartPos = false;
+      }
+    },
   },
 });
 </script>
+
+<style>
+.sidebar-touchzone {
+  bottom: 0;
+  right: -74px;
+  height: calc(100vh - 100px);
+  width: 74px;
+  position: absolute;
+}
+</style>

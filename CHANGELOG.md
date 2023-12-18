@@ -1,3 +1,17 @@
+# 1.5.3 (2023-12-18)
+
+- Mobile ready web app
+  - Swipe
+  - Responsive components
+  - Touchscreen compatibility
+- 100x faster canvas drawing
+- Solved WalletConnect bug on mobile
+- Updated docs for exchanges
+- Updated website
+  - Partners section (exchanges, wallets etc...)
+  - Updated roadmap
+  - Kanvas Gods description in the "Concept" section
+
 # 1.5.2 (2023-12-07)
 
 - Improved canvas zooming

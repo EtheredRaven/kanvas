@@ -131,13 +131,13 @@
   cursor: pointer;
 
   @media only screen and (max-width: 445px) {
-    max-width: 20rem;
-    min-width: 20rem;
+    max-width: 22rem;
+    min-width: 22rem;
   }
 
-  @media only screen and (max-width: 335px) {
-    max-width: 15rem;
-    min-width: 15rem;
+  @media only screen and (max-width: 350px) {
+    max-width: 16rem;
+    min-width: 16rem;
   }
 
   &:hover .sp-wallet-menu__toggle {
@@ -164,16 +164,13 @@
 
   .sp-wallet-menu__toggle {
     cursor: pointer;
-    position: absolute;
     font-size: 1.6rem;
     line-height: 3.1rem;
-    right: 1.4rem;
-    top: 1.8rem;
-    width: 3.2rem;
     text-align: center;
     opacity: 0.4;
-    z-index: 10;
     transition: 0.3s ease;
+    margin-right: -5px;
+    margin-bottom: -9px;
 
     &:hover {
       opacity: 1;
@@ -203,10 +200,12 @@
     cursor: pointer;
     margin-top: 1.4rem;
     position: relative;
-    display: flex;
+    display: grid;
     padding-left: 1.4rem;
     padding-right: 1.4rem;
     margin-bottom: 1.2rem;
+    grid-template-columns: 32px 1fr auto auto;
+
     &:hover .sp-wallet-menu-item__status {
       color: black;
     }
@@ -215,23 +214,13 @@
       line-height: 1.6rem;
       vertical-align: baseline;
       margin-left: 1rem;
-      width: calc(100% - 6.4rem);
+      white-space: nowrap;
 
       @media only screen and (max-width: 445px) {
         max-width: 7rem;
         display: block;
         overflow: hidden;
         text-overflow: ellipsis;
-      }
-    }
-
-    &:first-child {
-      .sp-wallet-menu-item__info {
-        width: calc(100% - 9.6rem);
-      }
-
-      .sp-wallet-menu-item__status {
-        margin-right: 2.5rem;
       }
     }
 
@@ -272,10 +261,6 @@
 
     .sp-wallet-menu-item__status {
       cursor: pointer;
-      font-size: 1.6rem;
-      line-height: 3.5rem;
-      width: 3.2rem;
-      text-align: center;
 
       &:hover {
         color: black;
@@ -348,9 +333,14 @@
       }
 
       .sp-accounts-list-item__use {
-        display: flex;
+        display: grid;
         align-items: center;
         padding: 0 0.5rem 0 0.5rem;
+        grid-template-columns: 3fr 4fr auto;
+
+        @media only screen and (min-width: 445px) {
+          grid-template-columns: auto 4fr auto;
+        }
 
         .sp-accounts-list-item__address {
           display: block;
@@ -383,6 +373,13 @@
           line-height: 1.6rem;
           text-align: left;
           cursor: pointer;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+
+          @media only screen and (max-width: 445px) {
+            width: auto;
+          }
         }
 
         .sp-accounts-list-item__copy {
@@ -432,7 +429,7 @@
     }
 
     .sp-link-icon__text {
-      margin-left: 0.5rem;
+      margin-left: 0.6rem;
       font-size: 1.4rem;
     }
 

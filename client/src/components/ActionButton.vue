@@ -11,8 +11,11 @@
     <div @click="$emit('click')">
       <span
         class="actionButtonTooltip"
-        v-if="tooltip && tooltip != ''"
-        v-bind:style="{ backgroundColor: tooltipColor, color: textColor }"
+        v-bind:style="{
+          backgroundColor: tooltipColor,
+          color: textColor,
+          opacity: showTooltip ? 1 : 0,
+        }"
         >{{ tooltip }}</span
       >
       <img alt="save" v-bind:src="'/app/img/' + icon" class="actionImage" />
@@ -26,6 +29,7 @@ export default {
   props: {
     icon: String,
     tooltip: String,
+    showTooltip: Boolean,
     tooltipColor: {
       type: String,
       default: "#9B0046",
@@ -72,6 +76,7 @@ export default {
   z-index: 2;
   min-width: 18px;
   text-align: center;
+  transition: opacity 0.3s ease;
 }
 
 .actionImage:hover {

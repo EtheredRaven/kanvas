@@ -3,7 +3,8 @@
     <ActionButton
       @click="selectEraseTool"
       icon="erase.svg"
-      :tooltip="isErasedToolSelected && '✓'"
+      :showTooltip="isErasedToolSelected"
+      tooltip="✓"
       tooltipColor="#019A09"
     ></ActionButton>
   </div>
