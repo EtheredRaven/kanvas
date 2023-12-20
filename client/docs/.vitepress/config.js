@@ -88,6 +88,10 @@ export default defineConfig({
           { text: "Troubleshooting", link: "/playing/troubleshooting" },
         ],
       },
+      {
+        text: "Others",
+        items: [{ text: "Privacy Policy", link: "/others/privacypolicy" }],
+      },
     ],
     socialLinks: [
       { icon: "github", link: "https://github.com/EtheredRaven/kanvas" },
