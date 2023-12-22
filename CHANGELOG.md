@@ -1,3 +1,12 @@
+# 1.5.4 (2023-12-22)
+
+- Correction of a bug on Brave
+- Correction of a bug on Space Striker
+- People can now see gods in the leaderboard
+- Added a Discord server
+- Updates token allocation parts in the docs
+- Added a privacy policy for preparing the app listing on the Play Store
+
 # 1.5.3 (2023-12-18)
 
 - Mobile ready web app

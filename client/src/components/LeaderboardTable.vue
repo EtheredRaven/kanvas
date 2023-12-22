@@ -16,6 +16,17 @@
     :current-page="currentPage"
     ref="dataTable"
   >
+    <template #item-id="item">
+      <span class="address">{{ item.id }}</span>
+      <!-- show the gods images profile pics from the item.gods list -->
+      <img
+        v-for="god in item.gods"
+        :key="god"
+        :src="`./img/gods/profile/${god}.png`"
+        :alt="god"
+        class="god"
+      />
+    </template>
   </EasyDataTable>
 </template>
 
@@ -78,6 +89,7 @@ export default {
             pixels_balance: pixels_balance,
             token_balance: token_balance,
             used_pixels_percentage: used_pixels_percentage,
+            gods: row.gods?.split(",") || [],
           };
         })
       );
@@ -115,7 +127,7 @@ export default {
 
 .customize-table {
   --easy-table-body-row-font-size: 1.4rem;
-  --easy-table-body-item-padding: 1.4rem 1.2rem;
+  --easy-table-body-item-padding: 1rem 1.2rem;
   --easy-table-header-font-size: 2rem;
   --easy-table-body-row-height: 3.8rem;
   --easy-table-header-item-padding: 1.4rem 1.2rem;
@@ -197,5 +209,18 @@ export default {
   --easy-table-body-row-font-color: rgba(100, 60, 0);
   --easy-table-body-row-hover-background-color: rgba(100, 60, 0, 0.1);
   --easy-table-body-row-hover-font-color: rgba(100, 60, 0);
+}
+
+.god {
+  width: 32px;
+  vertical-align: middle;
+  margin-left: 8px;
+}
+
+.address {
+  margin-top: 0.6rem;
+  margin-bottom: 0.6rem;
+  display: inline-block;
+  margin-right: 4px;
 }
 </style>

@@ -44,9 +44,9 @@ module.exports = function (Server) {
       ...reqParams
     );
 
-    try {
-      let addressToSendKoinTo = winner.Address;
+    let addressToSendKoinTo = winner.Address;
 
+    try {
       if (addressToSendKoinTo.match(/^([a-zA-Z0-9]+)\.koin$/)) {
         addressToSendKoinTo = (
           await Server.kapNameServiceContract.get_name({

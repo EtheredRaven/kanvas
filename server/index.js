@@ -142,4 +142,6 @@
   require("./src/socket")(Server);
   require("./src/blockchainEventsListener")(Server);
   require("./src/priceListener")(Server);
+  require("./src/init")(Server); // Only use to reset the db state from the blockchain
+  require("./src/test")(Server); // Only use to test some stuff
 })();

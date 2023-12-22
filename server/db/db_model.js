@@ -8,7 +8,7 @@ class DbModel {
       `CREATE TABLE IF NOT EXISTS processed_events (id TEXT PRIMARY KEY);`
     );
     await this.db.run(
-      `CREATE TABLE IF NOT EXISTS accounts (id TEXT PRIMARY KEY, token_balance INTEGER DEFAULT 0, pixels_balance INTEGER DEFAULT 0);`
+      `CREATE TABLE IF NOT EXISTS accounts (id TEXT PRIMARY KEY, token_balance INTEGER DEFAULT 0, pixels_balance INTEGER DEFAULT 0, gods TEXT);`
     );
     await this.db.run(
       `CREATE INDEX IF NOT EXISTS accounts_pixels_balance_index ON accounts(pixels_balance);`

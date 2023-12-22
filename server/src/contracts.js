@@ -3,6 +3,7 @@ const kanvasContractAbi = require("../../client/src/utils/abi/kanvasContractAbi.
 const koindxCoreAbi = require("../../client/src/utils/abi/koindxCoreAbi.json");
 const koindxPeripheryAbi = require("../../client/src/utils/abi/koindxPeripheryAbi.json");
 const kapNameServiceAbi = require("../../client/src/utils/abi/kapNameServiceAbi.json");
+const kanvasGodsAbi = require("../../client/src/utils/abi/kanvasGodsContractAbi.json");
 const { Client } = require("koinos-rpc");
 
 module.exports = async function (Server) {
@@ -64,4 +65,12 @@ module.exports = async function (Server) {
     return new Contract(contractArgs);
   };
   Server.kanvasContract = Server.initKanvasContractWithSigner();
+
+  // Kanvas gods contract
+  Server.kanvasGodsContractAddress = "1KANGodsBD74xBuoBVoJE2x2PiRyDbfM2i";
+  Server.kanvasGodsContract = new Contract({
+    id: Server.kanvasGodsContractAddress,
+    abi: kanvasGodsAbi,
+    provider: Server.provider,
+  });
 };

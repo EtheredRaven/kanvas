@@ -197,6 +197,8 @@ button {
 }
 
 .socials {
+  margin-left: 10px !important;
+  margin-right: 10px !important;
   flex-basis: 24px;
 }
 
@@ -220,12 +222,13 @@ button {
 }
 
 .telegramsocial {
-  margin-right: 24px !important;
+  margin-right: 10px !important;
   margin-left: 24px;
 }
 
 .twittersocial {
   margin-right: 44px !important;
+  margin-left: 10px;
 }
 
 .icon-arrow-down {
