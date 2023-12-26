@@ -57,9 +57,17 @@ The collection introduces an image importing function, where players can upload 
 NFT capabilities in "Gods on Kanvas" are not cumulative. Owning multiple NFTs across different tiers will not combine their features; the system only recognizes the highest tier associated with the player's address. This ensures that gameplay remains balanced and fair, with the highest tier NFT dictating the level of capabilities available to the player.
 :::
 
+### Visibility
+
+The profiles of god-tier NFT holders are prominently displayed on the leaderboard and in the account details, making owning of the Kanvas Gods even more prestigious!
+
+### Colors history
+
+Kanvas Gods' owners have access to their color history in the color picker, to help them creating their art pixel by pixel!
+
 ### Visibility and future capabilities
 
-As "Kanvas Gods" evolves, new capabilities may be introduced, especially with higher tiers. These could include unique features like pixel protection in specific zones for set periods, powers related to a god's realm, or cosmetic effects visible when placing pixels. Community suggestions will play a crucial role in shaping these future enhancements. Additionally, the profiles of god-tier NFT holders will be prominently displayed on the leaderboard and in account details. When other users hover over pixels placed by these holders, they'll see an indication of the holder's powerful status, adding an exciting social element to the Kanvas experience.
+As "Kanvas Gods" evolves, new capabilities may be introduced, especially with higher tiers. These could include unique features like pixel protection in specific zones for set periods, powers related to a god's realm, or cosmetic effects visible when placing pixels. Community suggestions will play a crucial role in shaping these future enhancements. Additionally, When other users hover over pixels placed by these holders, they'll see an indication of the holder's powerful status, adding an exciting social element to the Kanvas experience.
 
 ### Tiers details
 

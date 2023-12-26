@@ -154,6 +154,17 @@ module.exports = function (Server) {
       "Secondary Attributes": "Wine Cup",
       Temperament: "Jovial & Liberated",
     },
+    {
+      name: "Bill Cipher",
+      Legacy: "Master of Illusions",
+      Tier: "Divine",
+      Realm: "Mystery and Deception",
+      "Main Attribute": "All-Seeing Eye",
+      "Secondary Attributes": "Triangle Body & Top Hat",
+      Temperament: "Mysterious & Chaotic",
+      SpecialDescription:
+        "This exclusive Bill Cipher NFT is a tribute to Fox, whose remarkable contributions have been instrumental in the success of the Kanvas project. As a token of gratitude, this artwork was crafted specifically for Fox, celebrating their support and passion. This NFT, inspired by the enigmatic character from the beloved series 'Gravity Falls,' represents a convergence of mystery and chaos, mirroring Bill Cipher's notorious role as a trickster and a master of deception. It's a unique fan illustration, created as a reward and not for sale, thus respecting the copyrights of the original creators. Kanvas acknowledges that it is not affiliated with 'Gravity Falls' or its creators and has not monetized this artwork in any way. It's a special homage to a character that resonates with the spirit of curiosity and the unexpected, much like the journey of Kanvas itself.",
+    },
   ];
 
   function hexStringToAsciiInt(hexString) {
@@ -174,7 +185,7 @@ module.exports = function (Server) {
     return parseInt(charString);
   }
 
-  return (tokenId) => {
+  function getKanvasGodsMetadata(tokenId) {
     if (tokenId.startsWith("0x")) {
       tokenId = tokenId.substring(2);
     }
@@ -185,17 +196,23 @@ module.exports = function (Server) {
     let metadata = nftMetadata[tokenId];
     let returnedMetadata = {};
     returnedMetadata.name = metadata.name + " - " + metadata.Legacy;
-    returnedMetadata.description =
-      "Kanvas Gods (KANGODS) is a unique NFT collection where Greek deities empower your creative dominion over the collaborative digital world of Kanvas. " +
-      "Spanning 'Almighty', 'Olympian', 'Divine', 'Mythical', and 'Classical' tiers, each one enhances your ability to shape this pixelated realm with escalating capabilities in pixel placement, pixel erasing and image importation. " +
-      "Each tier not only grants greater creative power but also promises exclusive future features, embodying the democratic spirit and artistic mastery reminiscent of ancient Greece. " +
-      "Own a piece of this legacy and wield the power of a god to mold the Kanvas universe.";
+    returnedMetadata.description = metadata.SpecialDescription
+      ? metadata.SpecialDescription
+      : "Kanvas Gods (KANGODS) is a unique NFT collection where Greek deities empower your creative dominion over the collaborative digital world of Kanvas. " +
+        "Spanning 'Almighty', 'Olympian', 'Divine', 'Mythical', and 'Classical' tiers, each one enhances your ability to shape this pixelated realm with escalating capabilities in pixel placement, pixel erasing and image importation. " +
+        "Each tier not only grants greater creative power but also promises exclusive future features, embodying the democratic spirit and artistic mastery reminiscent of ancient Greece. " +
+        "Own a piece of this legacy and wield the power of a god to mold the Kanvas universe.";
     returnedMetadata.image =
       "https://kanvas-app.com/app/img/gods/" + metadata.name + ".png";
     returnedMetadata.attributes = [];
 
     for (const attribute in metadata) {
-      if (attribute == "name" || attribute == "Legacy") continue;
+      if (
+        attribute == "name" ||
+        attribute == "Legacy" ||
+        attribute == "SpecialDescription"
+      )
+        continue;
       returnedMetadata.attributes.push({
         trait_type: attribute,
         value: metadata[attribute],
@@ -210,5 +227,9 @@ module.exports = function (Server) {
     }
 
     return returnedMetadata;
-  };
+  }
+
+  Server.app.get("/api/kanvas_gods/get_metadata/:tokenId", function (req, res) {
+    return res.send(getKanvasGodsMetadata(req.params.tokenId));
+  });
 };

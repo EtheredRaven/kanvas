@@ -18,6 +18,7 @@ We collect data necessary for gameplay, including:
 
 - **Nicknames and .Koin Names**: For user identification and interaction.
 - **Wallet Names**: Essential for transactional functions in the app.
+- **Colors History**: Helper for drawing pixel by pixel in the app.
 
 No personal data beyond the above is collected.
 

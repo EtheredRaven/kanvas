@@ -93,6 +93,36 @@ export default function ({ graphics, vue }) {
     let rgbColor = stringToRgba(vue.$store.state.selectedColor);
     let hexNumberColor = rgbaToHexNumber(rgbColor);
 
+    let ownsAGod = vue.$store.getters.getBestKanvasGodId() > 0;
+    if (ownsAGod) {
+      // Premium feature
+      // Store it in the colors history
+      const MAX_COLORS_HISTORY = 16;
+      let currentHistory;
+      try {
+        currentHistory = JSON.parse(
+          localStorage.getItem("canvas-colors-history")
+        );
+      } catch (e) {
+        currentHistory = [];
+      }
+      if (!currentHistory) currentHistory = [];
+      currentHistory.unshift(vue.$store.state.selectedColor);
+
+      // Check if the color is already in the history and only keep the first one
+      currentHistory = currentHistory.filter(
+        (color, index, self) => self.indexOf(color) === index
+      );
+
+      if (currentHistory.length > MAX_COLORS_HISTORY) currentHistory.pop();
+      localStorage.setItem(
+        "canvas-colors-history",
+        JSON.stringify(currentHistory)
+      );
+      vue.forceRenderColorPicker();
+    }
+    localStorage.setItem("last-canvas-color", vue.$store.state.selectedColor);
+
     // Loading pixel animation until it is confirmed
     let loadingPixel = graphics.add
       .image(pixelPosX + 0.5, pixelPosY + 0.5, "pixel")

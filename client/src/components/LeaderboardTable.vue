@@ -17,7 +17,9 @@
     ref="dataTable"
   >
     <template #item-id="item">
-      <span class="address">{{ item.id }}</span>
+      <a :href="'https://koiner.app/addresses/' + item.address" target="_blank"
+        ><span class="address">{{ item.id }}</span></a
+      >
       <!-- show the gods images profile pics from the item.gods list -->
       <img
         v-for="god in item.gods"
@@ -90,6 +92,7 @@ export default {
             token_balance: token_balance,
             used_pixels_percentage: used_pixels_percentage,
             gods: row.gods?.split(",") || [],
+            address: row.id,
           };
         })
       );
@@ -222,5 +225,9 @@ export default {
   margin-bottom: 0.6rem;
   display: inline-block;
   margin-right: 4px;
+}
+
+td a {
+  color: unset;
 }
 </style>

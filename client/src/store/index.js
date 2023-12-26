@@ -29,7 +29,8 @@ export const createStore = (app) => {
         DRAW: 1,
         ERASE: 2,
       },
-      selectedColor: "rgba(0, 0, 0, 1)",
+      selectedColor:
+        window.localStorage.getItem("last-canvas-color") || "rgba(0, 0, 0, 1)",
       selectedTool: 1,
       zoomLevel: 1,
       walletsList: JSON.parse(window.localStorage.getItem("wallets")) || [

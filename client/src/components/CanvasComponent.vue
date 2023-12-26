@@ -43,6 +43,8 @@ export default {
           Client.game.graphics.scene.scenes[0].pixelGraphics
         ) {
           this.gameGraphics = Client.game.graphics;
+          this.gameGraphics.canvas.id = "gameCanvas";
+
           Client.game.graphics = Client.game.graphics.scene.scenes[0];
           this.sceneInstance = Client.game.graphics;
           this.sceneInstance.initCamera();

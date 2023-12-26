@@ -111,6 +111,7 @@
   Server.app.get("/api/get_last_week_winner/", async function (req, res) {
     return res.send(await spaceStrikerApi.getLastWeekWinner(req));
   });
+  require("./src/api/supply.js")(Server);
 
   // Price API
   const getLatestPrice = require("./src/api/getLatestPrice")(Server);
@@ -119,10 +120,7 @@
   });
 
   // Kanvas Gods metadata NFT API
-  const getKanvasGodsMetadata = require("./src/api/kanvasGodsMetadata")(Server);
-  Server.app.get("/api/kanvas_gods/get_metadata/:tokenId", function (req, res) {
-    return res.send(getKanvasGodsMetadata(req.params.tokenId));
-  });
+  require("./src/api/kanvasGodsMetadata.js")(Server);
 
   // Pixel map image API
   require("./src/api/createPixelMapImage")(Server);

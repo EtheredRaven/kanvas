@@ -1,3 +1,10 @@
+# 1.5.5 (2023-12-26)
+
+- Addition of a new special Kanvas God for oustanding contribution to the project
+- Added API point for total and circulating supply
+- Added color history for Kanvas Gods holders
+- On reload, preselected color is now the last used color (instead of black)
+
 # 1.5.4 (2023-12-22)
 
 - Correction of a bug on Brave

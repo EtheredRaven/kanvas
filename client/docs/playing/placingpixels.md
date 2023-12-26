@@ -22,7 +22,7 @@ When you have no pixels left to place, all you have to do is wait for another pl
 
 ## Chosing the color of the pixel
 
-To choose the color of the pixel you want to place, click on the black square below the wallets rectangle. You can then choose your color via hexadecimal code, RGB, saved colors or directly from the color chart.
+To choose the color of the pixel you want to place, click on the black square below the wallets rectangle. You can then choose your color via hexadecimal code, RGB, saved colors or directly from the color chart. If you own a [Kanvas God](./kanvasgods), you also have access to the color history of your placed pixels.
 
 ## Placing a pixel
 

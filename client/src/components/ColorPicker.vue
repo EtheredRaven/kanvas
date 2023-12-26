@@ -1,3 +1,31 @@
+<template>
+  <div
+    @onmousedown="Client.preventCanvasClick"
+    @onmouseup="Client.preventCanvasClick"
+    @touchstart="Client.preventCanvasClick"
+    @touchend="Client.preventCanvasClick"
+    @touchcancel="Client.preventCanvasClick"
+    @click="Client.preventCanvasClick"
+    class="animate__animated animate__bounceInRight colorPicker"
+  >
+    <div
+      :style="selectedColorStyle"
+      @click="showColorPicker = !showColorPicker"
+    ></div>
+    <div v-if="renderColorPicker">
+      <ColorPicker
+        :style="colorPickerStyle"
+        theme="light"
+        :color="color"
+        @changeColor="changeColor"
+        :colors-history-key="
+          ownsAGod ? 'canvas-colors-history' : 'canvas-colors-history-no-god'
+        "
+      />
+    </div>
+  </div>
+</template>
+
 <script>
 import { ColorPicker } from "vue-color-kit";
 import "vue-color-kit/dist/vue-color-kit.css";
@@ -10,11 +38,21 @@ export default {
   data() {
     return {
       showColorPicker: false,
+      gameCanvas: null,
+      suckerArea: [],
+      renderColorPicker: true,
     };
+  },
+  created() {
+    window.Client.game.vue.forceRenderColorPicker = this.forceRenderColorPicker;
   },
   computed: {
     color() {
       return this.$store.state.selectedColor;
+    },
+    ownsAGod() {
+      this.forceRenderColorPicker();
+      return this.$store.getters.getBestKanvasGodId() > 0;
     },
     selectedColorStyle() {
       return `
@@ -45,43 +83,22 @@ export default {
   },
   methods: {
     changeColor(color) {
-      this.$store.commit(
-        "changeColor",
-        rgbaToString({
-          r: color.rgba.r,
-          g: color.rgba.g,
-          b: color.rgba.b,
-          a: Math.round(color.rgba.a * 255),
-        })
-      );
+      let colorString = rgbaToString({
+        r: color.rgba.r,
+        g: color.rgba.g,
+        b: color.rgba.b,
+        a: Math.round(color.rgba.a * 255),
+      });
+      this.$store.commit("changeColor", colorString);
+    },
+    async forceRenderColorPicker() {
+      this.renderColorPicker = false;
+      await this.$nextTick();
+      this.renderColorPicker = true;
     },
   },
 };
 </script>
-
-<template>
-  <div
-    @onmousedown="Client.preventCanvasClick"
-    @onmouseup="Client.preventCanvasClick"
-    @touchstart="Client.preventCanvasClick"
-    @touchend="Client.preventCanvasClick"
-    @touchcancel="Client.preventCanvasClick"
-    @click="Client.preventCanvasClick"
-    class="animate__animated animate__bounceInRight colorPicker"
-  >
-    <div
-      :style="selectedColorStyle"
-      @click="showColorPicker = !showColorPicker"
-    ></div>
-    <ColorPicker
-      :style="colorPickerStyle"
-      theme="light"
-      :color="color"
-      :sucker-hide="true"
-      @changeColor="changeColor"
-    />
-  </div>
-</template>
 
 <style>
 .colorPicker {

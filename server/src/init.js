@@ -54,7 +54,7 @@ module.exports = function (Server) {
 
   // Init the gods
   let initGodsInDb = async function () {
-    const MAX_GOD_ID = 14; // Starts with 1
+    const MAX_GOD_ID = 15; // Starts with 1
     const godsListIntegers = [-1];
     for (let i = 1; i <= MAX_GOD_ID; i++) {
       godsListIntegers.push(i);

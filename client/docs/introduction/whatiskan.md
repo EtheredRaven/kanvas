@@ -39,11 +39,11 @@ KAN will be launched in several stages, with different releases of liquidities o
 
 Here's the token allocation table :
 
-|            Position             |      Percentage      |
-| :-----------------------------: | :------------------: |
-|    Events, marketing and dev    | 1,000,000 $KAN (33%) |
-| Initial liquidity pool (KoinDX) |  750,000 $KAN (25%)  |
-|     Next liquidity releases     | 1,250,000 KAN (42%)  |
+|                            Position                             |      Percentage      |
+| :-------------------------------------------------------------: | :------------------: |
+| Project wallet: events, marketing, listings, liquidities etc... | 1,500,000 $KAN (50%) |
+|            Initial liquidity pools and distributions            | 1,100,000 $KAN (37%) |
+|                      Team personal wallet                       |  400,000 KAN (13%)   |
 
 A third of the total $KAN supply will be kept in the development and marketing wallet to promote the project through bonuses, airdrops and contests!
 
