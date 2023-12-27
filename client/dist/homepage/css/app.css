@@ -197,8 +197,8 @@ button {
 }
 
 .socials {
-  margin-left: 10px !important;
-  margin-right: 10px !important;
+  margin-left: 8px !important;
+  margin-right: 8px !important;
   flex-basis: 24px;
 }
 
@@ -222,13 +222,13 @@ button {
 }
 
 .telegramsocial {
-  margin-right: 10px !important;
-  margin-left: 24px;
+  margin-right: 8px !important;
+  margin-left: 30px;
 }
 
 .twittersocial {
   margin-right: 44px !important;
-  margin-left: 10px;
+  margin-left: 8px;
 }
 
 .icon-arrow-down {
@@ -4330,32 +4330,32 @@ body:not(.touch-device) .header__item:hover .header__body {
   border-radius: 32px;
 }
 
-.plan__item:nth-child(2) {
+.plan__item:nth-child(3) {
   background: #5956e9;
   color: #fff;
 }
 
-.plan__item:nth-child(2) .plan__price {
+.plan__item:nth-child(3) .plan__price {
   color: rgba(255, 255, 255, 0.5);
 }
 
-.plan__item:nth-child(2) .plan__money {
+.plan__item:nth-child(3) .plan__money {
   color: #fff;
 }
 
-.plan__item:nth-child(2) .plan__list li {
+.plan__item:nth-child(3) .plan__list li {
   color: #fff;
 }
 
 .plan__item:first-child,
-.plan__item:nth-child(3) {
+.plan__item:nth-child(2) {
   background: #fff;
   -webkit-box-shadow: 0 20px 40px rgba(41, 41, 48, 0.05);
   box-shadow: 0 20px 40px rgba(41, 41, 48, 0.05);
 }
 
 .plan__item:first-child .roadmap__item,
-.plan__item:nth-child(3) .roadmap__item {
+.plan__item:nth-child(2) .roadmap__item {
   color: #999fae;
 }
 
@@ -7278,7 +7278,11 @@ body:not(.touch-device) .header__item:hover .header__body {
   display: -ms-flexbox;
   display: flex;
   margin-right: -40px;
-  margin-bottom: 73px;
+  margin-bottom: 8px;
+}
+
+.links_container {
+  margin-bottom: 24px;
 }
 
 .footer__col {
@@ -7286,10 +7290,6 @@ body:not(.touch-device) .header__item:hover .header__body {
   -ms-flex: 0 0 20%;
   flex: 0 0 20%;
   padding-right: 30px;
-}
-
-.footer__col:not(:first-child) {
-  padding-top: 8px;
 }
 
 .footer__logo {

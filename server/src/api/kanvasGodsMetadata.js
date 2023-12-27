@@ -203,7 +203,9 @@ module.exports = function (Server) {
         "Each tier not only grants greater creative power but also promises exclusive future features, embodying the democratic spirit and artistic mastery reminiscent of ancient Greece. " +
         "Own a piece of this legacy and wield the power of a god to mold the Kanvas universe.";
     returnedMetadata.image =
-      "https://kanvas-app.com/app/img/gods/" + metadata.name + ".png";
+      "https://kanvas-app.com/app/img/gods/" +
+      metadata.name.replace(" ", "%20") +
+      ".png";
     returnedMetadata.attributes = [];
 
     for (const attribute in metadata) {

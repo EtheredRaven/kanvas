@@ -44,7 +44,12 @@ export default {
     };
   },
   created() {
-    window.Client.game.vue.forceRenderColorPicker = this.forceRenderColorPicker;
+    let linkForRender = setInterval(() => {
+      if (!window.Client?.game?.vue) return;
+      window.Client.game.vue.forceRenderColorPicker =
+        this.forceRenderColorPicker;
+      clearInterval(linkForRender);
+    }, 100);
   },
   computed: {
     color() {

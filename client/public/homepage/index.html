@@ -148,7 +148,7 @@
                   </svg>
                 </a>
                 <a
-                  class="header__item socials twittersocial"
+                  class="header__item socials"
                   target="_blank"
                   href="https://twitter.com/KanvasOfficial"
                   ><svg
@@ -162,6 +162,26 @@
                       fill="currentcolor"
                       d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"
                     />
+                  </svg>
+                </a>
+                <a
+                  class="header__item socials twittersocial"
+                  target="_blank"
+                  href="https://play.google.com/store/apps/details?id=co.median.android.wqlyae"
+                  ><svg
+                    width="26px"
+                    height="26px"
+                    viewBox="0 0 64 64"
+                    xmlns="http://www.w3.org/2000/svg"
+                    stroke-width="5"
+                    stroke="currentColor"
+                    fill="none"
+                  >
+                    <path
+                      d="M12.36,53.33V10.67a1,1,0,0,1,1.56-.91L51.11,31a1,1,0,0,1,0,1.81L13.93,54.24A1.05,1.05,0,0,1,12.36,53.33Z"
+                    />
+                    <line x1="12.36" y1="10.67" x2="42.07" y2="38.02" />
+                    <line x1="12.36" y1="53.33" x2="41.24" y2="25.35" />
                   </svg>
                 </a>
                 <a class="header__item" href="./app/">Play</a>
@@ -217,16 +237,17 @@
               data-aos="animation-scale-y"
               data-aos-delay="550"
             >
-              <a
-                class="main__btn btn btn_purple"
-                href="https://app.koindx.com/swap?input=koin&output=1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS"
+              <a class="main__btn btn btn_purple" href="./app/"
+                >Play on browser</a
+              ><a
+                class="main__link"
+                href="https://play.google.com/store/apps/details?id=co.median.android.wqlyae"
                 target="_blank"
-                >Buy some $KAN !</a
-              ><a class="main__link" href="./app/">
+              >
                 <div class="main__icon">
                   <img class="main__pic" src="img/play.svg" alt="" />
                 </div>
-                <div class="main__text">And play the game !</div>
+                <div class="main__text">Get the mobile app</div>
               </a>
             </div>
             <div
@@ -901,9 +922,6 @@
               data-aos="animation-translate-y"
               data-aos-delay="200"
             >
-              <div class="plan__star">
-                <img src="img/pin.png" alt="pin" style="width: 60%" />
-              </div>
               <div class="plan__category">
                 <div class="plan__icon">
                   <img class="plan__pic" src="img/smile-2.svg" alt="" />
@@ -938,6 +956,9 @@
               data-aos="animation-translate-y"
               data-aos-delay="400"
             >
+              <div class="plan__star">
+                <img src="img/pin.png" alt="pin" style="width: 60%" />
+              </div>
               <div class="plan__category">
                 <div class="plan__icon">
                   <img class="plan__pic" src="img/smile-2.svg" alt="" />
@@ -946,7 +967,7 @@
               </div>
               <h3 class="plan__title title title_sm">Take-off</h3>
               <span class="roadmap__item"
-                ><span class="checked">〜</span>Mobile app</span
+                ><span class="checked">✔</span>Mobile app</span
               ><br />
               <span class="roadmap__item"
                 ><span class="checked">〜</span>Artistic contests</span
@@ -1353,7 +1374,9 @@
                 alt=""
                 style="width: 26px"
             /></a>
-            <div class="footer__copyright">© 2023, Kanvas</div>
+            <div class="footer__copyright">
+              © <span id="currentYear"></span>, Kanvas
+            </div>
             <a class="footer__scroll js-link-scroll" href="#header">
               <div class="footer__icon">
                 <img class="footer__pic" src="img/scroll.svg" alt="" />
@@ -1362,17 +1385,54 @@
             </a>
           </div>
           <div class="footer__copyright" style="margin-bottom: 26px">
-            <a href="./docs/introduction/whatiskanvas.html">Documentation</a
-            ><br />
-            <a target="_blank" href="https://t.me/KanvasOfficial"
-              >Telegram group</a
-            ><br />
-            <a target="_blank" href="https://twitter.com/KanvasOfficial"
-              >Twitter account</a
-            ><br />
-            <a target="_blank" href="https://discord.com/invite/yt6jgArt"
-              >Discord server</a
-            ><br /><br />
+            <div class="links_container">
+              <div class="footer__row">
+                <div class="footer__col">
+                  <a target="_blank" href="https://twitter.com/KanvasOfficial"
+                    >Twitter account</a
+                  >
+                </div>
+                <div class="footer__col">
+                  <a href="./docs/introduction/whatiskanvas.html"
+                    >Documentation</a
+                  >
+                </div>
+                <div class="footer__col">
+                  <a
+                    href="https://app.koindx.com/swap?input=koin&output=1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS"
+                    >KoinDX</a
+                  >
+                </div>
+              </div>
+              <div class="footer__row">
+                <div class="footer__col">
+                  <a target="_blank" href="https://t.me/KanvasOfficial"
+                    >Telegram group</a
+                  >
+                </div>
+                <div class="footer__col">
+                  <a href="./app">Web app</a>
+                </div>
+                <div class="footer__col">
+                  <a href="https://www.chainge.finance/info/pairs/KOIN/KAN"
+                    >Chainge</a
+                  >
+                </div>
+              </div>
+              <div class="footer__row">
+                <div class="footer__col">
+                  <a target="_blank" href="https://discord.com/invite/yt6jgArt"
+                    >Discord server</a
+                  >
+                </div>
+                <div class="footer__col">
+                  <a
+                    href="https://play.google.com/store/apps/details?id=co.median.android.wqlyae"
+                    >Mobile app</a
+                  >
+                </div>
+              </div>
+            </div>
             Market prices for cryptocurrencies such as $KAN are extremely
             volatile and can change unpredictably in a very short time. By
             buying $KAN, you acknowledge that you understand the risks you may
@@ -1382,6 +1442,10 @@
         </div>
       </div>
     </div>
+    <script>
+      document.getElementById("currentYear").innerHTML =
+        new Date().getFullYear();
+    </script>
     <script src="js/app.js"></script>
     <script src="js/common.js"></script>
   </body>
