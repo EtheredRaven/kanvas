@@ -22,7 +22,7 @@ module.exports = function (Server) {
   };
 
   // This function must use the buffer and return a png image from it that it will serve to the client
-  Server.bufferToPngImage = async function (buffer) {
+  let bufferToPngImage = async function (buffer) {
     const t = Date.now();
     const pngImage = await sharp(buffer, {
       raw: {
@@ -38,4 +38,40 @@ module.exports = function (Server) {
     );
     return pngImage;
   };
+
+  Server.app.get("/api/pixel_map_image.png", async function (req, res) {
+    try {
+      const pngImage = await bufferToPngImage(Server.pixelMapBuffer);
+      return res.type("png").send(pngImage);
+    } catch (err) {
+      Server.errorLogging("Error while serving pixel map image", err);
+      return res
+        .status(500)
+        .send("Error while serving pixel map image: " + err);
+    }
+  });
+
+  // Get the pixels of a specific owner
+  Server.app.get("/api/pixel_map_image/:owner.png", async function (req, res) {
+    if (!req.params.owner) {
+      return res.status(400).send("No owner provided");
+    }
+
+    let ownerPixelMapData = (Server.pixels = await Server.db.all(
+      "SELECT * FROM pixels WHERE unvisible != 1 AND owner = ? ORDER BY posX ASC, posY ASC",
+      [req.params.owner]
+    ));
+
+    try {
+      const pngImage = await bufferToPngImage(
+        Server.pixelDataToBuffer(ownerPixelMapData)
+      );
+      return res.type("png").send(pngImage);
+    } catch (err) {
+      Server.errorLogging("Error while serving pixel map image", err);
+      return res
+        .status(500)
+        .send("Error while serving pixel map image: " + err);
+    }
+  });
 };

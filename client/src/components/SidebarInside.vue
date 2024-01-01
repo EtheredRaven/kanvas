@@ -84,9 +84,9 @@ export default defineComponent({
 <style>
 .sidebar-touchzone {
   bottom: 0;
-  right: -74px;
+  right: -60px;
   height: calc(100vh - 100px);
-  width: 74px;
+  width: 60px;
   position: absolute;
 }
 </style>

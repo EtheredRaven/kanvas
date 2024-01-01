@@ -27,11 +27,15 @@ export default defineConfig({
       { text: "Home", link: "https://kanvas-app.com" },
       { text: "Game", link: "https://kanvas-app.com/app/" },
       {
+        text: "NFTs",
+        link: "https://kollection.app/collection/1KANGodsBD74xBuoBVoJE2x2PiRyDbfM2i/",
+      },
+      {
         text: "Buy",
         link: "https://app.koindx.com/swap?input=15DJN4a8SgrbGhhGksSBASiSYjGnMU8dGL&output=1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS",
       },
       {
-        text: "1.5.5",
+        text: "1.5.6",
         items: [
           {
             text: "Changelog",
@@ -62,12 +66,12 @@ export default defineConfig({
           { text: "How to buy $KOIN ?", link: "/playing/howtobuykoin" },
           { text: "How to buy $KAN ?", link: "/playing/howtobuykan" },
           {
-            text: "Controls and info",
-            link: "/playing/controlsandinfo",
-          },
-          {
             text: "Connecting your wallet",
             link: "/playing/connectingwallet",
+          },
+          {
+            text: "Controls and info",
+            link: "/playing/controlsandinfo",
           },
           {
             text: "Kanvas Gods NFT Collection",

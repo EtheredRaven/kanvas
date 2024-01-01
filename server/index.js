@@ -124,17 +124,6 @@
 
   // Pixel map image API
   require("./src/api/createPixelMapImage")(Server);
-  Server.app.get("/api/pixel_map_image.png", async function (req, res) {
-    try {
-      const pngImage = await Server.bufferToPngImage(Server.pixelMapBuffer);
-      return res.type("png").send(pngImage);
-    } catch (err) {
-      Server.errorLogging("Error while serving pixel map image", err);
-      return res
-        .status(500)
-        .send("Error while serving pixel map image: " + err);
-    }
-  });
 
   require("./src/serverDataFetching")(Server);
   require("./src/socket")(Server);

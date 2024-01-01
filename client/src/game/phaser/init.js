@@ -25,8 +25,8 @@ export default function ({ graphics, vue }) {
     );
 
     // Draw the preloaded image on the canvas
-    let img = graphics.add.image(0, 0, "pixelmap");
-    img.setOrigin(0, 0);
+    graphics.backgroundImg = graphics.add.image(0, 0, "pixelmap");
+    graphics.backgroundImg.setOrigin(0, 0);
     graphics.pixelGraphics = graphics.add.graphics();
     graphics.selectorGraphics = graphics.add.graphics();
   };

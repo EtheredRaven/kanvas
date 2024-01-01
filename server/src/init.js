@@ -102,8 +102,6 @@ module.exports = function (Server) {
         gods,
         godOwnerAddress,
       ]);
-      console.log(gods);
-      console.log(godOwnerAddress);
     }
   };
 

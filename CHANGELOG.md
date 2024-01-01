@@ -1,3 +1,12 @@
+# 1.5.6 (2023-01-01)
+
+- Correction of a new bug on colors of Brave
+- Correction on a bug on some mobiles that would not be able to place pixels
+- Correction of displaying bugs
+- Added a RC limit on the Kanvas smart-contract to avoid mana spamming
+- Changed cached data of nicknames and KAP from 30 days to 7 days
+- Added a button to show/hide only the owned pixels
+
 # 1.5.5 (2023-12-26)
 
 - Addition of a new special Kanvas God for oustanding contribution to the project

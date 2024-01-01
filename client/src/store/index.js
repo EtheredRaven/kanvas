@@ -42,6 +42,7 @@ export const createStore = (app) => {
       pixelsToErase: [],
       addressesData: {},
       pixelsAmount: {},
+      showOnlyOwnedPixels: false,
       kanvasContract: getKanvasContract(),
       kanvasGodsContract: getKanvasGodsContract(),
       koinContract: getKoinContract(),
@@ -166,7 +167,7 @@ export const createStore = (app) => {
             if (names && names.length) hoveredAccountName = "@" + names[0];
           }
           Cookies.set(hoveredPixelOwner, hoveredAccountName, {
-            expires: 30,
+            expires: 7,
           });
           return hoveredAccountName;
         }
@@ -236,6 +237,9 @@ export const createStore = (app) => {
     mutations: {
       setSelectedTool(state, newSelectedTool) {
         state.selectedTool = newSelectedTool;
+      },
+      setShowOnlyOwnedPixels(state, newShowOnlyOwnedPixels) {
+        state.showOnlyOwnedPixels = newShowOnlyOwnedPixels;
       },
       setZoomLevel(state, newZoomLevel) {
         state.zoomLevel = newZoomLevel;
@@ -386,6 +390,9 @@ export const createStore = (app) => {
 
         getters.getKanvasGodsList(state.activeAccount.address, false);
         getters.getPixelsPerTx(state.activeAccount.address, false);
+
+        // Call functions that may be need on the phaser side when the account is changed (caching data and things like that)
+        window.Client.game.graphics.performAccountChangeUpdate();
 
         state.koinContract = getKoinContract(newSigner);
         app.config.globalProperties.$socket.emit(

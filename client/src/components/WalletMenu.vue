@@ -137,12 +137,13 @@
     id="unlockWalletContainer"
     v-else-if="unlocking"
   >
-    <div class="sp-wallet-menu__toggle" v-on:click="close">
+    <div class="sp-wallet-menu__toggle alignRight" v-on:click="close">
       <span
         class="sp-icon"
         :class="{
           'icon-DownCaret': !unlocking,
           'icon-Close': unlocking,
+          iconClose: unlocking,
         }"
       />
     </div>
@@ -357,4 +358,13 @@ export default defineComponent({
 });
 </script>
 
-<style></style>
+<style>
+.iconClose {
+  margin-right: 20px;
+  vertical-align: sub;
+}
+
+.alignRight {
+  text-align: right !important;
+}
+</style>

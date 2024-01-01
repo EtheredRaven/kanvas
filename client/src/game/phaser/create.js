@@ -43,4 +43,10 @@ export default function ({ graphics }) {
   graphics.placeholdersCanvas.width = graphics.game.canvas.width * 2;
   graphics.placeholdersCanvas.height = graphics.game.canvas.height * 2;
   graphics.placeholdersCanvas.style.display = "none";
+
+  // Add a listener to the h key to hide/show the user pixels
+  graphics.hKey = graphics.input.keyboard.addKey("H");
+  graphics.hKey.on("down", () => {
+    graphics.togglePixelsOwnerOnly();
+  });
 }

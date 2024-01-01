@@ -10,7 +10,7 @@ head:
 
 ## A NFT collection fully integrated in Kanvas
 
-**Kanvas Gods** is a unique and exclusive NFT collection, fully integrated into the Kanvas gameplay and inspired by Greek mythology, where gods shape the digital world of Kanvas. The collection begins with the **'Almighty'** tier, featuring only three tokens representing the divine rulers—Zeus, Poseidon, and Hades. Below, you'll find a preview of their portraits, but the complete NFTs will showcase the full images set against detailed backgrounds.
+**Kanvas Gods** is a unique and exclusive NFT collection available for sale on [Kollection](https://kollection.app/collection/1KANGodsBD74xBuoBVoJE2x2PiRyDbfM2i), fully integrated into the Kanvas gameplay and inspired by Greek mythology, where gods shape the digital world of Kanvas. The collection begins with the **'Almighty'** tier, featuring only three tokens representing the divine rulers—Zeus, Poseidon, and Hades. Below, you'll find a preview of their portraits, but the complete NFTs will showcase the full images set against detailed backgrounds.
 
 ![](/gods/triple_gods.png "Almighty Gods")
 
@@ -18,7 +18,7 @@ This is followed by the **'Olympian'** tier, comprising eleven tokens. Each NFT 
 
 ## The NFT sale
 
-The initial sale will featured these **14 pre-minted prestigious NFTs**, with subsequent releases introducing the Divine, Mythical, and Classical tiers. It took place on the **1st of December** 2023, at **7PM UTC** on [Kollection](https://kollection.app/). As a holder of these esteemed NFTs, you not merely participate in a game; you are actively shaping a digital world, pixel by pixel, in a manner reminiscent of the democratic ethos that flourished in the Greek polis.
+The initial sale featured **14 pre-minted prestigious NFTs** and they are available for sale on [Kollection](https://kollection.app/collection/1KANGodsBD74xBuoBVoJE2x2PiRyDbfM2i). As a holder of these esteemed NFTs, you not merely participate in a game; you are actively shaping a digital world, pixel by pixel, in a manner reminiscent of the democratic ethos that flourished in the Greek polis.
 
 ## NFT Tiers
 

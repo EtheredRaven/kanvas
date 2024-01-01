@@ -349,12 +349,15 @@ export default function ({ graphics, vue }) {
     if (pointer.primaryDown) {
       graphics.currentPointerClick = [pointer.x, pointer.y];
       if (graphics.lastPointerClick && !graphics.isMultitouchZooming) {
+        const MIN_SCROLL_INIT = 1;
         let scrollX =
           (graphics.lastPointerClick[0] - pointer.x) /
           graphics.cameras.main.zoom;
+        scrollX = Math.abs(scrollX) > MIN_SCROLL_INIT ? scrollX : 0;
         let scrollY =
           (graphics.lastPointerClick[1] - pointer.y) /
           graphics.cameras.main.zoom;
+        scrollY = Math.abs(scrollY) > MIN_SCROLL_INIT ? scrollY : 0;
 
         graphics.isDragging && clearTimeout(graphics.isDragging);
         // Store if the canvas has really been dragged
@@ -413,5 +416,54 @@ export default function ({ graphics, vue }) {
     // Put the new pixels in front of the placeholder image
     graphics.pixelGraphics = graphics.add.graphics();
     graphics.selectorGraphics = graphics.add.graphics();
+  };
+
+  graphics.togglePixelsOwnerOnly = function () {
+    if (!vue.activeAccountAddress) return;
+
+    const loadPixelsOwnerOnly = !vue.$store.state.showOnlyOwnedPixels;
+
+    // Load the new image to display (full or owner only)
+    const randomString = Math.random().toString(36).substring(7);
+    const remoteImageSrc = loadPixelsOwnerOnly
+      ? "../api/pixel_map_image/" + vue.activeAccountAddress + ".png"
+      : "../api/pixel_map_image.png";
+
+    graphics.load.image(randomString, remoteImageSrc);
+    graphics.load.start();
+
+    vue.$store.commit("setShowOnlyOwnedPixels", loadPixelsOwnerOnly);
+
+    // While loading, display the preloaded image to avoid latency or load the next one
+    if (loadPixelsOwnerOnly) {
+      graphics.pixelGraphics.clear();
+      graphics.backgroundImg.destroy();
+      graphics.backgroundImg = graphics.add.image(
+        0,
+        0,
+        "preloaded-pixels-owned-only-map"
+      );
+      graphics.backgroundImg.setOrigin(0, 0);
+      graphics.pixelGraphics = graphics.add.graphics();
+      graphics.selectorGraphics = graphics.add.graphics();
+    } else {
+      graphics.preloadPixelsOwnedOnlyMap();
+    }
+
+    // When the image is completly loaded, draw it on the canvas
+    graphics.load.once("complete", () => {
+      graphics.pixelGraphics.clear();
+      graphics.backgroundImg.destroy();
+      graphics.backgroundImg = graphics.add.image(0, 0, randomString);
+      graphics.backgroundImg.setOrigin(0, 0);
+      graphics.pixelGraphics = graphics.add.graphics();
+      graphics.selectorGraphics = graphics.add.graphics();
+    });
+  };
+
+  // Function called when the account is changed on vue side
+  graphics.performAccountChangeUpdate = function () {
+    // You need to preload the image that you will draw if you want to only show the pixels owned by the user (for latency reasons)
+    graphics.preloadPixelsOwnedOnlyMap();
   };
 }

@@ -77,7 +77,7 @@ module.exports = async function (Server) {
           await Server.db.run(
             "UPDATE pixels SET unvisible = ? WHERE owner = ?",
             [pixelsUnvisibility, accId]
-          ); // TODO : To upgrade to take into account the real difference
+          );
 
           Server.infoLogging(
             "Pixels visibility updated",
@@ -109,6 +109,7 @@ module.exports = async function (Server) {
             0,
           ]
         );
+
         Server.infoLogging(
           "New pixel placed",
           eventArgs.pixel_placed.posX,

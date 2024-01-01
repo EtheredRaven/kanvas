@@ -40,15 +40,15 @@ export default function ({ graphics, vue }) {
   let pixelColor = graphics.placeholdersCanvas
     .getContext("2d")
     .getImageData(posX, posY, 1, 1).data;
+  let alpha = pixelColor[3] || 0;
   let stringToColor = rgbaToString({
     red: pixelColor[0] || 0,
     green: pixelColor[1] || 0,
     blue: pixelColor[2] || 0,
-    alpha: pixelColor[3] || 0,
+    alpha: alpha,
   });
-  // Change the picker color if the color is not rgba(0, 0, 0, 0.00)
-  stringToColor != "rgba(0, 0, 0, 0.00)" &&
-    vue.$store.commit("changeColor", stringToColor);
+
+  alpha > 0 && vue.$store.commit("changeColor", stringToColor);
 
   // If there is a placeholder image, follow the mouse
   if (graphics.placeholderImage) {
