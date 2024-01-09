@@ -349,7 +349,7 @@ export default function ({ graphics, vue }) {
     if (pointer.primaryDown) {
       graphics.currentPointerClick = [pointer.x, pointer.y];
       if (graphics.lastPointerClick && !graphics.isMultitouchZooming) {
-        const MIN_SCROLL_INIT = 1;
+        const MIN_SCROLL_INIT = 1 / graphics.cameras.main.zoom;
         let scrollX =
           (graphics.lastPointerClick[0] - pointer.x) /
           graphics.cameras.main.zoom;

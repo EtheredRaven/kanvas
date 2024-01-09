@@ -39,11 +39,12 @@
       }
       // Enter the address for highscore
 
-      let message = "Enter your Koinos address to save your highscore:";
+      let message =
+        "Enter your Koinos address to save your highscore: <br /> <span style='font-size: 12px'>⚠️ You cannot use an address you already won with!</span>";
       if (findGetParameter("error"))
         message = "The address you have given is not valid. Try another one:";
       vex.dialog.open({
-        message: message,
+        unsafeMessage: message,
         input:
           '<input name="address" type="text" placeholder="Koinos address" required />',
         buttons: [{ ...vex.dialog.buttons.YES, text: "Confirm" }],

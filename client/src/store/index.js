@@ -392,7 +392,12 @@ export const createStore = (app) => {
         getters.getPixelsPerTx(state.activeAccount.address, false);
 
         // Call functions that may be need on the phaser side when the account is changed (caching data and things like that)
-        window.Client.game.graphics.performAccountChangeUpdate();
+        let performAccountChange = setInterval(() => {
+          if (window.Client.game?.graphics?.performAccountChangeUpdate) {
+            window.Client.game.graphics.performAccountChangeUpdate();
+            clearInterval(performAccountChange);
+          }
+        }, 100);
 
         state.koinContract = getKoinContract(newSigner);
         app.config.globalProperties.$socket.emit(

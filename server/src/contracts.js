@@ -49,6 +49,7 @@ module.exports = async function (Server) {
   // Kanvas contract
   Server.kanvasContractAddress = "1LeWGhDVD8g5rGCL4aDegEf9fKyTL1KhsS";
   Server.koincrewtokenContractAddress = "1BTQCpospHJRA7VAtZ4wvitdcqYCvkwBCD";
+  Server.dogekoinContractAddress = "1KU6cUY3TwYQzTRHakUcviiYmxNepRKkhQ";
   Server.initKanvasContractWithSigner = (
     signer,
     contractAddress = Server.kanvasContractAddress

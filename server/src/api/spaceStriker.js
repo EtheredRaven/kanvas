@@ -24,6 +24,10 @@ module.exports = function (Server) {
     Server.spaceStrikerSigner,
     Server.koincrewtokenContractAddress
   ).functions;
+  Server.dogekoinContract = Server.initKanvasContractWithSigner(
+    Server.spaceStrikerSigner,
+    Server.dogekoinContractAddress
+  ).functions;
 
   let resetSpaceStriker = async () => {
     Server.currentBestHighscore = null;
@@ -115,6 +119,27 @@ module.exports = function (Server) {
       );
     } catch (err) {
       Server.errorLogging("Space Striker", "Error while sending the KCT", err);
+    }
+
+    try {
+      // Send DOGEK
+      let dogekTx = await Server.dogekoinContract.transfer(
+        {
+          from: Server.spaceStrikerSigner.getAddress(),
+          to: addressToSendKoinTo,
+          value: 50000000000000,
+        },
+        {
+          rcLimit: "100000000",
+        }
+      );
+      await dogekTx.transaction.wait();
+      Server.infoLogging(
+        "Space Striker",
+        "Sent 10 DGK to " + addressToSendKoinTo
+      );
+    } catch (err) {
+      Server.errorLogging("Space Striker", "Error while sending the DGK", err);
     }
   };
 
@@ -253,6 +278,16 @@ module.exports = function (Server) {
       if (serverHash != req.query.hash) {
         throw "Hash is wrong";
       }
+
+      // Check that the player has not already had an highscore (forbidden to play again if you already won)
+      let reqRes = await Server.db.all(
+        "SELECT * FROM space_striker_winners WHERE address=?",
+        [req.query.address]
+      );
+      if (reqRes.length) {
+        throw "You already won, you can't play again";
+      }
+
       let reqParams = [
         req.query.highscore,
         Date.now(),
