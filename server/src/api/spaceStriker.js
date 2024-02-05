@@ -106,7 +106,7 @@ module.exports = function (Server) {
         {
           from: Server.spaceStrikerSigner.getAddress(),
           to: addressToSendKoinTo,
-          value: 5000000000,
+          value: 1000000000,
         },
         {
           rcLimit: "100000000",

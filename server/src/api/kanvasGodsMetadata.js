@@ -234,4 +234,19 @@ module.exports = function (Server) {
   Server.app.get("/api/kanvas_gods/get_metadata/:tokenId", function (req, res) {
     return res.send(getKanvasGodsMetadata(req.params.tokenId));
   });
+
+  Server.app.get(
+    "/api/kanvas_rewards/get_metadata/:tokenId",
+    function (req, res) {
+      return res.send({
+        name: "Kanvas Reward - " + req.params.tokenId,
+        description:
+          "Kanvas Rewards are NFTs that are given out to users who participate in Kanvas events. They are not for sale and can only be obtained by participating in Kanvas events.",
+        image:
+          "https://kanvas-app.com/app/img/kanvas_rewards/" +
+          req.params.tokenId +
+          ".jpeg",
+      });
+    }
+  );
 };
