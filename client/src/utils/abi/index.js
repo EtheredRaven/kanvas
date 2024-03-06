@@ -4,6 +4,7 @@ import kapProfileAbi from "./kapProfileAbi.json";
 import koindxCoreAbi from "./koindxCoreAbi.json";
 import nicknamesContractAbi from "./nicknamesContractAbi.json";
 import kanvasGodsContractAbi from "./kanvasGodsContractAbi.json";
+import koinCrewNFTContractAbi from "./koinCrewNFTContractAbi.json";
 
 export {
   kanvasContractAbi,
@@ -12,4 +13,5 @@ export {
   koindxCoreAbi,
   nicknamesContractAbi,
   kanvasGodsContractAbi,
+  koinCrewNFTContractAbi,
 };

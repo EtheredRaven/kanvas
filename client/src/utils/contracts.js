@@ -5,6 +5,7 @@ import {
   kapProfileAbi,
   nicknamesContractAbi,
   kanvasGodsContractAbi,
+  koinCrewNFTContractAbi,
 } from "./abi";
 import { WalletConnectKoinos } from "@armana/walletconnect-koinos-sdk-js";
 
@@ -30,6 +31,17 @@ export function getKanvasGodsContract(signer) {
   return new Contract({
     id: window.Client.kanvasGodsContractAddress,
     abi: kanvasGodsContractAbi,
+    provider,
+    signer,
+  }).functions;
+}
+
+window.Client.koinCrewNFTContractAddress = "1FB7geE8MN1ViG91rkBE5iu27s2Khuo257";
+export function getKoinCrewNFTContractAddress(signer) {
+  signer && (signer.provider = provider);
+  return new Contract({
+    id: window.Client.koinCrewNFTContractAddress,
+    abi: koinCrewNFTContractAbi,
     provider,
     signer,
   }).functions;

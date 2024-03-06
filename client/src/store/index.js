@@ -4,6 +4,7 @@ import { Signer, utils } from "koilib";
 import {
   getKanvasContract,
   getKanvasGodsContract,
+  getKoinCrewNFTContractAddress,
   getKoinContract,
   provider,
   getNicknamesContract,
@@ -45,6 +46,7 @@ export const createStore = (app) => {
       showOnlyOwnedPixels: false,
       kanvasContract: getKanvasContract(),
       kanvasGodsContract: getKanvasGodsContract(),
+      koinCrewNFTContract: getKoinCrewNFTContractAddress(),
       koinContract: getKoinContract(),
     },
     getters: {
@@ -72,6 +74,30 @@ export const createStore = (app) => {
           }
 
           return state.addressesData[address].tokenBalance;
+        },
+      getKoinCrewNFT:
+        (state) =>
+        async (address = state.activeAccount.address, cache = true) => {
+          try {
+            if (!cache) {
+              const koinCrewNFTsResult =
+                await state.koinCrewNFTContract.tokenOfOwnerByIndex({
+                  owner: address,
+                  index: 0,
+                });
+              state.addressesData[address].koinCrewNFT =
+                koinCrewNFTsResult?.result?.value;
+
+              state.addressesData[address].koinCrewNFT &&
+                Cookies.set(
+                  "koinCrewNFT" + address,
+                  state.addressesData[address].koinCrewNFT
+                );
+            }
+            return state.addressesData[address].koinCrewNFT;
+          } catch (e) {
+            console.log(e);
+          }
         },
       getKanvasGodsList:
         (state) =>
@@ -389,6 +415,7 @@ export const createStore = (app) => {
         }
 
         getters.getKanvasGodsList(state.activeAccount.address, false);
+        getters.getKoinCrewNFT(state.activeAccount.address, false);
         getters.getPixelsPerTx(state.activeAccount.address, false);
 
         // Call functions that may be need on the phaser side when the account is changed (caching data and things like that)

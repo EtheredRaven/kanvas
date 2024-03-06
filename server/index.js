@@ -39,96 +39,99 @@
       if (req.secure) return next();
       res.redirect("https://" + req.hostname + req.url);
     });
-  } catch (e) {
-    e;
-  }
 
-  // LOGGING
-  require("./src/logging")(Server);
+    // LOGGING
+    require("./src/logging")(Server);
 
-  // DATABASE
-  const DbWrapper = require("./db/db_wrapper");
-  const DbModel = require("./db/db_model");
-  Server.db = new DbWrapper("db/data.db", Server);
-  await new DbModel(Server.db).loadModels();
+    // DATABASE
+    const DbWrapper = require("./db/db_wrapper");
+    const DbModel = require("./db/db_model");
+    Server.db = new DbWrapper("db/data.db", Server);
+    await new DbModel(Server.db).loadModels();
 
-  // Requirements
-  require("./src/contracts")(Server);
+    // Requirements
+    require("./src/contracts")(Server);
 
-  // PATHS DEFINITIONS
-  Server.app.use("/", express.static(__dirname + "/../client/public/homepage"));
-  Server.app.get("/", function (req, res) {
-    res.sendFile(__dirname + "/../client/public/homepage/index.html");
-  });
-
-  Server.app.use("/app/", express.static(__dirname + "/../client/dist"));
-  Server.app.get("/app/*", function (req, res) {
-    res.sendFile(path.resolve(__dirname + "/../client/dist/index.html"));
-  });
-
-  Server.app.use(
-    "/docs/",
-    express.static(__dirname + "/../client/docs/.vitepress/dist")
-  );
-  Server.app.get("/docs/", function (req, res) {
-    res.sendFile(__dirname + "/../client/docs/.vitepress/dist/index.html");
-  });
-
-  Server.app.use(
-    "/paper_wallet/",
-    express.static(__dirname + "/../client/public/paper_wallet")
-  );
-  Server.app.get("/paper_wallet/*", function (req, res) {
-    res.sendFile(
-      path.resolve(__dirname + "/../client/public/paper_wallet/index.html")
+    // PATHS DEFINITIONS
+    Server.app.use(
+      "/",
+      express.static(__dirname + "/../client/public/homepage")
     );
-  });
+    Server.app.get("/", function (req, res) {
+      res.sendFile(__dirname + "/../client/public/homepage/index.html");
+    });
 
-  // SPACE STRIKER GAME
-  Server.app.use(
-    "/space_striker/",
-    express.static(__dirname + "/../client/public/space_striker")
-  );
-  Server.app.get("/", function (req, res) {
-    res.sendFile(__dirname + "/../client/public/space_striker/index.html");
-  });
-  const spaceStrikerApi = require("./src/api/spaceStriker")(Server);
-  Server.app.get("/api/associate_login/", async function (req, res) {
-    return res.send(await spaceStrikerApi.associateLogin(req));
-  });
-  Server.app.get("/api/get_login/", async function (req, res) {
-    return res.send(await spaceStrikerApi.getLogin(req));
-  });
-  Server.app.get("/api/get_highscore/", async function (req, res) {
-    return res.send(await spaceStrikerApi.getHighscore(req));
-  });
-  Server.app.get("/api/save_highscore/", async function (req, res) {
-    return res.send(await spaceStrikerApi.saveHighscore(req));
-  });
-  Server.app.get("/api/get_leaderboard/", async function (req, res) {
-    return res.send(await spaceStrikerApi.getLeaderboard(req));
-  });
-  Server.app.get("/api/get_last_week_winner/", async function (req, res) {
-    return res.send(await spaceStrikerApi.getLastWeekWinner(req));
-  });
-  require("./src/api/supply.js")(Server);
+    Server.app.use("/app/", express.static(__dirname + "/../client/dist"));
+    Server.app.get("/app/*", function (req, res) {
+      res.sendFile(path.resolve(__dirname + "/../client/dist/index.html"));
+    });
 
-  // Price API
-  const getLatestPrice = require("./src/api/getLatestPrice")(Server);
-  Server.app.get("/api/get_latest_price/", async function (req, res) {
-    return res.send(await getLatestPrice());
-  });
+    Server.app.use(
+      "/docs/",
+      express.static(__dirname + "/../client/docs/.vitepress/dist")
+    );
+    Server.app.get("/docs/", function (req, res) {
+      res.sendFile(__dirname + "/../client/docs/.vitepress/dist/index.html");
+    });
 
-  // Kanvas Gods metadata NFT API
-  require("./src/api/kanvasGodsMetadata.js")(Server);
+    Server.app.use(
+      "/paper_wallet/",
+      express.static(__dirname + "/../client/public/paper_wallet")
+    );
+    Server.app.get("/paper_wallet/*", function (req, res) {
+      res.sendFile(
+        path.resolve(__dirname + "/../client/public/paper_wallet/index.html")
+      );
+    });
 
-  // Pixel map image API
-  require("./src/api/createPixelMapImage")(Server);
+    // SPACE STRIKER GAME
+    Server.app.use(
+      "/space_striker/",
+      express.static(__dirname + "/../client/public/space_striker")
+    );
+    Server.app.get("/", function (req, res) {
+      res.sendFile(__dirname + "/../client/public/space_striker/index.html");
+    });
+    const spaceStrikerApi = require("./src/api/spaceStriker")(Server);
+    Server.app.get("/api/associate_login/", async function (req, res) {
+      return res.send(await spaceStrikerApi.associateLogin(req));
+    });
+    Server.app.get("/api/get_login/", async function (req, res) {
+      return res.send(await spaceStrikerApi.getLogin(req));
+    });
+    Server.app.get("/api/get_highscore/", async function (req, res) {
+      return res.send(await spaceStrikerApi.getHighscore(req));
+    });
+    Server.app.get("/api/save_highscore/", async function (req, res) {
+      return res.send(await spaceStrikerApi.saveHighscore(req));
+    });
+    Server.app.get("/api/get_leaderboard/", async function (req, res) {
+      return res.send(await spaceStrikerApi.getLeaderboard(req));
+    });
+    Server.app.get("/api/get_last_week_winner/", async function (req, res) {
+      return res.send(await spaceStrikerApi.getLastWeekWinner(req));
+    });
+    require("./src/api/supply.js")(Server);
 
-  require("./src/serverDataFetching")(Server);
-  require("./src/socket")(Server);
-  require("./src/blockchainEventsListener")(Server);
-  require("./src/priceListener")(Server);
-  require("./src/init")(Server); // Only use to reset the db state from the blockchain
-  require("./src/test")(Server); // Only use to test some stuff
+    // Price API
+    const getLatestPrice = require("./src/api/getLatestPrice")(Server);
+    Server.app.get("/api/get_latest_price/", async function (req, res) {
+      return res.send(await getLatestPrice());
+    });
+
+    // Kanvas Gods metadata NFT API
+    require("./src/api/kanvasGodsMetadata.js")(Server);
+
+    // Pixel map image API
+    require("./src/api/createPixelMapImage")(Server);
+
+    require("./src/serverDataFetching")(Server);
+    require("./src/socket")(Server);
+    require("./src/blockchainEventsListener")(Server);
+    require("./src/priceListener")(Server);
+    require("./src/init")(Server); // Only use to reset the db state from the blockchain
+    require("./src/test")(Server); // Only use to test some stuff
+  } catch (e) {
+    console.log(e);
+  }
 })();

@@ -191,180 +191,193 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
-import AccountList from "./AccountList";
-import KanvasButton from "./KanvasButton";
-import LockIcon from "./LockIcon";
-import LinkIcon from "./LinkIcon";
-import { createAvatar } from "@dicebear/core";
-import { identicon } from "@dicebear/collection";
+  import { defineComponent } from "vue";
+  import AccountList from "./AccountList";
+  import KanvasButton from "./KanvasButton";
+  import LockIcon from "./LockIcon";
+  import LinkIcon from "./LinkIcon";
+  import { createAvatar } from "@dicebear/core";
+  import { identicon } from "@dicebear/collection";
 
-export default defineComponent({
-  name: "WalletMenu",
-  components: {
-    AccountList,
-    KanvasButton,
-    LinkIcon,
-    LockIcon,
-  },
-  emits: ["createNew"],
-  created() {
-    if (
-      this.$store.state.walletsList.length == 1 &&
-      this.$store.state.walletsList[0].name == "Demo"
-    ) {
-      setTimeout(
-        () => this.toggleWallet(this.$store.state.walletsList[0].name),
-        100
-      );
-    }
-  },
-  data: function () {
-    return {
-      opened: false,
-      unlocking: false,
-      toUnlock: null,
-      password: "",
-    };
-  },
-  computed: {
-    activeAccountAddress: function () {
-      return this.$store.state.activeAccount?.address;
+  export default defineComponent({
+    name: "WalletMenu",
+    components: {
+      AccountList,
+      KanvasButton,
+      LinkIcon,
+      LockIcon,
     },
-    profilePicturePath: function () {
-      if (!this.activeAccountAddress) return null;
-      let nftList =
-        this.$store.state.addressesData[this.activeAccountAddress]
-          .kanvasGodsList;
-      if (!nftList || !nftList.length) return null;
-      // Take the minimum of the nft string list to int because it is the most powerful
-      let nft = Math.min(...nftList.map((x) => parseInt(x)));
-      return "./img/gods/profile/" + nft + ".png";
-    },
-    walletList: function () {
-      return this.$store.state.walletsList;
-    },
-    walletToUnlock: function () {
-      return this.walletList.find((x) => x.name == this.toUnlock);
-    },
-    walletName: function () {
-      return this.$store.getters.walletName;
-    },
-    loggedIn: function () {
-      return this.$store.getters.loggedIn;
-    },
-    lastWallet: function () {
-      return this.$store.getters.lastWallet;
-    },
-    topWallet: function () {
-      let topWallets = this.walletList.filter((x) => x.name == this.lastWallet);
-      if (topWallets.length) {
-        return topWallets[0];
-      } else {
-        return this.walletList[0];
+    emits: ["createNew"],
+    created() {
+      if (
+        this.$store.state.walletsList.length == 1 &&
+        this.$store.state.walletsList[0].name == "Demo"
+      ) {
+        setTimeout(
+          () => this.toggleWallet(this.$store.state.walletsList[0].name),
+          100
+        );
       }
     },
-    restWallets: function () {
-      return this.walletList.filter((x) => x.name != this.topWallet.name);
+    data: function () {
+      return {
+        opened: false,
+        unlocking: false,
+        toUnlock: null,
+        password: "",
+      };
     },
-  },
-  methods: {
-    kondorAccountsChanged() {
-      this.$animateTransition(
-        document.getElementById("walletsListContainer")
-      ).then(() => {
+    computed: {
+      activeAccountAddress: function () {
+        return this.$store.state.activeAccount?.address;
+      },
+      profilePicturePath: function () {
+        if (!this.activeAccountAddress) return null;
+
+        let nftList =
+          this.$store.state.addressesData[this.activeAccountAddress]
+            .kanvasGodsList;
+        if (!nftList || !nftList.length) {
+          // Koin Crew NFTs
+          let koinCrewNft =
+            this.$store.state.addressesData[this.activeAccountAddress]
+              .koinCrewNFT;
+          if (koinCrewNft) {
+            return "./img/koincrew_nft/" + koinCrewNft + ".png";
+          } else {
+            return null;
+          }
+        }
+        // Take the minimum of the nft string list to int because it is the most powerful
+        let nft = Math.min(...nftList.map((x) => parseInt(x)));
+        return "./img/gods/profile/" + nft + ".png";
+      },
+      walletList: function () {
+        return this.$store.state.walletsList;
+      },
+      walletToUnlock: function () {
+        return this.walletList.find((x) => x.name == this.toUnlock);
+      },
+      walletName: function () {
+        return this.$store.getters.walletName;
+      },
+      loggedIn: function () {
+        return this.$store.getters.loggedIn;
+      },
+      lastWallet: function () {
+        return this.$store.getters.lastWallet;
+      },
+      topWallet: function () {
+        let topWallets = this.walletList.filter(
+          (x) => x.name == this.lastWallet
+        );
+        if (topWallets.length) {
+          return topWallets[0];
+        } else {
+          return this.walletList[0];
+        }
+      },
+      restWallets: function () {
+        return this.walletList.filter((x) => x.name != this.topWallet.name);
+      },
+    },
+    methods: {
+      kondorAccountsChanged() {
         this.$animateTransition(
           document.getElementById("walletsListContainer")
-        );
-      });
-    },
-    close() {
-      this.$animateTransition(
-        document.getElementById("unlockWalletContainer")
-      ).then(() => {
-        this.password = "";
-        this.unlocking = false;
-        this.toUnlock = null;
-      });
-    },
-    shortenAddress: function (addr) {
-      return addr.substr(0, 10) + "..." + addr.slice(-5);
-    },
-    getAvatar: function (name) {
-      const avatar = createAvatar(identicon, {
-        seed: name,
-        backgroundType: "solid",
-        row1: ["ooxoo", "oxoxo", "oxxxo"],
-        row5: ["ooxoo", "oxoxo", "oxxxo"],
-      });
-      const svg = avatar.toString();
-      return svg;
-    },
-    unlockStoreWallet: async function () {
-      this.$animateTransition(
-        document.getElementById("unlockWalletContainer")
-      ).then(async () => {
-        try {
-          await this.$store.dispatch("unlockWallet", {
-            name: this.walletToUnlock?.name,
-            password: this.password,
-          });
-          this.unlocking = false;
-          this.password = "";
-        } catch (err) {
-          this.$error("Your password is wrong !");
-          this.unlocking = false;
-          this.toUnlock = "";
-          this.password = "";
-        }
-      });
-    },
-    createNewWallet: function () {
-      this.$animateTransition(
-        document.getElementById("walletsListContainer")
-      ).then(() => {
-        this.$emit("createNew");
-      });
-    },
-    toggleWallet: async function (name) {
-      await this.$animateTransition(
-        document.getElementById("walletsListContainer")
-      );
-      let isWalletLocked = name != this.walletName;
-      if (isWalletLocked) {
-        if (name == "Kondor" || name == "WalletConnect" || name == "Demo") {
-          await this.$store.dispatch("unlockWallet", {
-            name,
-            password: null,
-          });
-
+        ).then(() => {
           this.$animateTransition(
             document.getElementById("walletsListContainer")
           );
-        } else {
-          this.toUnlock = name;
-          this.unlocking = true;
-        }
-      } else {
-        await this.$store.dispatch("signOut");
-        this.toUnlock = "";
-        this.unlocking = false;
+        });
+      },
+      close() {
+        this.$animateTransition(
+          document.getElementById("unlockWalletContainer")
+        ).then(() => {
+          this.password = "";
+          this.unlocking = false;
+          this.toUnlock = null;
+        });
+      },
+      shortenAddress: function (addr) {
+        return addr.substr(0, 10) + "..." + addr.slice(-5);
+      },
+      getAvatar: function (name) {
+        const avatar = createAvatar(identicon, {
+          seed: name,
+          backgroundType: "solid",
+          row1: ["ooxoo", "oxoxo", "oxxxo"],
+          row5: ["ooxoo", "oxoxo", "oxxxo"],
+        });
+        const svg = avatar.toString();
+        return svg;
+      },
+      unlockStoreWallet: async function () {
+        this.$animateTransition(
+          document.getElementById("unlockWalletContainer")
+        ).then(async () => {
+          try {
+            await this.$store.dispatch("unlockWallet", {
+              name: this.walletToUnlock?.name,
+              password: this.password,
+            });
+            this.unlocking = false;
+            this.password = "";
+          } catch (err) {
+            this.$error("Your password is wrong !");
+            this.unlocking = false;
+            this.toUnlock = "";
+            this.password = "";
+          }
+        });
+      },
+      createNewWallet: function () {
         this.$animateTransition(
           document.getElementById("walletsListContainer")
+        ).then(() => {
+          this.$emit("createNew");
+        });
+      },
+      toggleWallet: async function (name) {
+        await this.$animateTransition(
+          document.getElementById("walletsListContainer")
         );
-      }
+        let isWalletLocked = name != this.walletName;
+        if (isWalletLocked) {
+          if (name == "Kondor" || name == "WalletConnect" || name == "Demo") {
+            await this.$store.dispatch("unlockWallet", {
+              name,
+              password: null,
+            });
+
+            this.$animateTransition(
+              document.getElementById("walletsListContainer")
+            );
+          } else {
+            this.toUnlock = name;
+            this.unlocking = true;
+          }
+        } else {
+          await this.$store.dispatch("signOut");
+          this.toUnlock = "";
+          this.unlocking = false;
+          this.$animateTransition(
+            document.getElementById("walletsListContainer")
+          );
+        }
+      },
     },
-  },
-});
+  });
 </script>
 
 <style>
-.iconClose {
-  margin-right: 20px;
-  vertical-align: sub;
-}
+  .iconClose {
+    margin-right: 20px;
+    vertical-align: sub;
+  }
 
-.alignRight {
-  text-align: right !important;
-}
+  .alignRight {
+    text-align: right !important;
+  }
 </style>
